@@ -1,5 +1,6 @@
 // Prepares dist/ for publishing as a claude.ai Artifact (dist-artifact/).
 // - Drops the .woff font fallbacks (every target browser reads .woff2) to stay under the file limit.
+// - Escapes literal U+FFFD in scripts, which the publisher refuses.
 // - Writes the page as a body fragment: the Artifact host adds the document skeleton itself.
 // - Writes dist-artifact/files.json, the list of supporting files split into publish batches.
 import fs from 'node:fs';
@@ -17,6 +18,12 @@ const rel = (f) => path.relative(OUT, f).split(path.sep).join('/');
 
 for (const f of walk(OUT)) {
   if (f.endsWith('.woff')) fs.rmSync(f);
+  else if (f.endsWith('.js')) {
+    // The publisher refuses a literal U+FFFD; in a bundle it only sits inside string or regex
+    // literals (pdfmake's text decoder), where the escape means the same character.
+    const js = fs.readFileSync(f, 'utf8');
+    if (js.includes('\uFFFD')) fs.writeFileSync(f, js.replaceAll('\uFFFD', '\\uFFFD'));
+  }
   else if (f.endsWith('.css')) {
     const css = fs.readFileSync(f, 'utf8').replace(/,\s*url\([^)]*?\.woff\)\s*format\(["']woff["']\)/g, '');
     if (/\.woff\)/.test(css)) throw new Error(`.woff reference left in ${rel(f)}`);
