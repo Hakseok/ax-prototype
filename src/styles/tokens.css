@@ -57,6 +57,9 @@
   --color-data-grid:var(--p-gray-200);
   --color-data-compare:var(--p-gray-400);
   --color-data-reference:var(--p-gray-600);
+  /* Sequential scale (heatmap): low = calm, high = intense. Not a status color. */
+  --color-heat-low:var(--p-blue-100);
+  --color-heat-high:var(--p-series-blue-500);
   --color-series-1:var(--p-series-blue-500);
   --color-series-2:var(--p-series-aqua-500);
   --color-series-3:var(--p-series-violet-700);
@@ -122,6 +125,8 @@
   --color-data-grid:var(--p-gray-750);
   --color-data-compare:var(--p-gray-500);
   --color-data-reference:var(--p-gray-300);
+  --color-heat-low:var(--p-blue-900);
+  --color-heat-high:var(--p-series-blue-400);
   --color-series-1:var(--p-series-blue-400);
   --color-series-2:var(--p-series-aqua-600);
   --color-series-3:var(--p-series-violet-400);

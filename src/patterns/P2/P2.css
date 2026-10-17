@@ -1,0 +1,188 @@
+/* P2: the layout board and the selected machine on top, the bottleneck heatmap below. */
+.p2 {
+  display: flex;
+  flex-direction: column;
+  gap: var(--shell-gap);
+  height: 100%;
+  min-height: 0;
+}
+
+.p2__top {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 1fr);
+  gap: var(--shell-gap);
+  flex: 3 1 0;
+  min-height: 0;
+}
+
+.p2__board,
+.p2__detail {
+  min-height: 0;
+  overflow: auto;
+}
+
+.p2__heat {
+  flex: 2 1 0;
+  min-height: 0;
+}
+
+.p2__heat-body {
+  display: grid;
+  grid-template-columns: minmax(0, 4fr) minmax(0, 1fr);
+  gap: var(--shell-gap);
+  height: 100%;
+  min-height: 0;
+}
+
+.p2__bands {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.p2__band {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  padding-bottom: var(--space-md);
+  border-bottom: var(--border-w) solid var(--color-border);
+}
+
+.p2__band:last-child {
+  border-bottom: none;
+}
+
+.p2__band-head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-md);
+}
+
+.p2__spacer {
+  flex: 1 1 0;
+}
+
+.p2__tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(calc(var(--chart-axis-w) * 4), 1fr));
+  gap: var(--space-sm);
+}
+
+.p2__tile {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-xs);
+  padding: var(--space-sm) var(--space-md);
+  border: var(--border-w) solid var(--color-border);
+  border-radius: var(--radius-control);
+  background: var(--color-bg-surface);
+  color: var(--color-text-primary);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.p2__tile:hover {
+  background: var(--color-bg-hover);
+}
+
+.p2__tile:focus-visible {
+  outline: var(--border-w) solid var(--color-action);
+  outline-offset: var(--border-w);
+}
+
+.p2__tile--selected {
+  border-color: var(--color-action);
+  box-shadow: inset 0 0 0 var(--border-w) var(--color-action);
+}
+
+.p2__tile--idle,
+.p2__tile--missing {
+  color: var(--color-text-secondary);
+}
+
+.p2__tile--missing {
+  background-image: repeating-linear-gradient(-45deg, transparent 0 var(--hatch-gap), var(--color-bg-hover) var(--hatch-gap) calc(var(--hatch-gap) * 2));
+}
+
+.p2__tile-name {
+  font-weight: 600;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+.p2__tile-state,
+.p2__tile-health {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-size: var(--font-size-caption);
+}
+
+/* State marks are neutral ink; shape tells them apart (정상은 무채색, status colors stay for levels). */
+.p2__mark {
+  display: inline-block;
+  width: var(--status-mark);
+  height: var(--status-mark);
+  flex: none;
+}
+
+.p2__mark--run {
+  border-radius: var(--radius-pill);
+  background: var(--color-text-secondary);
+}
+
+.p2__mark--stop {
+  border: var(--border-w) solid var(--color-text-primary);
+  background: var(--color-text-primary);
+}
+
+.p2__mark--idle {
+  height: var(--border-w);
+  background: var(--color-text-tertiary);
+}
+
+.p2__mark--missing {
+  border: var(--border-w) dashed var(--color-text-secondary);
+  border-radius: var(--radius-pill);
+}
+
+.p2__legend {
+  display: inline-flex;
+  gap: var(--space-lg);
+  font-size: var(--font-size-caption);
+}
+
+.p2__legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.p2__title {
+  margin: 0 0 var(--space-sm);
+  font-size: var(--font-size-body);
+  font-weight: 600;
+}
+
+.p2__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+  margin-top: var(--space-md);
+}
+
+.p2__tally {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  min-height: 0;
+  overflow: auto;
+}
+
+.p2__h {
+  margin: 0;
+  font-size: var(--font-size-caption);
+  font-weight: 600;
+}

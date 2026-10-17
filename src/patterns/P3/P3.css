@@ -98,3 +98,36 @@
   padding-top: var(--space-sm);
   text-align: left;
 }
+
+/* ENG-020 energy form: cards, demand chart with daily peaks, line usage chart and table. */
+.p3e {
+  display: flex;
+  flex-direction: column;
+  gap: var(--shell-gap);
+}
+
+.p3e__kpis {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--shell-gap);
+}
+
+.p3e__mid,
+.p3e__bottom {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  gap: var(--shell-gap);
+  height: calc(var(--chart-axis-w) * 8);
+}
+
+.p3e__bottom {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+
+.p3e__demand,
+.p3e__peaks,
+.p3e__bars,
+.p3e__table {
+  min-height: 0;
+  overflow: auto;
+}

@@ -1,4 +1,4 @@
-// P3 분석형 (OPS-020): conditions, hierarchy path (company → site → line → equipment),
+// P3 분석형. OPS-020 (this file): conditions, hierarchy path (company → site → line → equipment),
 // summary of OEE and losses, child rows to drill into, the six-big-loss waterfall with time and
 // money, and tabs for top causes, stop events, shift and product comparisons.
 import { useMemo, useState } from 'react';
@@ -29,6 +29,7 @@ import { useRefs } from '../common/hooks';
 import type { ColumnDef, FieldDef } from '../common/types';
 import { useAsync } from '../common/useAsync';
 import '../common/patterns.css';
+import { P3Energy } from './P3Energy';
 import './P3.css';
 
 interface P3Definition {
@@ -48,7 +49,13 @@ const hours = (min: number) => formatNumber(Math.max(0, min) / 60, 1);
 const SHORT: Record<string, string> = { breakdown: '고장', changeover: '교체', minorStop: '소정지', speed: '속도', defect: '불량', startup: '초기불량' };
 const thousand = (won: number) => formatNumber(Math.round(won / 1000), 0);
 
-export function P3Analysis({ entry, def: rawDef, badges }: TemplateProps) {
+/** P3 draws the OEE·loss analysis (OPS-020) or, with a demand chart, the energy analysis (ENG-020). */
+export function P3Analysis(props: TemplateProps) {
+  const def = props.def as unknown as { chart?: { type?: string } };
+  return def.chart?.type === 'demand' ? <P3Energy {...props} /> : <P3Loss {...props} />;
+}
+
+function P3Loss({ entry, def: rawDef, badges }: TemplateProps) {
   const def = rawDef as unknown as P3Definition;
   const app = useApp();
   const link = useShellLink();

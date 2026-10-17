@@ -3,6 +3,7 @@
 import type { ComponentType } from 'react';
 import type { TemplateProps } from '../shell/ScreenHost';
 import { P1Dashboard } from './P1/P1Dashboard';
+import { P2Layout } from './P2/P2Layout';
 import { P3Analysis } from './P3/P3Analysis';
 import { P4Query } from './P4/P4Query';
 import { P5Workflow } from './P5/P5Workflow';
@@ -16,6 +17,7 @@ import { P12Assistant } from './P12/P12Assistant';
 
 export const patternTemplates: Partial<Record<string, ComponentType<TemplateProps>>> = {
   P1: P1Dashboard,
+  P2: P2Layout,
   P3: P3Analysis,
   P4: P4Query,
   P5: P5Workflow,

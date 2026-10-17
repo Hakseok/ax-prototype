@@ -1,0 +1,20 @@
+{
+  "id": "ENG-020",
+  "pattern": "P3",
+  "title": "에너지 분석",
+  "permission": { "view": "조회" },
+  "badges": ["시연용"],
+  "filters": [
+    { "field": "period", "label": "기간", "control": "dateRange", "default": "thisMonth", "required": true },
+    {
+      "field": "source", "label": "에너지원", "control": "select", "default": "electricity", "required": true,
+      "options": [{ "value": "electricity", "label": "전력" }, { "value": "compressedAir", "label": "압축공기" }]
+    }
+  ],
+  "target": { "levels": ["company", "site"] },
+  "chart": { "type": "demand", "unit": "kW" },
+  "analysis": { "cautionRatio": 0.85, "demandDays": 7 },
+  "actions": ["조회", "내보내기"],
+  "links": [{ "label": "에너지 현황", "to": "ENG-010" }],
+  "note": "피크는 15분 데이터(최근 7일)로 계산한다. 관리 기준은 계약전력의 85%(시연용 가정, D-64)."
+}

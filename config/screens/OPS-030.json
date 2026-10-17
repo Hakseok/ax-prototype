@@ -1,0 +1,22 @@
+{
+  "id": "OPS-030",
+  "pattern": "P2",
+  "title": "라인 모니터링",
+  "permission": { "view": "조회" },
+  "diagram": {
+    "source": "lineBoard",
+    "heatmap": {
+      "days": 14,
+      "metrics": [
+        { "id": "plan.attainment", "label": "계획 달성률" },
+        { "id": "oee", "label": "OEE" },
+        { "id": "oee.performance", "label": "성능" }
+      ]
+    }
+  },
+  "links": [
+    { "label": "OEE·손실 분석", "to": "OPS-020" },
+    { "label": "설비 건전성", "to": "MNT-010" }
+  ],
+  "note": "배치는 라인 순서와 설비 순서로 그린 도식이다(실제 배치도 연계 전). 병목 히트맵은 교대 실적이 라인 단위라 라인 × 일자로 본다(D-48, D-63)."
+}

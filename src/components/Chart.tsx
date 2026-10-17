@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef } from 'react';
 import * as echarts from 'echarts/core';
-import { BarChart, LineChart, SankeyChart, ScatterChart as EScatter } from 'echarts/charts';
-import { DataZoomComponent, GridComponent, LegendComponent, MarkAreaComponent, MarkLineComponent, TooltipComponent } from 'echarts/components';
+import { BarChart, HeatmapChart as EHeatmap, LineChart, SankeyChart, ScatterChart as EScatter } from 'echarts/charts';
+import { DataZoomComponent, GridComponent, LegendComponent, MarkAreaComponent, MarkLineComponent, TooltipComponent, VisualMapComponent } from 'echarts/components';
 import { CanvasRenderer, SVGRenderer } from 'echarts/renderers';
 import type { EChartsCoreOption } from 'echarts/core';
 import { useTheme } from '../theme/ThemeProvider';
@@ -9,7 +9,7 @@ import { readToken, readTokenNumber } from '../theme/tokens';
 import { formatNumber } from './KpiCard';
 import './Chart.css';
 
-echarts.use([LineChart, BarChart, SankeyChart, EScatter,GridComponent, LegendComponent, MarkAreaComponent, MarkLineComponent, TooltipComponent, DataZoomComponent, SVGRenderer, CanvasRenderer]);
+echarts.use([LineChart, BarChart, SankeyChart, EScatter, EHeatmap, GridComponent, LegendComponent, MarkAreaComponent, MarkLineComponent, TooltipComponent, DataZoomComponent, VisualMapComponent, SVGRenderer, CanvasRenderer]);
 
 export interface ChartSeries {
   name: string;
@@ -350,6 +350,88 @@ export function ScatterChart({ groups, xName, yName, xDigits = 1, yDigits = 1, b
     inst?.on('click', handler as never);
     return () => {
       // The chart may already be disposed when the screen unmounts.
+      if (inst && !inst.isDisposed()) inst.off('click', handler as never);
+    };
+  }, [host, onPick]);
+  return <div ref={host} className={`chart${fill ? ' chart--fill' : ''}`} role="img" aria-label={ariaLabel} />;
+}
+
+interface HeatmapChartProps {
+  xCategories: string[];
+  yCategories: string[];
+  /** [x index, y index, value]; null = no production or not received, drawn empty. */
+  cells: [number, number, number | null][];
+  unit: string;
+  digits?: number;
+  /** Value range of the color scale. */
+  range: [number, number];
+  /** Lower values are drawn more intense (e.g. attainment, where low means a bottleneck). */
+  lowIsIntense?: boolean;
+  /** Cells to outline and label, e.g. the bottleneck of each day. */
+  marked?: Set<string>;
+  markLabel?: string;
+  ariaLabel: string;
+  fill?: boolean;
+  onPick?: (x: number, y: number) => void;
+}
+
+/** Category × category heatmap with a sequential scale (heat tokens, never status colors). */
+export function HeatmapChart({ xCategories, yCategories, cells, unit, digits = 0, range, lowIsIntense, marked, markLabel = '', ariaLabel, fill, onPick }: HeatmapChartProps) {
+  const { revision } = useTheme();
+  const option = useMemo<EChartsCoreOption>(() => {
+    const px = readTokenNumber;
+    const font = readToken('font-family-base');
+    const numFont = readToken('font-family-num');
+    const caption = px('font-size-caption');
+    const muted = readToken('color-text-tertiary');
+    const ink = readToken('color-text-primary');
+    const scale = [readToken('color-heat-low'), readToken('color-heat-high')];
+    const key = (x: number, y: number) => `${x}|${y}`;
+    const axis = (data: string[]) => ({ type: 'category', data, splitArea: { show: false }, axisLine: { show: false }, axisTick: { show: false }, axisLabel: { color: muted, fontFamily: font, fontSize: caption, hideOverlap: true } });
+    return {
+      animation: false,
+      textStyle: { fontFamily: font, fontSize: caption },
+      grid: { left: px('chart-axis-w') * 3, right: px('space-xl'), top: px('space-md'), bottom: px('space-xl') * 2 + px('space-md') },
+      tooltip: {
+        trigger: 'item',
+        backgroundColor: readToken('color-bg-surface'),
+        borderColor: readToken('color-border-strong'),
+        textStyle: { color: ink, fontFamily: font, fontSize: caption },
+        formatter: (p: { data: [number, number, number | null] }) => {
+          const [x, y, v] = p.data;
+          return `${yCategories[y]} · ${xCategories[x]}<br/>${v === null ? '생산 없음·미수신' : `${formatNumber(v, digits)} ${unit}`}${marked?.has(key(x, y)) ? ` · ${markLabel}` : ''}`;
+        }
+      },
+      visualMap: {
+        min: range[0], max: range[1], calculable: false, orient: 'horizontal', left: 'center', bottom: 0, itemHeight: px('chart-axis-w') * 2, itemWidth: px('space-md'),
+        inRange: { color: lowIsIntense ? [...scale].reverse() : scale },
+        text: lowIsIntense ? [`${formatNumber(range[1], digits)} ${unit}`, `${formatNumber(range[0], digits)} ${unit}`] : undefined,
+        textStyle: { color: muted, fontFamily: numFont, fontSize: caption }
+      },
+      xAxis: axis(xCategories),
+      yAxis: { ...axis(yCategories), inverse: true },
+      series: [
+        {
+          type: 'heatmap',
+          data: cells.map(([x, y, v]) => ({
+            value: [x, y, v],
+            itemStyle: marked?.has(key(x, y)) ? { borderColor: ink, borderWidth: px('border-w') * 2 } : { borderColor: readToken('color-bg-surface'), borderWidth: px('border-w') }
+          })),
+          label: { show: true, color: ink, fontFamily: numFont, fontSize: caption, formatter: (p: { data: { value: [number, number, number | null] } }) => (p.data.value[2] === null ? '-' : formatNumber(p.data.value[2], digits)) },
+          emphasis: { itemStyle: { borderColor: readToken('color-action'), borderWidth: px('border-w') * 2 } }
+        }
+      ]
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [xCategories, yCategories, cells, unit, digits, range, lowIsIntense, marked, markLabel, revision]);
+  const host = useEChart(option);
+  useEffect(() => {
+    const el = host.current;
+    if (!el || !onPick) return;
+    const inst = echarts.getInstanceByDom(el);
+    const handler = (p: { data?: { value: [number, number, number | null] } }) => p.data && onPick(p.data.value[0], p.data.value[1]);
+    inst?.on('click', handler as never);
+    return () => {
       if (inst && !inst.isDisposed()) inst.off('click', handler as never);
     };
   }, [host, onPick]);
