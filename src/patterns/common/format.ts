@@ -1,3 +1,4 @@
+import { saveFile } from '../../report/save';
 import { formatNumber } from '../../components/KpiCard';
 import type { ColumnDef } from './types';
 
@@ -45,11 +46,6 @@ export const buildCsv = (columns: ColumnDef[], rows: Record<string, unknown>[], 
 };
 
 export const downloadCsv = (fileName: string, columns: ColumnDef[], rows: Record<string, unknown>[], refs: RefMaps, totalRow?: Record<string, unknown>) => {
-  const blob = new Blob([buildCsv(columns, rows, refs, totalRow)], { type: 'text/csv;charset=utf-8' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = fileName;
-  a.click();
-  URL.revokeObjectURL(url);
+  // Same path as the PDF: inside a published Artifact the viewer confirms the save (D-42).
+  void saveFile(fileName, new Blob([buildCsv(columns, rows, refs, totalRow)], { type: 'text/csv;charset=utf-8' }));
 };
