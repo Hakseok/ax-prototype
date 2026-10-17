@@ -1,9 +1,9 @@
-// P5 처리 목록형 (MNT-020, QUA-030): conditions, stage tabs with counts, the list, and the
-// content panel of the selected record with its action for the current stage and the process log.
-// The workflow kind (workOrder, claim) picks the content panel; columns and stages come from the definition.
+// P5 처리 목록형 (QUA-030): conditions, stage tabs with counts, the list, and the content panel of
+// the selected record with its action for the current stage and the process log. Columns and stages
+// come from the definition. Maintenance orders are not processed here (CMMS, D-66).
 import { useMemo } from 'react';
 import { Alert as Notice, Button, Segmented, Tag } from 'antd';
-import { DownloadOutlined, PlusOutlined } from '@ant-design/icons';
+import { DownloadOutlined } from '@ant-design/icons';
 import { useSearchParams } from 'react-router-dom';
 import { DataGrid } from '../../components/DataGrid';
 import { Panel } from '../../components/Panel';
@@ -18,15 +18,13 @@ import { downloadCsv } from '../common/format';
 import { useDataset, useRefs } from '../common/hooks';
 import type { ColumnDef, FieldDef } from '../common/types';
 import { ClaimPanel } from './ClaimPanel';
-import { WorkOrderPanel } from './WorkOrderPanel';
-import { NewWorkOrder } from './NewWorkOrder';
 import '../common/patterns.css';
 import './P5.css';
 
 interface P5Definition {
   badges?: string[];
   dataSource: string;
-  workflow: 'workOrder' | 'claim';
+  workflow: 'claim';
   filters: FieldDef[];
   list: { stageField: string; stages: string[]; openStages: string[]; columns: ColumnDef[] };
   content: { title: string };
@@ -59,7 +57,6 @@ export function P5Workflow({ entry, def: rawDef, badges }: TemplateProps) {
   const stage = params.get('stage') ?? (openCount ? OPEN : ALL);
   const shown = filtered.filter((r) => stage === ALL || (stage === OPEN ? def.list.openStages.includes(stageOf(r)) : stageOf(r) === stage));
   const selectedId = params.get('id');
-  const creating = params.get('new') === '1';
   const canEdit = app.hasPermission(entry.edit ?? '편집');
 
   const set = (patch: Record<string, string | null>) =>
@@ -91,11 +88,6 @@ export function P5Workflow({ entry, def: rawDef, badges }: TemplateProps) {
               내보내기
             </Button>
           )}
-          {def.actions.includes('신규') && canEdit && def.workflow === 'workOrder' && (
-            <Button icon={<PlusOutlined />} onClick={() => set({ new: '1', id: null, eq: null, ai: null })}>
-              신규
-            </Button>
-          )}
         </>
       }
       bodyMode="fit"
@@ -121,19 +113,13 @@ export function P5Workflow({ entry, def: rawDef, badges }: TemplateProps) {
               rows={shown}
               height="fill"
               selectedId={selectedId}
-              onRowClick={(r) => set({ id: String((r as { id: string }).id), new: null })}
+              onRowClick={(r) => set({ id: String((r as { id: string }).id) })}
               emptyText={stage === OPEN ? '처리할 건이 없습니다. 기간을 넓히거나 다른 단계를 고르세요.' : '조건에 맞는 건이 없습니다.'}
             />
           </Panel>
           <div className="p5__content">
-            {creating && def.workflow === 'workOrder' ? (
-              <NewWorkOrder onDone={(id) => set({ new: null, id, stage: '요청', eq: null, ai: null })} onCancel={() => set({ new: null, eq: null, ai: null })} />
-            ) : selectedId ? (
-              def.workflow === 'workOrder' ? (
-                <WorkOrderPanel id={selectedId} canEdit={canEdit} />
-              ) : (
-                <ClaimPanel id={selectedId} canEdit={canEdit} />
-              )
+            {selectedId ? (
+              <ClaimPanel id={selectedId} canEdit={canEdit} />
             ) : (
               <Panel title={def.content.title} className="p5__empty">
                 <p className="caption">왼쪽 목록에서 건을 고르세요. 단계별 처리 버튼과 처리 기록이 여기에 보입니다.</p>

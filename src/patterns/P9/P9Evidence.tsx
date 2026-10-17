@@ -14,7 +14,8 @@ import { decisionStore } from '../../data/aiEngine';
 import { useCostVersion } from '../../data/costs';
 import { useLocalStore } from '../../data/localStore';
 import { claimStore, workOrderStore } from '../../data/workflows';
-import { METRICS, displayValue, metric } from '../../data/metrics/catalog';
+import { METRICS, displayValue } from '../../data/metrics/catalog';
+import { beforeAfter } from '../../data/executive';
 import { buildLedger, type EffectItem, type Ledger } from '../../data/roi/ledger';
 import { DAY, GO_LIVE, NOW, formatDate } from '../../data/time';
 import { baselinePeriod } from '../../data/baseline';
@@ -83,7 +84,7 @@ export function P9Evidence({ entry, def: rawDef, badges }: TemplateProps) {
                         <span className="caption">{g.note}</span>
                       </div>
                       {items.map((i) => (
-                        <ItemButton key={i.id} id={i.id} selected={selected} onSelect={select} title={i.title} amount={i.kind === '제외' ? null : i.amount} muted={!['확정', '추정'].includes(i.kind)} />
+                        <ItemButton key={i.id} id={i.id} selected={selected} onSelect={select} title={i.title} sub={i.status} amount={i.kind === '제외' ? null : i.amount} muted={!['확정', '추정'].includes(i.kind)} />
                       ))}
                     </div>
                   );
@@ -149,13 +150,7 @@ function Summary({ ledger }: { ledger: Ledger }) {
 
 function Overview({ ledger, compareMetrics, siteIds }: { ledger: Ledger; compareMetrics: string[]; siteIds: string[] }) {
   const { value: rows } = useAsync(
-    () =>
-      Promise.all(
-        compareMetrics.map(async (id) => {
-          const [b, a] = await Promise.all([metric(id, { siteIds, from: baselinePeriod().from, to: baselinePeriod().to }), metric(id, { siteIds, from: GO_LIVE, to: NOW })]);
-          return { id, b, a };
-        })
-      ),
+    () => beforeAfter(siteIds, compareMetrics),
     `${siteIds}|${compareMetrics}|${baselinePeriod().months}`
   );
   const cats = ledger.cumulative.map((c) => `${c.month.slice(2).replace('-', '.')}${c.projected ? '*' : ''}`);
@@ -207,12 +202,10 @@ function Overview({ ledger, compareMetrics, siteIds }: { ledger: Ledger; compare
                 </tr>
               </thead>
               <tbody>
-                {rows.map(({ id, b, a }) => {
+                {rows.map(({ id, before: b, after: a, change, better }) => {
                   const d = METRICS[id];
                   const unit = d.unit === '원' ? '백만 원' : d.unit;
                   const show = (v: number | null) => (v === null ? '-' : d.unit === '원' ? formatMoney(v) : formatNumber(displayValue(id, v)!, d.digits));
-                  const diff = a !== null && b !== null ? (d.percent ? `${formatNumber((a - b) * 100, 1)}%p` : `${formatNumber(((a - b) / b) * 100, 1)}%`) : '-';
-                  const better = a !== null && b !== null && a !== b ? (a > b) === d.higherIsBetter : null;
                   return (
                     <tr key={id}>
                       <td>
@@ -221,7 +214,7 @@ function Overview({ ledger, compareMetrics, siteIds }: { ledger: Ledger; compare
                       <td className="num num-col">{show(b)}</td>
                       <td className="num num-col">{show(a)}</td>
                       <td className="num num-col">
-                        {diff.startsWith('-') ? diff.replace('-', '−') : `+${diff}`} {better === null ? '' : better ? '개선' : '악화'}
+                        {change} {better === null ? '' : better ? '개선' : '악화'}
                       </td>
                     </tr>
                   );

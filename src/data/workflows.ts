@@ -1,4 +1,4 @@
-// Work orders (MNT-020) and claims (QUA-030) = mock records + changes made on screens
+// Work orders (from the CMMS, read-only on screens since D-66) and claims (QUA-030) = mock records + changes
 // (browser storage overlay, D-04). Every screen and the ROI ledger read them through here.
 import { useEffect, useMemo, useState } from 'react';
 import { alertActions, mergeAlerts } from './alertStore';

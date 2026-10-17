@@ -4,14 +4,21 @@
 import { formatNumber } from '../components/format';
 import { formatMoney } from '../components/money';
 import { company, terms } from '../config';
-import { kpiValue, monthPeriod, monthlyTrend, riskFeed, siteRows, type KpiValue } from '../data/executive';
+import { alertHistory, beforeAfter, kpiValue, monthPeriod, monthlyTrend, riskFeed, siteRows, type KpiValue } from '../data/executive';
+import { baselinePeriod } from '../data/baseline';
 import { METRICS, displayValue } from '../data/metrics/catalog';
 import { buildLedger } from '../data/roi/ledger';
-import { NOW, formatDate, formatDateTime } from '../data/time';
+import { DAY, GO_LIVE, NOW, formatDate, formatDateTime, parseTime } from '../data/time';
 import { aggregationText, changeText } from '../data/kpiText';
 
 export const REPORT_KPIS = ['plan.attainment', 'oee', 'quality.ppmInternal', 'quality.fpy', 'loss.downtimeCost', 'mnt.mtbf', 'delivery.otd', 'energy.kwhPerUnit'];
 export const REPORT_SITE_METRICS = ['plan.attainment', 'oee', 'quality.ppmInternal', 'loss.downtimeCost'];
+/** Same rows as the AX 적용 전후 비교 on EXE-020. */
+export const REPORT_COMPARE = ['oee', 'oee.availability', 'quality.fpy', 'quality.ppmInternal', 'mnt.mtbf', 'mnt.mttr', 'energy.kwhPerUnit', 'delivery.otd'];
+/** Pages of the report (D-39, D-68). */
+export const REPORT_PAGES = 5;
+/** Alert rows that fit page 5 with the notes. */
+const ALERT_ROWS = 9;
 
 export interface ReportKpi {
   label: string;
@@ -47,6 +54,9 @@ export interface ReportModel {
     rows: string[][];
   };
   risks: string[][];
+  riskCount: number;
+  compare: { basis: string; rows: string[][] };
+  alerts: { summary: string; rows: string[][] };
   trend: { categories: string[]; baseline: (number | null)[]; after: (number | null)[]; baselineAvg: number; unit: string };
   /** investment is null for a single site: the investment is company-wide. */
   cumulative: { categories: string[]; actual: (number | null)[]; projected: (number | null)[]; investment: number | null };
@@ -61,13 +71,19 @@ const unitOf = (id: string) => (METRICS[id].unit === '원' ? '백만 원' : METR
 
 export const buildReport = async (siteIds: string[], month: string): Promise<ReportModel> => {
   const period = monthPeriod(month);
-  const [kpis, sites, risks, ledger, trend] = await Promise.all([
+  const bl = baselinePeriod();
+  const [kpis, sites, risks, ledger, trend, compare, alerts] = await Promise.all([
     Promise.all(REPORT_KPIS.map((id) => kpiValue(id, siteIds, period))),
     siteRows(siteIds, period, REPORT_SITE_METRICS),
     riskFeed(siteIds),
     buildLedger(siteIds),
-    monthlyTrend('oee', siteIds)
+    monthlyTrend('oee', siteIds),
+    beforeAfter(siteIds, REPORT_COMPARE),
+    alertHistory(siteIds, period.from, period.to)
   ]);
+  const siteName = (id: string) => company.sites.find((s) => s.id === id)!.name;
+  const gradeName = (g: 'critical' | 'warning' | 'info') => terms.status[{ critical: 0, warning: 1, info: 2 }[g]];
+  const at = (s: string | null) => (s ? formatDateTime(parseTime(s)).slice(5) : '-');
   const byId = Object.fromEntries(kpis.map((k) => [k.metric, k])) as Record<string, KpiValue>;
   const siteCount = siteIds.length;
   const scopeText = siteCount > 1 ? `전사 (${siteCount}개 사업장)` : company.sites.find((s) => s.id === siteIds[0])!.name;
@@ -78,7 +94,7 @@ export const buildReport = async (siteIds: string[], month: string): Promise<Rep
   const oee = byId.oee;
   const top = risks.find((r) => r.impactKrw) ?? risks[0];
   const messages = [
-    `OEE ${show('oee', oee.value)}%, 계획 달성률 ${show('plan.attainment', byId['plan.attainment'].value)}% (${changeText(oee)}).`,
+    `OEE ${show('oee', oee.value)}%(${changeText(oee)}), 계획 달성률 ${show('plan.attainment', byId['plan.attainment'].value)}%(${changeText(byId['plan.attainment'])}).`,
     ledger.payback.scope === 'site'
       ? `AX 효과는 적용 후 누적 ${formatMoney(ledger.totals.counted)} 백만 원(확정 + 추정)입니다. 투자비와 회수 시점은 전사 기준으로만 계산합니다.`
       : `AX 효과는 적용 후 누적 ${formatMoney(ledger.totals.counted)} 백만 원(확정 + 추정)이고, 운영비를 뺀 순효과는 투자비 ${formatMoney(ledger.investment.total)} 백만 원의 ${formatNumber(((lastActual?.net ?? 0) / ledger.investment.total) * 100, 1)}%입니다. 회수 시점은 ${payback}입니다.`,
@@ -121,11 +137,20 @@ export const buildReport = async (siteIds: string[], month: string): Promise<Rep
       payback,
       rows: ledger.items
         .filter((i) => i.kind !== '제외')
-        .map((i) => [i.title, i.kind, i.kind === '잠재' ? `${formatMoney(i.amount)} (연간)` : formatMoney(i.amount), formatMoney(i.monthly[month] ?? 0), i.kind === '확정' || i.kind === '추정' ? '포함' : '제외'])
+        .map((i) => [i.status ? `${i.title} (${i.status})` : i.title, i.kind, i.kind === '잠재' ? `${formatMoney(i.amount)} (연간)` : formatMoney(i.amount), formatMoney(i.monthly[month] ?? 0), i.kind === '확정' || i.kind === '추정' ? '포함' : '제외'])
     },
-    risks: risks.slice(0, 6).map((r) => [
-      terms.status[{ critical: 0, warning: 1, info: 2 }[r.level]],
-      company.sites.find((s) => s.id === r.siteId)!.name,
+    riskCount: risks.length,
+    compare: {
+      basis: `기준선 ${formatDate(bl.from)}~${formatDate(bl.to - DAY)} 대 적용 후 ${formatDate(GO_LIVE)}~${formatDate(NOW)}`,
+      rows: compare.map((c) => [`${METRICS[c.id].label} (${unitOf(c.id)})`, show(c.id, c.before), show(c.id, c.after), `${c.change}${c.better === null ? '' : c.better ? ' 개선' : ' 악화'}`])
+    },
+    alerts: {
+      summary: `${alerts.length}건 (긴급 ${alerts.filter((a) => a.grade === 'critical').length} · 주의 ${alerts.filter((a) => a.grade === 'warning').length} · 참고 ${alerts.filter((a) => a.grade === 'info').length}) · 조치 완료 ${alerts.filter((a) => a.state === '조치 완료').length} · 처리 중 ${alerts.filter((a) => a.state !== '조치 완료').length}${alerts.length > ALERT_ROWS ? ` · 최근 ${ALERT_ROWS}건, 전체는 알림 센터(COM-010)` : ''}`,
+      rows: alerts.slice(0, ALERT_ROWS).map((a) => [at(a.occurredAt), gradeName(a.grade), siteName(a.siteId), a.title, a.state, at(a.closedAt), a.action || '-'])
+    },
+    risks: risks.map((r) => [
+      gradeName(r.level),
+      siteName(r.siteId),
       r.title,
       r.detail,
       r.impactKrw ? `${formatMoney(r.impactKrw[0])}~${formatMoney(r.impactKrw[1])}` : '-'

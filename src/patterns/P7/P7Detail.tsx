@@ -3,7 +3,7 @@
 // a past case of the same failure, maintenance and stop history, and the next action.
 import { useMemo } from 'react';
 import { Alert as Notice, Empty, Segmented, Skeleton } from 'antd';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { AiResultCard } from '../../components/AiResultCard';
 import { Chart } from '../../components/Chart';
 import { DataGrid, type GridColumn } from '../../components/DataGrid';
@@ -14,7 +14,7 @@ import { StatusBadge } from '../../components/StatusBadge';
 import { terms } from '../../config';
 import { decide, decisionStore, health } from '../../data/aiEngine';
 import { useLocalStore } from '../../data/localStore';
-import { equipmentDetail, signalSeries, stopCostPerHour } from '../../data/maintenance';
+import { equipmentDetail, rulDates, signalSeries, stopCostPerHour } from '../../data/maintenance';
 import { formatDateTime, NOW, parseTime } from '../../data/time';
 import type { WorkOrder } from '../../data/types';
 import { workOrderStore } from '../../data/workflows';
@@ -45,7 +45,6 @@ function P7Equipment({ entry, def: rawDef, badges }: TemplateProps) {
   const def = rawDef as unknown as P7Definition;
   const app = useApp();
   const link = useShellLink();
-  const navigate = useNavigate();
   const [params, setParams] = useSearchParams();
   const id = params.get(def.param);
   const signal = params.get('signal');
@@ -89,10 +88,11 @@ function P7Equipment({ entry, def: rawDef, badges }: TemplateProps) {
   const adopted = h?.decision?.value === '채택';
   const shown = series.find((s) => s.signal === signal) ?? series[0];
   const title = `${detail.lineName} · ${detail.eq.name}`;
+  // Maintenance orders belong to the CMMS (D-66): shown read-only, requests go there.
   const action = open ? (
-    <Link to={link('MNT-020', { id: open.id, stage: open.stage })}>진행 중인 정비 {open.id} ({open.stage})</Link>
-  ) : h && h.level ? (
-    <Link to={link('MNT-020', { new: '1', eq: detail.eq.id, ai: h.id })}>정비 요청</Link>
+    <span className="caption">
+      진행 중인 정비 {open.id} ({open.stage}) · CMMS
+    </span>
   ) : null;
 
   return (
@@ -121,7 +121,7 @@ function P7Equipment({ entry, def: rawDef, badges }: TemplateProps) {
             <Fact label="설치" value={detail.eq.installedOn} />
             <Fact label="건전성 지수" value={h ? `${h.payload.index} / 100` : terms.noData} strong />
             <Fact label="AI 진단" value={h ? h.payload.failureMode : '-'} />
-            <Fact label="잔여수명" value={h?.payload.rul ? `${h.payload.rul.p10}~${h.payload.rul.p90}일 (중앙값 ${h.payload.rul.p50}일)` : '예측하지 않음'} strong />
+            <Fact label="잔여수명 · 예상 고장 시점" value={h?.payload.rul ? `${h.payload.rul.p10}~${h.payload.rul.p90}일 (중앙값 ${h.payload.rul.p50}일) · ${rulDates(h.payload.rul)}` : '예측하지 않음'} strong />
             <Fact label="정지 단가" value={`${formatNumber(perHour, 0)} 원/시간`} />
             <Fact label="기준 시각" value={formatDateTime(NOW)} />
           </dl>
@@ -136,12 +136,7 @@ function P7Equipment({ entry, def: rawDef, badges }: TemplateProps) {
               onDecide={canEdit ? (v, reason) => decide(h.id, v, reason, app.user.id) : undefined}
             />
             {adopted && !open && (
-              <Notice
-                type="info"
-                showIcon
-                message="채택한 진단입니다. 정비 요청으로 이어 가세요."
-                action={<Link to={link('MNT-020', { new: '1', eq: detail.eq.id, ai: h.id })}>정비 요청</Link>}
-              />
+              <Notice type="info" showIcon message="채택한 진단입니다. 설비관리 시스템(CMMS)과 연계하면 정비 요청으로 전달됩니다." />
             )}
             {h.impact?.costKrw && (
               <p className="caption p7__impact">
@@ -202,7 +197,7 @@ function P7Equipment({ entry, def: rawDef, badges }: TemplateProps) {
             <dl className="facts">
               <dt>정비 오더</dt>
               <dd>
-                <Link to={link('MNT-020', { id: detail.precedent.id, stage: '효과 확인', 'f.requestedAt': `${detail.precedent.requestedAt.slice(0, 10)}~${detail.precedent.requestedAt.slice(0, 10)}` })}>{detail.precedent.id}</Link> {detail.precedent.title}
+                <span className="num">{detail.precedent.id}</span> {detail.precedent.title}
               </dd>
               <dt>요청 → 완료</dt>
               <dd className="num">
@@ -221,8 +216,8 @@ function P7Equipment({ entry, def: rawDef, badges }: TemplateProps) {
         )}
 
         <div className="p7__row">
-          <Panel title="정비 이력" caption={`${detail.orders.length}건`} className="p7__history">
-            <OrderGrid orders={detail.orders} onPick={(o) => navigate(link('MNT-020', { id: o.id, stage: o.stage, 'f.requestedAt': `${o.requestedAt.slice(0, 10)}~${o.requestedAt.slice(0, 10)}` }))} />
+          <Panel title="정비 이력" caption={`${detail.orders.length}건 · CMMS 연계 조회`} className="p7__history">
+            <OrderGrid orders={detail.orders} />
           </Panel>
           <Panel title="고장 정지 (최근 90일)" caption={`${detail.breakdowns.length}건`} className="p7__history">
             <ul className="timeline">
@@ -267,7 +262,7 @@ export function Fact({ label, value, strong }: { label: string; value: string; s
   );
 }
 
-function OrderGrid({ orders, onPick }: { orders: WorkOrder[]; onPick: (o: WorkOrder) => void }) {
+function OrderGrid({ orders }: { orders: WorkOrder[] }) {
   const columns = useMemo<GridColumn[]>(
     () => [
       { field: 'requestedAt', label: '요청일', flex: 0.8, formatter: (v) => String(v).slice(0, 10) },
@@ -276,5 +271,5 @@ function OrderGrid({ orders, onPick }: { orders: WorkOrder[]; onPick: (o: WorkOr
     ],
     []
   );
-  return <DataGrid ariaLabel="정비 이력" columns={columns} rows={orders.slice(0, 50)} height="fill" onRowClick={onPick} emptyText="정비 이력이 없습니다." />;
+  return <DataGrid ariaLabel="정비 이력" columns={columns} rows={orders.slice(0, 50)} height="fill" emptyText="정비 이력이 없습니다." />;
 }

@@ -35,6 +35,8 @@ export interface EffectItem {
   source: { label: string; to: string };
   /** Monthly amounts (YYYY-MM -> won) for charts and payback. */
   monthly: Record<string, number>;
+  /** Progress of a potential item, e.g. 채택됨 · 실행 전 (D-69). */
+  status?: string;
 }
 
 export interface Ledger {
@@ -134,7 +136,7 @@ const siteItems = async (siteId: string, from: number, to: number): Promise<Effe
     items.push({
       id: 'fx.pdm.cases', title: '예지 정비로 피한 고장 (사례)', kind: '근거', amount, formula: '사례별 피한 정지 시간 × 정지 단가', inputs,
       assumptions: ['피한 정지 시간은 보수적으로 같은 고장 유형의 중앙값을 썼다'], overlap: '고장 정지 감소(확정)에 포함되어 합계에 더하지 않는다',
-      source: { label: '정비 요청·처리', to: '/MNT-020' }, monthly: {}
+      source: { label: '설비 건전성', to: '/MNT-010' }, monthly: {}
     });
   }
 
@@ -159,7 +161,7 @@ const siteItems = async (siteId: string, from: number, to: number): Promise<Effe
           `${PDM_MEASURE_DAYS}일이 지나면 고장 정지 감소(확정)의 측정값으로 옮겨 가고 이 항목에서 빠진다`
         ],
         overlap: '고장 정지 감소(확정)는 측정 기간의 실적이라 이 건들과 겹치지 않는다',
-        source: { label: '정비 요청·처리', to: '/MNT-020' }, monthly
+        source: { label: '설비 건전성', to: '/MNT-010' }, monthly
       });
     }
   }
@@ -283,7 +285,12 @@ const siteItems = async (siteId: string, from: number, to: number): Promise<Effe
         id: 'fx.potential.defect.GMH-IM1', title: '범퍼 커버 권장 조건 적용', kind: '잠재', amount: sc02.payload.monthlySavingKrw * 12,
         formula: '(현재 불량률 − 권장 조건 불량률) × 월 생산량 × 불량 단가 × 12개월',
         inputs: [{ label: '월 불량 감소', value: sc02.payload.monthlyDefectReduction, unit: '개' }, { label: '월 절감', value: Math.round(sc02.payload.monthlySavingKrw / 1000), unit: '천 원' }],
-        assumptions: ['권장 조건 범위 안에서 생산한 과거 로트의 불량률을 기대값으로 썼다'], source: { label: '품질 원인 분석', to: '/QUA-020?site=GMH' }, monthly: {}
+        assumptions: [
+          '권장 조건 범위 안에서 생산한 과거 로트의 불량률을 기대값으로 썼다',
+          ...(sc02.decision?.value === '채택' ? [`${sc02.decision.at.replace('T', ' ')} 채택. 현장에 적용하고 불량률이 측정되면 공정 불량 감소(확정)로 옮겨 가고 잠재에서 빠진다`] : [])
+        ],
+        source: { label: '품질 원인 분석', to: '/QUA-020?site=GMH' }, monthly: {},
+        status: sc02.decision?.value === '채택' ? '채택됨 · 실행 전' : undefined
       });
     }
     items.push(...potentials);
@@ -333,6 +340,9 @@ const mergeItems = (perSite: [string, EffectItem[]][]): EffectItem[] => {
 const ledgerMemo = new Map<string, Promise<Ledger>>();
 
 /** Ledger for the sites and period; recomputed when unit costs or AI decisions change. */
+/** Items that make up the monthly saving card (energy + quality losses), confirmed and estimated. */
+export const SAVING_ITEMS = ['fx.energy', 'fx.defect', 'fx.claim'];
+
 export const buildLedger = (siteIds: string[], from = GO_LIVE, to = NOW): Promise<Ledger> => {
   const key = [siteIds.join(','), from, to, JSON.stringify(versionStore.get()), JSON.stringify(decisionStore.get()), JSON.stringify(workOrderStore.get()), JSON.stringify(claimStore.get())].join('|');
   if (!ledgerMemo.has(key)) ledgerMemo.set(key, computeLedger(siteIds, from, to));

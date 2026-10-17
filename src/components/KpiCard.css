@@ -63,3 +63,8 @@
   height: calc(var(--meter-h) * 2);
   background: var(--color-text-primary);
 }
+
+/* A footnote line that keeps its own row (e.g. the parts of the AX effect). */
+.kpi-card__line {
+  display: block;
+}

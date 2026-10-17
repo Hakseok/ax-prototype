@@ -34,12 +34,12 @@
       "name": "자동차 부품",
       "description": "프레스·용접, 사출·도장, 가공, 조립 같은 이산형 반복 생산",
       "productionUnit": "개",
-      "headlineKpis": ["plan.attainment", "oee", "quality.ppmInternal", "loss.downtimeCost", "ax.effect"],
+      "headlineKpis": ["plan.attainment", "oee", "quality.fpy", "loss.downtimeCost", "ax.saving", "ax.effect"],
       "kpis": [
         "plan.attainment", "oee", "oee.availability", "oee.performance", "oee.quality",
         "loss.sixBig", "loss.downtimeCost", "quality.fpy", "quality.ppmInternal", "quality.ppmCustomer",
         "quality.cost", "mnt.mtbf", "mnt.mttr", "mnt.pmCompliance", "delivery.otd",
-        "energy.kwhPerUnit", "energy.airPerUnit", "energy.idleShare", "ax.effect"
+        "energy.kwhPerUnit", "energy.airPerUnit", "energy.idleShare", "ax.saving", "ax.effect"
       ],
       "lossCategories": [
         { "id": "breakdown", "name": "고장", "group": "가용성" },

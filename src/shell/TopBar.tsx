@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { Badge, Button, Dropdown, Popover, Segmented, Select, Space } from 'antd';
 import { BellOutlined, DownOutlined, MessageOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { company, terms } from '../config';
 import { COMPANY, NOW, formatDateTime } from '../data';
 import { useAlerts } from '../data/alertStore';
@@ -30,7 +30,8 @@ export function TopBar({ onOpenAlerts, onOpenAssistant }: { onOpenAlerts: () => 
 
   return (
     <header className="topbar">
-      <div className="topbar__brand">
+      {/* The logo goes to the role's first screen — the way back on phones, where the menu is hidden. */}
+      <Link className="topbar__brand" to={link(homeOf(app.user.role))} title="첫 화면으로">
         <svg className="topbar__logo" viewBox="0 0 20 20" aria-hidden="true">
           <path d="M3 15 L8 9 L12 12 L17 5" />
           <circle cx="17" cy="5" r="1.6" />
@@ -38,7 +39,7 @@ export function TopBar({ onOpenAlerts, onOpenAssistant }: { onOpenAlerts: () => 
         </svg>
         <strong>제조 AX</strong>
         <span className="topbar__company">{company.company.displayName}</span>
-      </div>
+      </Link>
       <Select
         className="topbar__site"
         aria-label="사업장 선택"

@@ -120,3 +120,9 @@
   margin: 0;
   padding-left: var(--space-xl);
 }
+
+/* Dense tables (alert history): tighter rows so a month fits one page. */
+.rp__table--small th,
+.rp__table--small td {
+  padding: var(--space-xs);
+}

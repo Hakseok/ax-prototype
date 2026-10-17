@@ -170,6 +170,13 @@ export const METRICS: Record<string, MetricDef> = {
   },
   'production.good': { label: '양품 수량', unit: '개', digits: 0, aggregation: 'sum', higherIsBetter: true, compute: async (s) => (await totals(s)).goodQty },
   'production.planned': { label: '계획 수량', unit: '개', digits: 0, aggregation: 'sum', higherIsBetter: true, compute: async (s) => (await totals(s)).plannedQty },
+  'ax.saving': {
+    label: '절감액 (에너지 + 품질)', unit: '원', digits: 0, aggregation: 'sum', higherIsBetter: true,
+    compute: async (s) => {
+      const { buildLedger, SAVING_ITEMS } = await import('../roi/ledger');
+      return (await buildLedger(s.siteIds, s.from, s.to)).items.filter((i) => SAVING_ITEMS.includes(i.id)).reduce((a, i) => a + i.amount, 0);
+    }
+  },
   'ax.effect': {
     label: 'AX 효과 금액', unit: '원', digits: 0, aggregation: 'sum', higherIsBetter: true,
     compute: async (s) => {

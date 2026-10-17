@@ -193,7 +193,7 @@ export const answer = async (question: string, allowedSites: string[]): Promise<
       {
         params: { sites: siteText },
         rows: list.slice(0, 5).map((h) => ({ label: h.target.label, value: `건전성 ${h.payload.index}${h.payload.rul ? ` · 잔여 ${h.payload.rul.p10}~${h.payload.rul.p90}일` : ''}` })),
-        links: [{ label: '설비 진단 상세', to: `/MNT-011?site=${top.target.siteId}&id=${top.target.equipmentId}` }, { label: '정비 요청·처리', to: `/MNT-020?site=${top.target.siteId}` }]
+        links: [{ label: '설비 진단 상세', to: `/MNT-011?site=${top.target.siteId}&id=${top.target.equipmentId}` }]
       },
       top.confidence,
       top.target.siteId

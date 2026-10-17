@@ -91,7 +91,7 @@ export function HealthTablePanel({ panel, siteIds, version }: PanelProps) {
       { field: 'index', label: '건전성 지수', flex: 0.8, align: 'right', formatter: (v) => (v === null ? terms.noData : String(v)) },
       { field: 'level', label: '상태', flex: 0.7, renderer: (v) => (v ? <StatusBadge level={v as 'critical'} /> : <StatusBadge level="info" label={terms.noData} />) },
       { field: 'failureMode', label: 'AI 진단', flex: 1 },
-      { field: 'rul', label: '잔여수명 (구간)', flex: 0.9, align: 'right' },
+      { field: 'rul', label: '잔여수명 (예상 고장 시점)', flex: 1.4, align: 'right' },
       { field: 'openOrder', label: '진행 중 정비', flex: 1, formatter: (v) => (v ? String(v) : '') }
     ],
     []
@@ -100,10 +100,8 @@ export function HealthTablePanel({ panel, siteIds, version }: PanelProps) {
   return <DataGrid ariaLabel={panel.title} columns={columns} rows={value} height="fill" onRowClick={(r) => navigate(link('MNT-011', { id: r.id }))} />;
 }
 
-/** Work orders not finished yet (MNT-010). */
+/** Work orders not finished yet (MNT-010), read from the CMMS (D-66). */
 export function OpenOrdersPanel({ panel, siteIds }: PanelProps) {
-  const navigate = useNavigate();
-  const link = useShellLink();
   const orders = useWorkOrders();
   const { value: lines } = useAsync(() => loadLines(), 'lines');
   const lineName = useMemo(() => new Map((lines ?? []).map((l) => [l.id, l.name])), [lines]);
@@ -127,7 +125,6 @@ export function OpenOrdersPanel({ panel, siteIds }: PanelProps) {
       rows={open}
       height="fill"
       emptyText="진행 중인 정비가 없습니다."
-      onRowClick={(r) => navigate(link('MNT-020', { id: r.id, stage: r.stage }))}
     />
   );
 }

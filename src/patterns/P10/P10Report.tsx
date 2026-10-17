@@ -10,7 +10,7 @@ import { decisionStore } from '../../data/aiEngine';
 import { useCostVersion } from '../../data/costs';
 import { reportMonths } from '../../data/executive';
 import { useLocalStore } from '../../data/localStore';
-import { buildReport } from '../../report/model';
+import { REPORT_PAGES, buildReport } from '../../report/model';
 import { ReportPreview } from '../../report/ReportPreview';
 import { saveFile } from '../../report/save';
 import { useApp } from '../../shell/AppContext';
@@ -26,7 +26,7 @@ interface P10Definition {
 }
 
 /** Page of each table-of-contents entry (cover, KPIs, trend, sites, effect, risks, notes). */
-const PAGE_OF = [1, 2, 2, 2, 3, 4, 4];
+const PAGE_OF = [1, 2, 2, 2, 3, 4, 4, 5, 5];
 
 export function P10Report({ entry, def: rawDef, badges }: TemplateProps) {
   const def = rawDef as unknown as P10Definition;
@@ -89,13 +89,13 @@ export function P10Report({ entry, def: rawDef, badges }: TemplateProps) {
       bodyMode="fit"
     >
       <div className="p10">
-        <Panel title="목차" caption="4쪽 · A4" className="p10__toc">
+        <Panel title="목차" caption={`${REPORT_PAGES}쪽 · A4`} className="p10__toc">
           <ol className="p10__toc-list">
             {def.report.contents.map((c, i) => (
               <li key={c}>
-                <a href={`#rp-${PAGE_OF[i] ?? 4}`} onClick={(e) => {
+                <a href={`#rp-${PAGE_OF[i] ?? REPORT_PAGES}`} onClick={(e) => {
                   e.preventDefault();
-                  document.getElementById(`rp-${PAGE_OF[i] ?? 4}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  document.getElementById(`rp-${PAGE_OF[i] ?? REPORT_PAGES}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }}>
                   {c}
                 </a>

@@ -1,9 +1,9 @@
-// Equipment health and maintenance data for MNT-010, MNT-011 and MNT-020.
+// Equipment health and maintenance data for MNT-010 and MNT-011 (orders are CMMS data, D-66).
 import { aiHistory, health } from './aiEngine';
 import { costResolver } from './costs';
 import { loadCollection, loadEquipment, loadSensorHourly, loadSensors } from './loaders';
 import { getDowntime, lineMap } from './production';
-import { DAY, HOUR, NOW, PRODUCTION_FROM, formatDateTime, parseTime } from './time';
+import { DAY, HOUR, NOW, PRODUCTION_FROM, formatDate, formatDateTime, parseTime } from './time';
 import type { DowntimeEvent, Equipment, WorkOrder } from './types';
 import { allWorkOrders } from './workflows';
 
@@ -48,6 +48,9 @@ export const stopCostPerHour = async (lineId: string, t = NOW) => {
   return line.constrained ? cost(`lineLoss.${line.id}`, t) : line.crew * cost('overtimeLaborKrwPerHour', t);
 };
 
+/** Remaining-life range as calendar dates from "now", e.g. 10-07~10-14 (expected failure window). */
+export const rulDates = (rul: { p10: number; p90: number }): string => `${formatDate(NOW + rul.p10 * DAY).slice(5)}~${formatDate(NOW + rul.p90 * DAY).slice(5)}`;
+
 export interface HealthRow {
   id: string;
   siteId: string;
@@ -80,7 +83,7 @@ export const healthTable = async (siteIds: string[]): Promise<HealthRow[]> => {
           index: h?.payload.index ?? null,
           level: h ? h.level ?? 'normal' : null,
           failureMode: h ? h.payload.failureMode : '수집 중단',
-          rul: rul ? `${rul.p10}~${rul.p90}일` : '',
+          rul: rul ? `${rul.p10}~${rul.p90}일 (${rulDates(rul)})` : '',
           rulP10: rul?.p10 ?? null,
           openOrder: open?.id ?? null
         };

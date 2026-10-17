@@ -9,12 +9,12 @@
     { "metric": "oee.availability", "link": { "label": "손실 분석", "to": "OPS-020" } },
     { "metric": "mnt.mtbf" },
     { "metric": "mnt.mttr" },
-    { "metric": "mnt.pmCompliance", "link": { "label": "정비 요청·처리", "to": "MNT-020" } },
+    { "metric": "mnt.pmCompliance" },
     { "metric": "loss.downtimeCost", "link": { "label": "비가동 이력", "to": "OPS-050" } }
   ],
   "panels": [
     { "id": "health", "type": "healthTable", "title": "감시 설비 건전성", "area": "main-top", "grow": 1.4 },
-    { "id": "orders", "type": "openOrders", "title": "진행 중인 정비", "area": "main-bottom", "link": { "label": "정비 요청·처리", "to": "MNT-020" } },
+    { "id": "orders", "type": "openOrders", "title": "진행 중인 정비 (CMMS 연계 조회)", "area": "main-bottom" },
     { "id": "alerts", "type": "healthAlerts", "title": "AI 이상 징후", "area": "side", "grow": 2.4 },
     { "id": "collection", "type": "collection", "title": "데이터 수집 상태", "area": "side" }
   ]

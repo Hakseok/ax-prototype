@@ -18,7 +18,7 @@ import { getDowntime, getShifts, lineMap } from './production';
 import { applyOverlay, overlayStore, type Row } from './records';
 import { DAY, NOW, PRODUCTION_FROM, parseTime } from './time';
 import type { User } from './types';
-import { allClaims, allWorkOrders, claimStore, workOrderStore } from './workflows';
+import { allClaims, claimStore } from './workflows';
 
 export interface DatasetContext {
   siteIds: string[];
@@ -96,14 +96,6 @@ export const datasets: Record<string, Dataset> = {
     stores: [alertChangesStore],
     async load(ctx) {
       return inPeriod(asRows(mergeAlerts(await loadAlerts())), ctx, 'occurredAt').filter(bySite(ctx)).sort(byDesc('occurredAt'));
-    }
-  },
-  /** Maintenance orders (MNT-020): mock orders + screen changes. */
-  workOrders: {
-    handles: ['requestedAt'],
-    stores: [workOrderStore],
-    async load(ctx) {
-      return inPeriod(asRows(await allWorkOrders()), ctx, 'requestedAt').filter(bySite(ctx)).sort(byDesc('requestedAt'));
     }
   },
   /** Customer claims (QUA-030). */

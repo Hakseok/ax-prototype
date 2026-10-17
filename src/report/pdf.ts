@@ -150,9 +150,16 @@ export const buildPdf = async (m: ReportModel): Promise<Blob> => {
         },
         table(['항목', '분류', '누적 (백만 원)', '보고 월 (백만 원)', '합계'], m.effect.rows, ['*', 40, 90, 90, 40], [2, 3]),
         { image: cumImg, width: contentWidth, margin: [0, pt('space-md'), 0, 0] },
-        // 5. risks and notes
-        { ...h('5. 주요 리스크'), pageBreak: 'before' },
+        // 5. before / after and risks
+        { ...h('5. AX 적용 전후 비교'), pageBreak: 'before' },
+        { text: m.compare.basis, color: muted, fontSize: small, margin: [0, 0, 0, pt('space-sm')] },
+        table(['지표', '기준선', '적용 후', '변화'], m.compare.rows, ['*', 70, 70, 90], [1, 2, 3]),
+        h(`6. 주요 리스크 (${m.riskCount}건)`),
         m.risks.length ? table(['등급', '사업장', '내용', '상세', '예상 영향 (백만 원)'], m.risks, [30, 50, 90, '*', 70], [4]) : { text: '처리 중인 리스크가 없다.' },
+        // 6. alert history and notes
+        { ...h('7. 알림·조치 이력'), pageBreak: 'before' },
+        { text: `보고 기간에 발생한 알림 ${m.alerts.summary}`, color: muted, fontSize: small, margin: [0, 0, 0, pt('space-sm')] },
+        m.alerts.rows.length ? table(['발생', '등급', '사업장', '내용', '상태', '조치 완료', '조치 내용'], m.alerts.rows, [52, 26, 44, 80, 40, 52, '*'], []) : { text: '보고 기간에 발생한 알림이 없다.' },
         h('작성 기준'),
         { ul: [...m.notes], color: muted, fontSize: small }
       ]

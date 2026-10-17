@@ -36,9 +36,6 @@
 
     { "id": "MNT-010", "group": "MNT", "name": "설비 건전성", "pattern": "P1", "siteScope": "site-or-company", "view": "조회", "phase": "now", "summary": "감시 설비의 건전성 지수와 잔여수명, 위험 설비를 본다" },
     { "id": "MNT-011", "group": "MNT", "name": "설비 진단 상세", "pattern": "P7", "parent": "MNT-010", "siteScope": "site-or-company", "view": "조회", "edit": "편집", "phase": "now", "summary": "설비 한 대의 신호, AI 진단, 정비 이력을 본다" },
-    { "id": "MNT-020", "group": "MNT", "name": "정비 요청·처리", "pattern": "P5", "siteScope": "site-or-company", "view": "조회", "edit": "편집", "phase": "now", "summary": "요청→승인→작업→완료→효과 확인 단계로 정비를 처리한다" },
-    { "id": "MNT-030", "group": "MNT", "name": "정비 이력", "pattern": "P4", "siteScope": "site-or-company", "view": "조회", "phase": "next", "summary": "CMMS의 정비 오더와 비용을 연계 조회한다(시스템이 없으면 엑셀 양식 업로드)" },
-    { "id": "MNT-040", "group": "MNT", "name": "예방 정비 계획", "pattern": "P8", "siteScope": "site-only", "view": "조회", "edit": "편집", "phase": "next", "summary": "CMMS의 예방 정비 계획을 연계 조회하고 AI 주기 조정 제안을 붙인다(시스템이 없으면 엑셀 양식 업로드)" },
 
     { "id": "ENG-010", "group": "ENG", "name": "에너지 현황", "pattern": "P1", "siteScope": "site-or-company", "view": "조회", "phase": "now", "summary": "전력·압축공기·LNG 사용량, 원단위, 비생산 시간 낭비를 본다" },
     { "id": "ENG-020", "group": "ENG", "name": "에너지 분석", "pattern": "P3", "siteScope": "site-or-company", "view": "조회", "phase": "now", "summary": "15분 수요전력으로 피크를 관리하고 라인별 사용량과 원단위를 분석한다" },

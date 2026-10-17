@@ -151,7 +151,6 @@ function P3Loss({ entry, def: rawDef, badges }: TemplateProps) {
           {eqId && (
             <>
               <Link to={link('MNT-011', { id: eqId })}>설비 진단 상세</Link>
-              <Link to={link('MNT-020', { new: '1', eq: eqId })}>정비 요청</Link>
             </>
           )}
           {def.actions.includes('내보내기') && (

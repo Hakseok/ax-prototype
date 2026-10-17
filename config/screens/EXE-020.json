@@ -5,6 +5,6 @@
   "permission": { "view": "조회" },
   "badges": ["시연용"],
   "ledger": {
-    "compareMetrics": ["oee", "oee.availability", "quality.ppmInternal", "mnt.mtbf", "mnt.mttr", "energy.kwhPerUnit", "delivery.otd"]
+    "compareMetrics": ["oee", "oee.availability", "quality.fpy", "quality.ppmInternal", "mnt.mtbf", "mnt.mttr", "energy.kwhPerUnit", "delivery.otd"]
   }
 }

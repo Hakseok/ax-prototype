@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { KpiCard } from '../../components/KpiCard';
 import { aggregationText, changeText } from '../../data/kpiText';
 import { MoneyCard } from '../../components/MoneyCard';
+import { formatMoney } from '../../components/money';
 import { METRICS, displayValue } from '../../data/metrics/catalog';
 import type { KpiValue } from '../../data/executive';
 import type { Ledger } from '../../data/roi/ledger';
@@ -39,6 +40,7 @@ export function KpiTile({ k, label, siteCount, to, linkLabel }: KpiTileProps) {
 /** The AX effect card: confirmed + estimated since go-live, potential shown apart, payback. */
 export function AxEffectTile({ ledger, label, to }: { ledger: Ledger; label?: string; to?: string }) {
   const pb = ledger.payback;
+  const item = (id: string) => ledger.items.find((i) => i.id === id)?.amount ?? 0;
   return (
     <MoneyCard
       label={label ?? 'AX 효과 (적용 후 누적)'}
@@ -48,7 +50,15 @@ export function AxEffectTile({ ledger, label, to }: { ledger: Ledger; label?: st
         { kind: '추정', amount: ledger.totals.estimated }
       ]}
       excluded={[{ kind: '잠재', amount: ledger.totals.potential }]}
-      footnote={pb.scope === 'site' ? '회수 시점은 전사 기준' : pb.month ? `회수 ${pb.month}${pb.projected ? ' (예상)' : ''}` : '회수 시점 예측 불가'}
+      footnote={
+        <>
+          {/* What the AX effect is made of, in the executive's terms (concept ①). */}
+          <span className="kpi-card__line">
+            예지보전 방지 손실 {formatMoney(item('fx.breakdown'))} · 품질 개선 절감 {formatMoney(item('fx.defect'))}
+          </span>
+          <span className="kpi-card__line">{pb.scope === 'site' ? '회수 시점은 전사 기준' : pb.month ? `회수 ${pb.month}${pb.projected ? ' (예상)' : ''}` : '회수 시점 예측 불가'}</span>
+        </>
+      }
       evidenceTo={to}
     />
   );

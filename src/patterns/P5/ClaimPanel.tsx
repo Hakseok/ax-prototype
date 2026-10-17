@@ -16,7 +16,7 @@ import { useApp } from '../../shell/AppContext';
 import { useShellLink } from '../../shell/links';
 import { useAsync } from '../common/useAsync';
 import { ProcessLog } from './ProcessLog';
-import { OutOfScope } from './WorkOrderPanel';
+import { OutOfScope } from './OutOfScope';
 
 const STAGES = terms.claimStages as Claim['stage'][];
 

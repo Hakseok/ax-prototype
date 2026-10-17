@@ -310,7 +310,7 @@ function Analysis({ data, selectedVar, selectedLot, onVar, onLot, loading, link 
           )}
           <div className="p11__actions">
             <span className="caption">조치로 연결</span>
-            {groupEq && <Link to={link('MNT-020', { new: '1', eq: groupEq.value })}>{groupEq.value} 정비 요청</Link>}
+            {groupEq && <Link to={link('MNT-011', { id: groupEq.value })}>{groupEq.value} 설비 진단</Link>}
             <Link to={link('OPS-020', { line: data.target.lineId, 'f.productId': data.target.productId })}>라인 손실 분석</Link>
             <Link to={link('QUA-030', { 'f.productId': data.target.productId })}>이 제품의 클레임</Link>
           </div>

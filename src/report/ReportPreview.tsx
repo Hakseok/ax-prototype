@@ -1,5 +1,5 @@
 import { Chart } from '../components/Chart';
-import type { ReportModel } from './model';
+import { REPORT_PAGES, type ReportModel } from './model';
 import './ReportPreview.css';
 
 /** A4 pages of the monthly report, drawn from the same model as the PDF. */
@@ -17,7 +17,9 @@ export function ReportPreview({ m }: { m: ReportModel }) {
       <span>
         {m.company} · {m.scopeText}
       </span>
-      <span className="num">{n} / 4</span>
+      <span className="num">
+        {n} / {REPORT_PAGES}
+      </span>
     </div>
   );
   return (
@@ -156,9 +158,12 @@ export function ReportPreview({ m }: { m: ReportModel }) {
         {foot(3)}
       </section>
 
-      <section className="rp__page" id="rp-4" aria-label="4쪽 리스크와 작성 기준">
+      <section className="rp__page" id="rp-4" aria-label="4쪽 적용 전후 비교와 리스크">
         {head}
-        <h2 className="rp__h">5. 주요 리스크</h2>
+        <h2 className="rp__h">5. AX 적용 전후 비교</h2>
+        <p className="rp__p caption">{m.compare.basis}</p>
+        <Table header={['지표', '기준선', '적용 후', '변화']} rows={m.compare.rows} numeric={[1, 2, 3]} />
+        <h2 className="rp__h">6. 주요 리스크 ({m.riskCount}건)</h2>
         <table className="rp__table">
           <thead>
             <tr>
@@ -181,14 +186,49 @@ export function ReportPreview({ m }: { m: ReportModel }) {
             ))}
           </tbody>
         </table>
+        {foot(4)}
+      </section>
+
+      <section className="rp__page" id="rp-5" aria-label="5쪽 알림·조치 이력과 작성 기준">
+        {head}
+        <h2 className="rp__h">7. 알림·조치 이력</h2>
+        <p className="rp__p caption">보고 기간에 발생한 알림 {m.alerts.summary}</p>
+        <Table header={['발생', '등급', '사업장', '내용', '상태', '조치 완료', '조치 내용']} rows={m.alerts.rows} numeric={[]} small />
         <h2 className="rp__h">작성 기준</h2>
         <ul className="rp__notes caption">
           {m.notes.map((n) => (
             <li key={n}>{n}</li>
           ))}
         </ul>
-        {foot(4)}
+        {foot(5)}
       </section>
     </div>
+  );
+}
+
+function Table({ header, rows, numeric, small }: { header: string[]; rows: string[][]; numeric: number[]; small?: boolean }) {
+  return (
+    <table className={`rp__table${small ? ' rp__table--small' : ''}`}>
+      <thead>
+        <tr>
+          {header.map((h, i) => (
+            <th key={h} className={numeric.includes(i) ? 'rp__num' : undefined}>
+              {h}
+            </th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        {rows.map((r, ri) => (
+          <tr key={ri}>
+            {r.map((c, ci) => (
+              <td key={ci} className={numeric.includes(ci) ? 'rp__num num' : undefined}>
+                {c}
+              </td>
+            ))}
+          </tr>
+        ))}
+      </tbody>
+    </table>
   );
 }

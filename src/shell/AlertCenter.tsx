@@ -28,6 +28,7 @@ export const useActiveAlerts = () => {
 };
 
 export function AlertList({ compact = false }: { compact?: boolean }) {
+  const link = useShellLink();
   const active = useActiveAlerts();
   const [filter, setFilter] = useState<Filter>('all');
   const count = (f: Filter) => active.filter((a) => f === 'all' || a.grade === f).length;
@@ -37,7 +38,7 @@ export function AlertList({ compact = false }: { compact?: boolean }) {
   return (
     <div className={`alert-list${compact ? ' alert-list--compact' : ''}`}>
       <div className="alert-list__summary caption">
-        미확인 <span className="num alert-list__count">{unread}</span>건 · 처리 중 <span className="num">{active.length - unread}</span>건
+        미확인 <span className="num alert-list__count">{unread}</span>건 · 처리 중 <span className="num">{active.length - unread}</span>건 · <Link to={link('COM-010')}>알림·조치 이력</Link>
       </div>
       <Segmented
         value={filter}
@@ -45,7 +46,7 @@ export function AlertList({ compact = false }: { compact?: boolean }) {
         options={TABS.map(([value, label]) => ({ value, label: `${label} ${count(value)}` }))}
       />
       <div className="alert-list__items">
-        {shown.length === 0 && <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="처리할 알림이 없습니다. 지난 알림은 알림 이력에서 찾을 수 있습니다." />}
+        {shown.length === 0 && <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={<>처리할 알림이 없습니다. 지난 알림은 <Link to={link('COM-010')}>알림·조치 이력</Link>에서 봅니다.</>} />}
         {shown.map((a) => (
           <AlertCard key={a.id} alert={a} />
         ))}

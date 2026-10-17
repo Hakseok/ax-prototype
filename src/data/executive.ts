@@ -156,3 +156,54 @@ export const monthPeriod = (month: string): Period => {
 };
 
 export type { MetricScope };
+
+export interface BeforeAfterRow {
+  id: string;
+  before: number | null;
+  after: number | null;
+  /** "+2.4%p", "−16.2%" — points for percentages, ratio otherwise. */
+  change: string;
+  better: boolean | null;
+}
+
+/** Baseline period against the time since go-live (EXE-020 and the report read the same rows). */
+export const beforeAfter = async (siteIds: string[], ids: string[]): Promise<BeforeAfterRow[]> => {
+  const bl = baselinePeriod();
+  return Promise.all(
+    ids.map(async (id) => {
+      const d = METRICS[id];
+      const [b, a] = await Promise.all([metric(id, { siteIds, from: bl.from, to: bl.to }), metric(id, { siteIds, from: GO_LIVE, to: NOW })]);
+      const raw = a !== null && b !== null ? (d.percent ? (a - b) * 100 : ((a - b) / b) * 100) : null;
+      const change = raw === null ? '-' : `${raw < 0 ? '−' : '+'}${Math.abs(raw).toLocaleString('ko-KR', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}${d.percent ? '%p' : '%'}`;
+      return { id, before: b, after: a, change, better: a !== null && b !== null && a !== b ? a > b === d.higherIsBetter : null };
+    })
+  );
+};
+
+export interface AlertHistoryRow {
+  id: string;
+  siteId: string;
+  grade: Grade;
+  title: string;
+  target: string;
+  occurredAt: string;
+  state: Alert['state'];
+  ackAt: string | null;
+  closedAt: string | null;
+  /** The last action note, or '' when nothing was recorded. */
+  action: string;
+  actor: string | null;
+}
+
+/** Alerts that occurred in [from, to) at the sites, newest first, with what was done about them. */
+export const alertHistory = async (siteIds: string[], from: number, to: number): Promise<AlertHistoryRow[]> =>
+  mergeAlerts(await loadAlerts())
+    .filter((a) => siteIds.includes(a.siteId) && parseTime(a.occurredAt) >= from && parseTime(a.occurredAt) < to)
+    .sort((a, b) => (a.occurredAt < b.occurredAt ? 1 : -1))
+    .map((a) => {
+      const last = [...a.log].reverse().find((l) => l.action !== '발생');
+      return {
+        id: a.id, siteId: a.siteId, grade: a.grade, title: a.title, target: a.target, occurredAt: a.occurredAt, state: a.state,
+        ackAt: a.ackAt, closedAt: a.closedAt, action: last?.note ?? '', actor: last?.userId ?? null
+      };
+    });

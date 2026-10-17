@@ -13,7 +13,7 @@
       { "label": "기각", "where": "AI 결과 카드, 사유 필수" }
     ],
     "workflow": [
-      { "label": "승인", "where": "P5 처리 목록형(MNT-020, QUA-030)" },
+      { "label": "승인", "where": "P5 처리 목록형(QUA-030)" },
       { "label": "반려", "where": "P5 처리 목록형, 사유 필수" },
       { "label": "완료", "where": "P5 처리 목록형" }
     ],
