@@ -40,6 +40,18 @@ describe('AI 도우미', () => {
     expect(a.payload.supported!.length).toBeGreaterThan(3);
   });
 
+  it('조회 범위 밖 사업장을 물으면 다른 사업장으로 바꿔 답하지 않고 안내한다', async () => {
+    const a = await answer('오늘 아산공장 OEE는?', ['GMH']);
+    expect(a.payload.intent).toBe('siteScope');
+    expect(a.conclusion).toContain('아산공장');
+    expect(a.conclusion).not.toContain('%');
+  });
+
+  it('지표 이름 뒤 조사를 받침에 맞춘다', async () => {
+    expect((await answer('대구공장 이번 달 가용성은?', SITES)).conclusion).toContain('가용성은');
+    expect((await answer('이번 달 가용성이 가장 낮은 라인은?', SITES)).conclusion).toContain('가용성이 가장');
+  });
+
   it('불량 원인 질문은 품질 원인 분석과 같은 대상(대형 사출 1라인)을 가리킨다', async () => {
     const a = await answer('지난주 불량이 늘어난 원인은?', ['GMH']);
     expect(a.payload.links[0].to).toContain('f.lineId=GMH-IM1');

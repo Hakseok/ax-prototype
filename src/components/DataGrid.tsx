@@ -99,7 +99,8 @@ const toColDef = (c: GridColumn): ColDef => {
     wrapText: c.wrap,
     autoHeight: c.wrap,
     type: numeric ? 'rightAligned' : undefined,
-    cellClass: numeric ? 'num' : undefined,
+    // cellClass replaces the class the rightAligned type sets, so keep it here.
+    cellClass: numeric ? ['num', 'ag-right-aligned-cell'] : undefined,
     tooltipValueGetter: (p) => (p.valueFormatted ?? (p.value == null ? '' : String(p.value))) || undefined
   };
   if (c.formatter) {

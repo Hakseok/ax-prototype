@@ -10,10 +10,10 @@
     "search": { "placeholder": "항목 이름 검색", "fields": ["name", "id"] },
     "filters": [{ "field": "group", "label": "구분", "control": "select", "options": "costGroups" }],
     "columns": [
-      { "field": "group", "label": "구분", "width": 100 },
+      { "field": "group", "label": "구분", "width": 90 },
       { "field": "name", "label": "항목", "flex": 3 },
       { "field": "value", "label": "현재 값", "format": "number", "width": 120 },
-      { "field": "unit", "label": "단위", "width": 90 },
+      { "field": "unit", "label": "단위", "width": 80 },
       { "field": "validFrom", "label": "최근 적용 시작일", "format": "date", "width": 130 }
     ]
   },

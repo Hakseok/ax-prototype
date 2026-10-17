@@ -10,6 +10,8 @@ import { allClaims as loadClaims } from './workflows';
 import { METRICS, displayValue, metric } from './metrics/catalog';
 import { comparisonOf, periodOf, recentWindow, type PeriodKey } from './period';
 import { buildLedger } from './roi/ledger';
+import { LOSS_LABELS, totalsOf } from './metrics/oee';
+import { getShifts, lineMap } from './production';
 import { DAY, NOW, formatDateTime } from './time';
 
 export interface AnswerLink {
@@ -63,9 +65,17 @@ const periodFrom = (q: string, fallback: PeriodKey) => {
   return { key: p.key, from: p.from, to: p.to, label: p.label };
 };
 
+const siteMentioned = (q: string) => company.sites.find((x) => q.includes(norm(x.name)) || q.includes(norm(x.name).replace('공장', '')));
 const siteFrom = (q: string, allowed: string[]) => {
-  const s = company.sites.find((x) => allowed.includes(x.id) && (q.includes(norm(x.name)) || q.includes(norm(x.name).replace('공장', ''))));
-  return s ? [s.id] : allowed;
+  const s = siteMentioned(q);
+  return s && allowed.includes(s.id) ? [s.id] : allowed;
+};
+
+/** Korean particle after a word: 은/는, 이/가. Words ending in a Latin letter (OEE, PPM) read with a vowel. */
+const josa = (word: string, withBatchim: string, without: string) => {
+  const c = word.charCodeAt(word.length - 1);
+  const batchim = c >= 0xac00 && c <= 0xd7a3 && (c - 0xac00) % 28 !== 0;
+  return word + (batchim ? withBatchim : without);
 };
 
 const METRIC_WORDS: [string[], string][] = [
@@ -109,6 +119,11 @@ const result = (question: string, intent: string | null, conclusion: string, evi
 
 export const answer = async (question: string, allowedSites: string[]): Promise<AiResult<AnswerPayload>> => {
   const q = norm(question);
+  // A site outside the user's permission is not swapped for another site silently.
+  const asked = siteMentioned(q);
+  if (asked && !allowedSites.includes(asked.id)) {
+    return result(question, 'siteScope', `${asked.name}은(는) 이 사용자의 조회 범위가 아니어서 답하지 않습니다. 조회할 수 있는 사업장: ${company.sites.filter((s) => allowedSites.includes(s.id)).map((s) => s.name).join(', ')}.`, [], { params: {}, links: [] }, 1);
+  }
   const sites = siteFrom(q, allowedSites);
   const siteText = sites.length > 1 ? `${sites.length}개 사업장` : company.sites.find((s) => s.id === sites[0])!.name;
   const siteParam = sites.length > 1 ? 'ALL' : sites[0];
@@ -123,15 +138,12 @@ export const answer = async (question: string, allowedSites: string[]): Promise<
     const low = has(q, '가장낮', '제일낮', '최저') === METRICS[id].higherIsBetter;
     valid.sort((a, b) => (low ? a.v - b.v : b.v - a.v));
     const top = valid[0];
-    const { totalsOf } = await import('./metrics/oee');
-    const { getShifts, lineMap } = await import('./production');
     const t = totalsOf(await getShifts({ siteIds: [top.l.siteId], lineIds: [top.l.id], from: p.from, to: p.to }), await lineMap());
-    const { LOSS_LABELS } = await import('./metrics/oee');
     const losses = Object.entries(t.loss).sort((a, b) => b[1] - a[1]);
     const why = losses.slice(0, 2).map(([k, v]) => `${LOSS_LABELS[k as keyof typeof LOSS_LABELS]} ${(v / 60).toFixed(1)}시간`).join(', ');
     return result(
       question, 'rankLine',
-      `${p.label} ${METRICS[id].label}가 가장 ${low ? '낮은' : '높은'} 라인은 ${top.l.name}(${fmt(id, top.v)})입니다. 손실이 큰 항목은 ${why}입니다.`,
+      `${p.label} ${josa(METRICS[id].label, '이', '가')} 가장 ${low ? '낮은' : '높은'} 라인은 ${top.l.name}(${fmt(id, top.v)})입니다. ${low ? '손실이 큰 항목은' : '남은 손실 중 큰 항목은'} ${why}입니다.`,
       [],
       {
         params: { period: p.label, metric: METRICS[id].label, sites: siteText },
@@ -176,7 +188,7 @@ export const answer = async (question: string, allowedSites: string[]): Promise<
     const top = list[0];
     return result(
       question, 'maintenance',
-      `정비가 필요한 설비는 ${list.length}대입니다. 가장 급한 설비는 ${top.target.label}이며, ${top.conclusion}.`,
+      `정비가 필요한 설비는 ${list.length}대입니다. 가장 급한 설비는 ${top.target.label}입니다: ${top.conclusion.replace(/\.$/, '')}.`,
       top.evidence,
       {
         params: { sites: siteText },
@@ -193,13 +205,15 @@ export const answer = async (question: string, allowedSites: string[]): Promise<
     const p = periodFrom(q, 'thisYear');
     const l = await buildLedger(sites);
     const items = l.items.filter((i) => i.kind === '확정' || i.kind === '추정');
-    const inPeriod = items.reduce((a, i) => a + Object.entries(i.monthly).filter(([m]) => m >= new Date(p.from).toISOString().slice(0, 7)).reduce((x, [, v]) => x + v, 0), 0);
+    const fromMonth = new Date(p.from).toISOString().slice(0, 7);
+    const periodAmount = (i: (typeof items)[number]) => Object.entries(i.monthly).filter(([m]) => m >= fromMonth).reduce((x, [, v]) => x + v, 0);
+    const inPeriod = items.reduce((a, i) => a + periodAmount(i), 0);
     const pb = l.payback.scope === 'site' ? '투자비와 회수 시점은 전사 기준으로만 계산합니다' : l.payback.month ? `회수 시점은 ${l.payback.month}${l.payback.projected ? '(예상)' : ''}입니다` : '아직 회수 시점을 예상할 수 없습니다';
     return result(
       question, 'axEffect',
       `${p.label} AX 효과는 ${mwon(inPeriod)} 백만 원(확정 + 추정, 시연용)입니다. 적용 후 누적은 ${mwon(l.totals.counted)} 백만 원이고 ${pb}.`,
       [],
-      { params: { period: p.label, sites: siteText }, rows: items.map((i) => ({ label: `${i.title} (${i.kind})`, value: `${mwon(i.amount)} 백만 원` })), links: [{ label: 'AX 성과·ROI에서 근거 보기', to: `/EXE-020?site=${siteParam}` }] }
+      { params: { period: p.label, sites: siteText }, rows: items.map((i) => ({ label: `${i.title} (${i.kind})`, value: `${p.label} ${mwon(periodAmount(i))} · 누적 ${mwon(i.amount)} 백만 원` })), links: [{ label: 'AX 성과·ROI에서 근거 보기', to: `/EXE-020?site=${siteParam}` }] }
     );
   }
 
@@ -224,7 +238,7 @@ export const answer = async (question: string, allowedSites: string[]): Promise<
     if (!found.length) return result(question, 'energyWaste', `${siteText}에서 비생산 시간 에너지 낭비가 탐지되지 않았습니다.`, [], { params: { sites: siteText }, links: [{ label: '에너지 현황', to: `/ENG-010?site=${siteParam}` }] });
     const w = found[0];
     return result(
-      question, 'energyWaste', `${w.conclusion}. 월 ${(w.payload.monthlyCostKrw / 1e6).toFixed(1)} 백만 원 규모입니다(시연용).`, w.evidence,
+      question, 'energyWaste', `${w.target.label}: ${w.conclusion.replace(/\.$/, '')}. 월 ${(w.payload.monthlyCostKrw / 1e6).toFixed(1)} 백만 원 규모입니다(시연용).`, w.evidence,
       { params: { sites: siteText }, links: [{ label: '에너지 현황에서 보기', to: `/ENG-010?site=${w.target.siteId}` }] }, w.confidence, w.target.siteId
     );
   }
@@ -239,7 +253,7 @@ export const answer = async (question: string, allowedSites: string[]): Promise<
     const cmp = comparisonOf({ key: p.key === 'last7' ? 'custom' : (p.key as PeriodKey), label: p.label, from: p.from, to: p.to });
     const prev = await metric(id, { ...scope, from: cmp.from, to: cmp.to });
     return result(
-      question, 'metricValue', `${p.label} ${siteText} ${METRICS[id].label}는 ${fmt(id, cur)}입니다(${cmp.basis} ${fmt(id, prev)}).`, [],
+      question, 'metricValue', `${p.label} ${siteText} ${josa(METRICS[id].label, '은', '는')} ${fmt(id, cur)}입니다(${cmp.basis} ${fmt(id, prev)}).`, [],
       { params: { period: p.label, metric: METRICS[id].label, sites: siteText }, links: [{ label: '경영 현황', to: `/EXE-010?site=${siteParam}` }] }
     );
   }

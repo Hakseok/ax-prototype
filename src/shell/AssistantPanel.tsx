@@ -94,7 +94,7 @@ function TurnView({ turn }: { turn: Turn }) {
         <div className="assistant-turn__a caption">{ind.template.name} 템플릿은 데이터가 연계되지 않아 답하지 않습니다. 상단 안내에서 자동차 부품으로 되돌리면 답할 수 있습니다.</div>
       ) : !value ? (
         <Skeleton active paragraph={{ rows: 2 }} />
-      ) : value.payload.intent === null ? (
+      ) : value.payload.intent === null || value.payload.intent === 'siteScope' ? (
         <div className="assistant-turn__a">
           <p className="assistant-turn__text">{value.conclusion}</p>
           <ul className="assistant-turn__list">
