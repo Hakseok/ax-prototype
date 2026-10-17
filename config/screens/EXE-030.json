@@ -1,0 +1,12 @@
+{
+  "id": "EXE-030",
+  "pattern": "P10",
+  "title": "경영 보고서",
+  "permission": { "view": "조회" },
+  "badges": ["시연용"],
+  "report": {
+    "kind": "monthly",
+    "contents": ["표지와 핵심 요약", "핵심 지표", "월별 OEE · AX 적용 전후", "사업장별 실적", "AX 효과와 근거", "주요 리스크", "작성 기준"]
+  },
+  "actions": ["내보내기"]
+}

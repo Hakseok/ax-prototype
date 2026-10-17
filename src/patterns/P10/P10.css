@@ -1,0 +1,31 @@
+.p10 {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 3.4fr);
+  gap: var(--shell-gap);
+  height: 100%;
+  min-height: 0;
+}
+
+.p10__toc {
+  align-self: start;
+}
+
+.p10__toc-list {
+  margin: 0 0 var(--space-md);
+  padding-left: var(--space-xl);
+  line-height: 2;
+}
+
+.p10__preview {
+  overflow: auto;
+  min-height: 0;
+  background: var(--color-bg-subtle);
+  border: var(--border-w) solid var(--color-border);
+  border-radius: var(--radius-surface);
+}
+
+@media (max-width: 48em) {
+  .p10 {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "id": "OPS-050",
+  "pattern": "P4",
+  "title": "비가동 이력",
+  "permission": { "view": "조회" },
+  "dataSource": "downtime",
+  "filters": [
+    { "field": "start", "label": "기간", "control": "dateRange", "default": "last30days", "required": true },
+    { "field": "category", "label": "손실 분류", "control": "select", "options": "lossCategories" },
+    { "field": "lineId", "label": "라인", "control": "select", "options": "lines" },
+    { "field": "cause", "label": "원인·설비", "control": "text", "placeholder": "원인 또는 설비 이름", "fields": ["cause", "causeCode", "equipmentName"] }
+  ],
+  "columns": [
+    { "field": "start", "label": "시작", "format": "datetime", "width": 150, "pinned": true },
+    { "field": "end", "label": "종료", "format": "datetime", "width": 150 },
+    { "field": "siteId", "label": "사업장", "ref": "sites", "width": 100, "showWhen": "company" },
+    { "field": "lineId", "label": "라인", "ref": "lines", "width": 220 },
+    { "field": "equipmentName", "label": "설비", "flex": 2 },
+    { "field": "categoryLabel", "label": "손실 분류", "width": 130 },
+    { "field": "cause", "label": "원인", "flex": 2 },
+    { "field": "durationMin", "label": "정지 시간 (분)", "format": "number", "width": 130, "total": true },
+    { "field": "lineMin", "label": "라인 환산 (분)", "format": "number", "width": 130, "total": true }
+  ],
+  "summary": { "count": true },
+  "actions": ["조회", "내보내기"],
+  "rowLink": { "label": "설비 진단", "to": "MNT-011", "params": { "id": "equipmentId" } },
+  "note": "병렬 라인(사출·가공)은 설비 한 대 정지를 라인의 1/설비 수로 환산합니다. 소정지는 교대 실적의 건수·시간으로만 집계합니다(OEE·손실 분석)."
+}

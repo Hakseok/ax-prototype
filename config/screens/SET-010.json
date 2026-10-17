@@ -1,0 +1,21 @@
+{
+  "id": "SET-010",
+  "pattern": "P6",
+  "title": "초기 설정",
+  "permission": { "view": "관리", "edit": "관리" },
+  "badges": ["시연용"],
+  "dataSource": "industryTemplates",
+  "mode": "settings",
+  "sections": [],
+  "steps": [
+    { "id": "industry", "title": "업종 선택" },
+    { "id": "kpis", "title": "지표 세트" },
+    { "id": "losses", "title": "손실 분류" },
+    { "id": "quality", "title": "품질 지표·원가 항목" },
+    { "id": "costs", "title": "단가·기준선" },
+    { "id": "confirm", "title": "확인" }
+  ],
+  "actions": ["이전", "다음", "저장", "취소"],
+  "links": [{ "label": "단가·기준선", "to": "SET-020" }],
+  "note": "업종 템플릿 3종 중 자동차 부품만 가상 데이터가 있습니다(D-09)."
+}

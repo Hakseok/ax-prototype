@@ -1,0 +1,17 @@
+{
+  "id": "QUA-020",
+  "pattern": "P11",
+  "title": "품질 원인 분석",
+  "permission": { "view": "조회" },
+  "badges": ["시연용", "가상 엔진"],
+  "filters": [
+    { "field": "period", "label": "기간", "control": "dateRange", "default": "last14days", "required": true },
+    { "field": "productId", "label": "제품", "control": "select", "options": "products", "help": "비우면 직전 같은 기간보다 불량률이 가장 크게 오른 제품" },
+    { "field": "lineId", "label": "라인", "control": "select", "options": "lines", "help": "비우면 그 제품에서 불량률이 가장 크게 오른 라인" },
+    { "field": "defectType", "label": "불량 유형", "control": "select", "options": "defectTypes" }
+  ],
+  "analysis": {
+    "problemRule": "불량 로트 = 기간 불량률 중앙값의 1.6배 이상(최소 0.5%), 나머지는 정상 로트 (D-23)"
+  },
+  "actions": ["조회", "채택", "기각", "내보내기"]
+}

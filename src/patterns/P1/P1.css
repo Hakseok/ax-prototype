@@ -1,0 +1,205 @@
+.p1 {
+  display: flex;
+  flex-direction: column;
+  gap: var(--shell-gap);
+  height: 100%;
+  min-height: 0;
+}
+
+.p1__kpis {
+  display: grid;
+  grid-template-columns: repeat(var(--p1-kpi-count, 5), minmax(0, 1fr));
+  gap: var(--shell-gap);
+  flex: none;
+}
+
+.p1__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  gap: var(--shell-gap);
+  flex: 1 1 0;
+  min-height: 0;
+}
+
+.p1__main,
+.p1__side {
+  display: flex;
+  flex-direction: column;
+  gap: var(--shell-gap);
+  min-height: 0;
+}
+
+.p1__main > .p1__panel {
+  flex: 1 1 0;
+  min-height: 0;
+}
+
+.p1__side > .p1__panel {
+  flex: 1 1 0;
+  min-height: 0;
+}
+
+.p1__panel {
+  display: flex;
+  flex-direction: column;
+}
+
+.p1__panel-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.p1__panel--risks .p1__panel-body {
+  overflow-y: auto;
+}
+
+.p1__panel--monthlyTrend .chart {
+  flex: 1 1 0;
+}
+
+.p1__note {
+  margin: 0;
+}
+
+.p1__asof {
+  white-space: nowrap;
+}
+
+.kpi-change--worse {
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+/* Risk list */
+.risk-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.risk-list > .caption {
+  margin: 0;
+}
+
+.risk-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  padding: var(--space-sm) var(--space-md);
+  border: var(--border-w) solid var(--color-border);
+  border-radius: var(--radius-control);
+  background: var(--color-bg-surface);
+}
+
+.risk-item__head,
+.risk-item__foot {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+.risk-item__spacer {
+  flex: 1 1 0;
+}
+
+.risk-item__title {
+  font-weight: 600;
+}
+
+.risk-item__detail {
+  font-size: var(--font-size-caption);
+  color: var(--color-text-secondary);
+}
+
+.risk-item__amount {
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+/* Phones (EXE-010, D-08): one column, page scrolls. */
+@media (max-width: 48em) {
+  .p1--mobile {
+    height: auto;
+  }
+  .p1--mobile .p1__kpis {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .p1--mobile .p1__grid {
+    grid-template-columns: minmax(0, 1fr);
+    flex: none;
+  }
+  .p1--mobile .p1__main,
+  .p1--mobile .p1__side {
+    min-height: auto;
+  }
+  .p1--mobile .p1__side {
+    order: -1;
+  }
+  .p1--mobile .p1__panel,
+  .p1--mobile .p1__panel-body {
+    flex: none;
+    overflow: visible;
+  }
+  .p1--mobile .p1__panel--monthlyTrend .chart {
+    flex: none;
+    height: var(--chart-min-h);
+  }
+}
+
+/* Plant, maintenance and energy panels (OPS-010, MNT-010, ENG-010) */
+.p1__panel--lossByLine .chart,
+.p1__panel--dailyEnergy .chart {
+  flex: 1 1 0;
+}
+
+.p1__panel--healthAlerts .p1__panel-body,
+.p1__panel--energyWaste .p1__panel-body,
+.p1__panel--collection .p1__panel-body {
+  overflow-y: auto;
+}
+
+.p1-cards {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.p1-cards__item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-xs);
+}
+
+.p1-cards__item > .ai-card {
+  align-self: stretch;
+}
+
+.p1-cards__chart {
+  display: flex;
+  flex: 1 1 auto;
+  min-height: var(--chart-min-h);
+}
+
+.p1-collection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.p1-collection > .caption {
+  margin: 0;
+}
+
+.p1-collection__row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}

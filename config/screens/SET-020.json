@@ -1,0 +1,63 @@
+{
+  "id": "SET-020",
+  "pattern": "P8",
+  "title": "단가·기준선",
+  "permission": { "view": "조회", "edit": "관리" },
+  "badges": ["시연용"],
+  "dataSource": "unitCosts",
+  "master": {
+    "type": "list",
+    "search": { "placeholder": "항목 이름 검색", "fields": ["name", "id"] },
+    "filters": [{ "field": "group", "label": "구분", "control": "select", "options": "costGroups" }],
+    "columns": [
+      { "field": "group", "label": "구분", "width": 100 },
+      { "field": "name", "label": "항목", "flex": 3 },
+      { "field": "value", "label": "현재 값", "format": "number", "width": 120 },
+      { "field": "unit", "label": "단위", "width": 90 },
+      { "field": "validFrom", "label": "최근 적용 시작일", "format": "date", "width": 130 }
+    ]
+  },
+  "detail": {
+    "titleField": "name",
+    "sections": [
+      {
+        "title": "현재 값",
+        "fields": [
+          { "field": "group", "label": "구분", "control": "readonly" },
+          { "field": "unit", "label": "단위", "control": "readonly" },
+          { "field": "versions", "label": "버전 수", "control": "readonly" }
+        ]
+      },
+      {
+        "title": "새 값 (적용 시작일부터 반영)",
+        "fields": [
+          { "field": "value", "label": "값", "control": "number", "min": 0, "required": true, "help": "AX 기준선 기간은 1~6개월(데이터 시작 2025-10 이전으로는 늘릴 수 없음)" },
+          { "field": "validFrom", "label": "적용 시작일", "control": "date", "required": true, "help": "이 날짜부터 계산에 쓰입니다. 앞선 기간은 이전 값으로 계산합니다" },
+          { "field": "note", "label": "변경 사유", "control": "textarea", "required": true }
+        ]
+      }
+    ],
+    "related": [
+      {
+        "title": "변경 이력",
+        "dataSource": "unitCostVersions",
+        "by": "itemId",
+        "columns": [
+          { "field": "validFrom", "label": "적용 시작일", "format": "date", "width": 120, "sort": "desc" },
+          { "field": "value", "label": "값", "format": "number", "width": 110 },
+          { "field": "state", "label": "상태", "width": 90 },
+          { "field": "changedAt", "label": "변경 시각", "format": "datetime", "width": 140 },
+          { "field": "changedBy", "label": "변경자", "ref": "users", "width": 110 },
+          { "field": "note", "label": "사유", "flex": 2 }
+        ]
+      }
+    ],
+    "versioned": { "kind": "unitCost", "valueField": "value", "validFromField": "validFrom" }
+  },
+  "actions": ["저장"],
+  "links": [
+    { "label": "AX 성과·ROI", "to": "EXE-020" },
+    { "label": "초기 설정", "to": "SET-010" }
+  ],
+  "note": "모든 단가는 시연용 가상값입니다. 저장하면 효과 원장·경영 현황·보고서가 다시 계산됩니다."
+}

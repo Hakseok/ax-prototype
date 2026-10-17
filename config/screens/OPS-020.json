@@ -1,0 +1,24 @@
+{
+  "id": "OPS-020",
+  "pattern": "P3",
+  "title": "OEE·손실 분석",
+  "permission": { "view": "조회" },
+  "badges": ["시연용"],
+  "filters": [
+    { "field": "period", "label": "기간", "control": "dateRange", "default": "thisMonth", "required": true },
+    {
+      "field": "shift", "label": "교대", "control": "select",
+      "options": [{ "value": "A", "label": "1조 (06~14시)" }, { "value": "B", "label": "2조 (14~22시)" }, { "value": "C", "label": "3조 (22~06시)" }, { "value": "D", "label": "주간 (07~16시, 화성)" }, { "value": "N", "label": "야간 (16~01시, 화성)" }]
+    },
+    { "field": "productId", "label": "제품", "control": "select", "options": "products" }
+  ],
+  "target": { "levels": ["company", "site", "line", "equipment"] },
+  "chart": { "type": "waterfall", "unit": "시간" },
+  "tabs": [
+    { "id": "causes", "title": "손실 상위 원인" },
+    { "id": "events", "title": "비가동 사건" },
+    { "id": "shifts", "title": "교대 비교" },
+    { "id": "products", "title": "제품 비교" }
+  ],
+  "actions": ["조회", "내보내기"]
+}

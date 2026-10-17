@@ -1,0 +1,60 @@
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  height: var(--badge-h);
+  padding: 0 var(--space-sm);
+  border-radius: var(--radius-badge);
+  font-size: var(--font-size-caption);
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.status-badge::before {
+  content: '';
+  flex: none;
+  width: var(--status-mark);
+  height: var(--status-mark);
+  background: currentColor;
+}
+
+/* Critical: diamond */
+.status-badge--critical {
+  color: var(--color-status-critical);
+  background: var(--color-status-critical-bg);
+}
+.status-badge--critical::before {
+  transform: rotate(45deg) scale(0.85);
+}
+
+/* Warning: triangle */
+.status-badge--warning {
+  color: var(--color-status-warning);
+  background: var(--color-status-warning-bg);
+}
+.status-badge--warning::before {
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+}
+
+/* Info: ring */
+.status-badge--info {
+  color: var(--color-status-info);
+  background: var(--color-status-info-bg);
+}
+.status-badge--info::before {
+  border-radius: var(--radius-pill);
+  background: transparent;
+  border: var(--line-w) solid currentColor;
+}
+
+/* Normal: short dash, no fill, neutral ink */
+.status-badge--normal {
+  color: var(--color-text-tertiary);
+  background: transparent;
+  padding: 0;
+  font-weight: 500;
+}
+.status-badge--normal::before {
+  height: var(--line-w);
+}

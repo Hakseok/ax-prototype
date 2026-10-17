@@ -1,0 +1,40 @@
+.money-card__demo {
+  display: inline-flex;
+  align-items: center;
+  height: var(--badge-h);
+  padding: 0 var(--space-xs);
+  border: var(--border-w) solid var(--color-border-strong);
+  border-radius: var(--radius-badge);
+  font-size: var(--font-size-micro);
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+  flex: none;
+}
+
+.money-card__classes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs) var(--space-sm);
+}
+
+.money-card__class {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.money-card__class--excluded {
+  color: var(--color-text-tertiary);
+}
+
+.money-card__foot {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-sm);
+}
+
+.money-card__link {
+  color: var(--color-action);
+  white-space: nowrap;
+  align-self: flex-end;
+}

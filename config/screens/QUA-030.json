@@ -1,0 +1,31 @@
+{
+  "id": "QUA-030",
+  "pattern": "P5",
+  "title": "클레임·로트 추적",
+  "permission": { "view": "조회", "edit": "편집" },
+  "badges": ["시연용"],
+  "dataSource": "claims",
+  "workflow": "claim",
+  "filters": [
+    { "field": "receivedAt", "label": "접수 기간", "control": "dateRange", "default": "thisYear", "required": true },
+    { "field": "customerId", "label": "고객사", "control": "select", "options": "customers" },
+    { "field": "productId", "label": "제품", "control": "select", "options": "products" }
+  ],
+  "list": {
+    "stageField": "stage",
+    "stages": ["접수", "원인 분석", "대책", "종결"],
+    "openStages": ["접수", "원인 분석", "대책"],
+    "columns": [
+      { "field": "id", "label": "클레임", "width": 140, "pinned": true },
+      { "field": "stage", "label": "단계", "width": 90 },
+      { "field": "receivedAt", "label": "접수", "format": "datetime", "width": 140 },
+      { "field": "customerId", "label": "고객사", "ref": "customers", "width": 90 },
+      { "field": "siteId", "label": "사업장", "ref": "sites", "width": 90, "showWhen": "company" },
+      { "field": "productId", "label": "제품", "ref": "products", "flex": 3 },
+      { "field": "defectType", "label": "불량 유형", "flex": 1 },
+      { "field": "qty", "label": "수량 (개)", "format": "number", "width": 90 }
+    ]
+  },
+  "content": { "title": "클레임" },
+  "actions": ["조회", "승인", "반려", "완료", "확인", "내보내기"]
+}

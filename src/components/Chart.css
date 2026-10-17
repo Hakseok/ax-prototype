@@ -1,0 +1,11 @@
+.chart {
+  width: 100%;
+  min-width: 0;
+  height: var(--chart-min-h);
+}
+
+.chart--fill {
+  flex: 1 1 auto;
+  height: auto;
+  min-height: calc(var(--chart-min-h) / 2);
+}

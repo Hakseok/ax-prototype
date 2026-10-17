@@ -1,0 +1,21 @@
+{
+  "id": "OPS-010",
+  "pattern": "P1",
+  "title": "공장 현황",
+  "permission": { "view": "조회" },
+  "badges": ["시연용"],
+  "period": { "options": ["today", "thisWeek", "thisMonth"], "default": "today" },
+  "kpis": [
+    { "metric": "plan.attainment" },
+    { "metric": "oee", "link": { "label": "손실 분석", "to": "OPS-020" } },
+    { "metric": "quality.ppmInternal", "link": { "label": "원인 분석", "to": "QUA-020" } },
+    { "metric": "loss.downtimeCost", "link": { "label": "비가동 이력", "to": "OPS-050" } },
+    { "metric": "mnt.mttr", "link": { "label": "설비 건전성", "to": "MNT-010" } }
+  ],
+  "panels": [
+    { "id": "lines", "type": "lineTable", "title": "라인별 실적", "area": "main-top", "link": { "label": "OEE·손실 분석", "to": "OPS-020" } },
+    { "id": "losses", "type": "lossByLine", "title": "라인별 6대 손실", "area": "main-bottom" },
+    { "id": "risks", "type": "risks", "title": "주요 리스크", "area": "side", "grow": 2, "link": { "label": "알림 센터", "to": "COM-010" } },
+    { "id": "collection", "type": "collection", "title": "데이터 수집 상태", "area": "side" }
+  ]
+}

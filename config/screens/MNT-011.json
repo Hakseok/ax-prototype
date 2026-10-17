@@ -1,0 +1,15 @@
+{
+  "id": "MNT-011",
+  "pattern": "P7",
+  "title": "설비 진단 상세",
+  "permission": { "view": "조회", "edit": "편집" },
+  "badges": ["시연용", "가상 엔진"],
+  "dataSource": "equipment",
+  "param": "id",
+  "actions": ["채택", "기각"],
+  "links": [
+    { "label": "설비 건전성으로", "to": "MNT-010" },
+    { "label": "정비 요청", "to": "MNT-020" },
+    { "label": "손실 분석", "to": "OPS-020" }
+  ]
+}

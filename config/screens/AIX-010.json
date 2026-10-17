@@ -1,0 +1,13 @@
+{
+  "id": "AIX-010",
+  "pattern": "P12",
+  "title": "AI 도우미",
+  "permission": { "view": "조회" },
+  "badges": ["가상 엔진", "시연용"],
+  "assistant": {
+    "engine": "rule-based",
+    "intents": ["metricValue", "rankLine", "defectCause", "maintenance", "axEffect", "claimLots", "energyWaste"],
+    "sharedWith": "top-bar drawer"
+  },
+  "actions": ["삭제"]
+}

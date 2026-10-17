@@ -1,0 +1,44 @@
+.ind-preview {
+  display: flex;
+  flex-direction: column;
+  gap: var(--shell-gap);
+}
+
+.ind-preview__lead {
+  margin: 0;
+}
+
+.ind-preview__kpis {
+  display: grid;
+  grid-template-columns: repeat(var(--ind-kpi-count, 5), minmax(0, 1fr));
+  gap: var(--shell-gap);
+}
+
+.ind-preview__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--shell-gap);
+  align-items: start;
+}
+
+.ind-preview__list {
+  margin: 0;
+  padding-left: var(--space-xl);
+}
+
+.ind-preview__h {
+  margin: 0;
+  font-size: var(--font-size-body);
+  font-weight: 600;
+}
+
+/* Shell banner while a template without data is selected (D-09). */
+.industry-banner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-xs) var(--shell-pad);
+  background: var(--color-action-subtle);
+  border-bottom: var(--border-w) solid var(--color-border);
+  font-size: var(--font-size-body);
+}

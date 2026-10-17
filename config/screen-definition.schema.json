@@ -1,0 +1,228 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "screen-definition.schema.json",
+  "title": "화면 정의",
+  "description": "config/screens/<화면ID>.json의 형식. 패턴은 docs/screen-guide.md 3장.",
+  "type": "object",
+  "required": ["id", "pattern", "title", "permission"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^[A-Z]{3}-\\d{3}$" },
+    "pattern": { "enum": ["P1", "P2", "P3", "P4", "P5", "P6", "P7", "P8", "P9", "P10", "P11", "P12"] },
+    "title": { "type": "string", "minLength": 1 },
+    "permission": {
+      "type": "object",
+      "required": ["view"],
+      "additionalProperties": false,
+      "properties": { "view": { "$ref": "#/$defs/role" }, "edit": { "$ref": "#/$defs/role" } }
+    },
+    "dataSource": { "type": "string", "minLength": 1 },
+    "badges": { "type": "array", "items": { "enum": ["시연용", "규격 확정 전", "전사 공통", "가상 엔진"] } },
+    "actions": { "type": "array", "items": { "type": "string" } },
+    "links": { "type": "array", "items": { "$ref": "#/$defs/link" } },
+    "note": { "type": "string" },
+    "newIdPrefix": { "type": "string" },
+    "filters": { "type": "array", "items": { "$ref": "#/$defs/field" } },
+    "columns": { "type": "array", "items": { "$ref": "#/$defs/column" } },
+    "summary": { "type": "object", "additionalProperties": false, "properties": { "count": { "type": "boolean" } } },
+    "rowLink": { "$ref": "#/$defs/link" },
+    "master": { "$ref": "#/$defs/master" },
+    "detail": { "$ref": "#/$defs/detail" },
+    "period": { "type": "object" },
+    "kpis": { "type": "array" },
+    "kpisFrom": { "enum": ["industry"], "description": "P1: 카드를 SET-010의 핵심 지표 선택에서 가져온다" },
+    "panels": { "type": "array" },
+    "target": { "type": "object" },
+    "chart": { "type": "object" },
+    "table": { "type": "object" },
+    "diagram": { "type": "object" },
+    "tabs": { "type": "array" },
+    "list": { "type": "object" },
+    "form": { "type": "object" },
+    "sections": { "type": "array" },
+    "workflow": { "enum": ["alert", "workOrder", "claim"] },
+    "content": { "type": "object" },
+    "mode": { "enum": ["append", "settings"] },
+    "recent": { "type": "object" },
+    "apply": { "type": "object" },
+    "param": { "type": "string" },
+    "ledger": { "type": "object" },
+    "report": { "type": "object" },
+    "analysis": { "type": "object" },
+    "assistant": { "type": "object" },
+    "steps": { "type": "array" },
+    "ai": { "type": "array" },
+    "drill": { "type": "object" },
+    "mobile": { "type": "boolean" },
+    "exception": { "type": "string", "description": "템플릿으로 안 되는 부분과 이유(src/screens 사용 시 필수)" }
+  },
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": { "properties": { "pattern": { "const": "P4" } } },
+      "then": { "required": ["dataSource", "filters", "columns", "actions"] }
+    },
+    {
+      "if": { "properties": { "pattern": { "const": "P8" } } },
+      "then": { "required": ["dataSource", "master", "detail", "actions"] }
+    },
+    {
+      "if": { "properties": { "pattern": { "const": "P1" } } },
+      "then": { "required": ["kpis", "panels"], "properties": { "kpis": { "minItems": 4, "maxItems": 6 } } }
+    },
+    {
+      "if": { "properties": { "pattern": { "const": "P3" } } },
+      "then": { "required": ["filters", "target", "chart", "actions"] }
+    },
+    { "if": { "properties": { "pattern": { "const": "P2" } } }, "then": { "required": ["diagram"] } },
+    { "if": { "properties": { "pattern": { "const": "P5" } } }, "then": { "required": ["dataSource", "workflow", "list", "content", "actions"] } },
+    { "if": { "properties": { "pattern": { "const": "P6" } } }, "then": { "required": ["dataSource", "mode", "sections", "actions"] } },
+    { "if": { "properties": { "pattern": { "const": "P7" } } }, "then": { "required": ["dataSource", "param", "actions"] } },
+    { "if": { "properties": { "pattern": { "const": "P9" } } }, "then": { "required": ["ledger"] } },
+    { "if": { "properties": { "pattern": { "const": "P10" } } }, "then": { "required": ["report", "actions"] } },
+    { "if": { "properties": { "pattern": { "const": "P11" } } }, "then": { "required": ["filters", "analysis", "actions"] } },
+    { "if": { "properties": { "pattern": { "const": "P12" } } }, "then": { "required": ["assistant"] } }
+  ],
+  "$defs": {
+    "role": { "enum": ["조회", "편집", "관리"] },
+    "link": {
+      "type": "object",
+      "required": ["label", "to"],
+      "additionalProperties": false,
+      "properties": {
+        "label": { "type": "string" },
+        "to": { "type": "string", "pattern": "^[A-Z]{3}-\\d{3}$" },
+        "params": { "type": "object", "additionalProperties": { "type": "string" } }
+      }
+    },
+    "options": {
+      "oneOf": [
+        { "type": "string", "description": "참조 이름 (sites, lines, equipment, products, users, grades ...)" },
+        {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              { "type": "string" },
+              { "type": "object", "required": ["value", "label"], "additionalProperties": false, "properties": { "value": { "type": "string" }, "label": { "type": "string" } } }
+            ]
+          }
+        }
+      ]
+    },
+    "format": { "enum": ["number", "percent", "signedPercent", "datetime", "date", "month", "boolean", "list"] },
+    "field": {
+      "type": "object",
+      "required": ["field", "label", "control"],
+      "additionalProperties": false,
+      "properties": {
+        "field": { "type": "string" },
+        "label": { "type": "string" },
+        "control": { "enum": ["text", "textarea", "number", "select", "multiSelect", "date", "dateRange", "month", "year", "switch", "readonly"] },
+        "options": { "$ref": "#/$defs/options" },
+        "required": { "type": "boolean" },
+        "readOnly": { "type": "boolean" },
+        "readOnlyOnEdit": { "type": "boolean" },
+        "derivedFrom": { "type": "string" },
+        "min": { "type": "number" },
+        "max": { "type": "number" },
+        "step": { "type": "number" },
+        "unit": { "type": "string" },
+        "placeholder": { "type": "string" },
+        "default": {},
+        "collapsed": { "type": "boolean" },
+        "pending": { "type": "boolean" },
+        "help": { "type": "string" },
+        "fields": { "type": "array", "items": { "type": "string" } },
+        "format": { "$ref": "#/$defs/format" }
+      }
+    },
+    "column": {
+      "type": "object",
+      "required": ["field", "label"],
+      "additionalProperties": false,
+      "properties": {
+        "field": { "type": "string" },
+        "label": { "type": "string" },
+        "width": { "type": "number", "minimum": 40 },
+        "flex": { "type": "number", "minimum": 1 },
+        "pinned": { "type": "boolean" },
+        "align": { "enum": ["left", "right"] },
+        "format": { "$ref": "#/$defs/format" },
+        "fractionDigits": { "type": "integer", "minimum": 0, "maximum": 4 },
+        "render": { "enum": ["status", "shareBar"] },
+        "labelField": { "type": "string" },
+        "ref": { "type": "string" },
+        "showWhen": { "enum": ["company", "site"] },
+        "sort": { "enum": ["asc", "desc"] },
+        "total": { "type": "boolean" },
+        "wrap": { "type": "boolean" }
+      }
+    },
+    "master": {
+      "type": "object",
+      "required": ["type"],
+      "additionalProperties": false,
+      "properties": {
+        "type": { "enum": ["list", "tree"] },
+        "search": {
+          "type": "object",
+          "required": ["placeholder", "fields"],
+          "additionalProperties": false,
+          "properties": { "placeholder": { "type": "string" }, "fields": { "type": "array", "items": { "type": "string" } } }
+        },
+        "filters": { "type": "array", "items": { "$ref": "#/$defs/field" } },
+        "columns": { "type": "array", "items": { "$ref": "#/$defs/column" } },
+        "tree": {
+          "type": "object",
+          "required": ["parentField", "labelField"],
+          "additionalProperties": false,
+          "properties": { "parentField": { "type": "string" }, "labelField": { "type": "string" } }
+        }
+      },
+      "if": { "properties": { "type": { "const": "tree" } } },
+      "then": { "required": ["tree"] },
+      "else": { "required": ["columns"] }
+    },
+    "detail": {
+      "type": "object",
+      "required": ["sections"],
+      "additionalProperties": false,
+      "properties": {
+        "titleField": { "type": "string" },
+        "sections": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["title", "fields"],
+            "additionalProperties": false,
+            "properties": { "title": { "type": "string" }, "fields": { "type": "array", "items": { "$ref": "#/$defs/field" } } }
+          }
+        },
+        "related": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["title", "dataSource", "columns"],
+            "additionalProperties": false,
+            "properties": {
+              "title": { "type": "string" },
+              "dataSource": { "type": "string" },
+              "by": { "type": "string" },
+              "columns": { "type": "array", "items": { "$ref": "#/$defs/column" } }
+            }
+          }
+        },
+        "versioned": {
+          "type": "object",
+          "required": ["kind", "valueField", "validFromField"],
+          "additionalProperties": false,
+          "properties": {
+            "kind": { "type": "string" },
+            "valueField": { "type": "string" },
+            "validFromField": { "type": "string" }
+          }
+        }
+      }
+    }
+  }
+}

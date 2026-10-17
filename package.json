@@ -1,0 +1,46 @@
+{
+  "name": "ax-prototype",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "build:artifact": "npm run build && node scripts/build-artifact.mjs",
+    "gen:data": "node scripts/gen-data/index.mjs",
+    "tokens:sync": "node scripts/tokens-sync.mjs",
+    "fonts:pdf": "node scripts/fonts-unwrap.mjs",
+    "test": "vitest run",
+    "check:tokens": "node scripts/check-tokens.mjs",
+    "check:screens": "node scripts/check-screens.mjs",
+    "check:licenses": "node scripts/check-licenses.mjs",
+    "check": "npm run check:tokens && npm run check:screens && npm run check:licenses && npm run test && npm run build"
+  },
+  "dependencies": {
+    "@ant-design/icons": "^5.6.1",
+    "@ant-design/v5-patch-for-react-19": "^1.0.3",
+    "@fontsource/ibm-plex-mono": "^5.3.0",
+    "@fontsource/ibm-plex-sans-kr": "^5.3.0",
+    "ag-grid-community": "^36.2.0",
+    "ag-grid-react": "^36.2.0",
+    "antd": "^5.29.3",
+    "dayjs": "^1.11.23",
+    "echarts": "^6.1.0",
+    "pdfmake": "^0.3.11",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "react-router-dom": "^7.18.4"
+  },
+  "devDependencies": {
+    "@ibm/plex-sans-kr": "^1.1.0",
+    "@types/node": "^26.6.5",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.2",
+    "ajv": "^8.20.0",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.4",
+    "vitest": "^5.0.3"
+  }
+}

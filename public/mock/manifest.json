@@ -1,0 +1,1 @@
+{"now":"2026-09-30T14:30:00+09:00","seed":20261017,"production":{"from":"2025-10-01","to":"2026-09-30"},"sensorHourly":{"from":"2026-04-01T00:00","hours":4382},"energyHourly":{"from":"2025-10-01T00:00","hours":8750},"energyQuarter":{"from":"2026-09-24T00:00","slots":634},"sites":["ASN","GMH","DGU","HWS"],"quarters":["2025Q4","2026Q1","2026Q2","2026Q3"],"files":55}

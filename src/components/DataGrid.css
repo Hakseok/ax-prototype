@@ -1,0 +1,45 @@
+.data-grid {
+  min-width: 0;
+}
+
+.data-grid--fill {
+  flex: 1 1 auto;
+  min-height: 0;
+  height: 100%;
+}
+
+.data-grid--fill > div {
+  height: 100%;
+}
+
+/* AG Grid reserves a tall empty body in auto-height mode, which leaves a gap
+   above the total row. Keep only room for the one-line empty-state message. */
+.data-grid .ag-layout-auto-height.ag-grid-scrolling-rows {
+  min-height: calc(var(--grid-row-h) * 2);
+}
+
+.data-grid .grid-total-row {
+  background: var(--color-bg-subtle);
+  font-weight: 600;
+}
+
+.data-grid .grid-row--selected {
+  background: var(--color-action-subtle);
+}
+
+.data-grid--clickable .ag-row:not(.ag-row-pinned) {
+  cursor: pointer;
+}
+
+.data-grid .ag-cell {
+  display: flex;
+  align-items: center;
+}
+
+.data-grid .ag-cell.ag-right-aligned-cell {
+  justify-content: flex-end;
+}
+
+.data-grid__empty {
+  color: var(--color-text-secondary);
+}

@@ -1,0 +1,43 @@
+/* Base styles. Every value comes from a 2nd- or 3rd-tier token. */
+html,
+body,
+#root {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  background: var(--color-bg-app);
+  color: var(--color-text-primary);
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-body);
+  line-height: 1.5;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:focus-visible {
+  outline: var(--focus-ring-w) solid var(--color-action);
+  outline-offset: var(--focus-ring-w);
+}
+
+.num {
+  font-family: var(--font-family-num);
+  font-variant-numeric: tabular-nums;
+}
+
+.caption {
+  font-size: var(--font-size-caption);
+  color: var(--color-text-tertiary);
+}
+
+/* Value missing because collection stopped. Never shown as 0. */
+.no-data {
+  color: var(--color-text-tertiary);
+  font-family: var(--font-family-base);
+  font-style: normal;
+}

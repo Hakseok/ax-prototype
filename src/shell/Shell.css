@@ -1,0 +1,26 @@
+.shell {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: var(--color-bg-app);
+}
+
+.shell__main {
+  display: flex;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.shell__content {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* Phone width (COM-020 is the one screen that must read there): hide the menu. 48em = tablet edge. */
+@media (max-width: 48em) {
+  .shell .sidenav {
+    display: none;
+  }
+}

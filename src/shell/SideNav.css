@@ -1,0 +1,25 @@
+.sidenav {
+  width: var(--shell-nav-w);
+  flex: none;
+  overflow-y: auto;
+  background: var(--color-bg-surface);
+  border-right: var(--border-w) solid var(--color-border);
+}
+
+.sidenav .ant-menu-inline {
+  border-inline-end: none;
+}
+
+.sidenav__next {
+  color: var(--color-text-tertiary);
+}
+
+.sidenav .sidenav__next {
+  color: var(--color-text-tertiary);
+}
+
+.sidenav__next-tag {
+  margin-left: var(--space-xs);
+  font-size: var(--font-size-micro);
+  color: var(--color-text-tertiary);
+}

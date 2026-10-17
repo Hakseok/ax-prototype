@@ -1,0 +1,37 @@
+.effect-mark {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-size: var(--font-size-caption);
+  white-space: nowrap;
+}
+
+.effect-swatch {
+  display: inline-block;
+  width: var(--chart-legend-swatch);
+  height: var(--status-mark);
+  border: var(--border-w) solid var(--color-effect);
+  border-radius: var(--radius-badge);
+}
+
+/* Shared fills, also used by effect bars in charts and tables. */
+.effect-swatch--confirmed,
+.effect-fill--confirmed {
+  background: var(--color-effect);
+}
+
+.effect-swatch--estimated,
+.effect-fill--estimated {
+  background: repeating-linear-gradient(
+    135deg,
+    var(--color-effect) 0,
+    var(--color-effect) var(--border-w),
+    transparent var(--border-w),
+    transparent var(--hatch-gap)
+  );
+}
+
+.effect-swatch--potential,
+.effect-fill--potential {
+  background: transparent;
+}

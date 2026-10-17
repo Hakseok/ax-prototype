@@ -1,0 +1,80 @@
+.p8 {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: var(--shell-gap);
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.p8__master,
+.p8__detail {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.p8__master-tools {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(calc(var(--shell-nav-w) - var(--space-xl)), 1fr));
+  gap: var(--space-sm);
+  flex: none;
+}
+
+.p8__tree {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+}
+
+.p8__detail-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  padding-right: var(--space-xs);
+}
+
+.p8__section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.p8__section + .p8__section {
+  padding-top: var(--space-md);
+  border-top: var(--border-w) solid var(--color-border);
+}
+
+.p8__section-title {
+  margin: 0;
+  font-size: var(--font-size-body);
+  font-weight: 600;
+  color: var(--color-text-secondary);
+}
+
+.p8__fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 var(--space-lg);
+}
+
+.p8__field--wide {
+  grid-column: 1 / -1;
+}
+
+.p8__fields .ant-form-item {
+  margin-bottom: var(--space-md);
+}
+
+.p8__related {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.p8__link {
+  font-size: var(--font-size-body);
+  font-weight: 500;
+  color: var(--color-action);
+}

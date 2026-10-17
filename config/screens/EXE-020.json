@@ -1,0 +1,10 @@
+{
+  "id": "EXE-020",
+  "pattern": "P9",
+  "title": "AX 성과·ROI",
+  "permission": { "view": "조회" },
+  "badges": ["시연용"],
+  "ledger": {
+    "compareMetrics": ["oee", "oee.availability", "quality.ppmInternal", "mnt.mtbf", "mnt.mttr", "energy.kwhPerUnit", "delivery.otd"]
+  }
+}

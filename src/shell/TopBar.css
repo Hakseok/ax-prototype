@@ -1,0 +1,101 @@
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  height: var(--shell-header-h);
+  padding: 0 var(--space-lg);
+  background: var(--color-bg-header);
+  color: var(--color-text-on-header);
+  flex: none;
+}
+
+.topbar__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  width: calc(var(--shell-nav-w) - var(--space-lg));
+  font-size: var(--font-size-title);
+  white-space: nowrap;
+}
+
+.topbar__logo {
+  width: var(--icon-lg);
+  height: var(--icon-lg);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+}
+
+.topbar__company {
+  font-size: var(--font-size-caption);
+  color: var(--color-text-on-header-muted);
+}
+
+.topbar__spacer {
+  flex: 1 1 0;
+}
+
+.topbar__tag {
+  display: inline-flex;
+  align-items: center;
+  height: var(--badge-h);
+  padding: 0 var(--space-sm);
+  border: var(--border-w) solid var(--color-border-on-header);
+  border-radius: var(--radius-badge);
+  font-size: var(--font-size-caption);
+  font-weight: 500;
+  white-space: nowrap;
+  flex: none;
+  color: var(--color-text-on-header-muted);
+}
+
+.topbar__role {
+  font-size: var(--font-size-caption);
+  color: var(--color-text-on-header-muted);
+}
+
+.topbar__time {
+  font-size: var(--font-size-caption);
+  color: var(--color-text-on-header-muted);
+}
+
+/* Controls on the dark header use header ink in both themes. */
+.topbar .topbar__site .ant-select-selection-item,
+.topbar .topbar__site .ant-select-arrow,
+.topbar .topbar__icon,
+.topbar .topbar__user {
+  color: var(--color-text-on-header);
+}
+
+.topbar .topbar__site {
+  min-width: calc(var(--shell-nav-w) - var(--space-xl));
+  font-weight: 600;
+}
+
+.topbar .topbar__icon:hover,
+.topbar .topbar__user:hover,
+.topbar .topbar__site:hover {
+  background: var(--color-bg-header-hover);
+  color: var(--color-text-on-header);
+}
+
+@media (max-width: 48em) {
+  .topbar {
+    gap: var(--space-xs);
+    padding: 0 var(--space-sm);
+  }
+  .topbar__brand {
+    width: auto;
+  }
+  .topbar__brand strong,
+  .topbar__company,
+  .topbar__label,
+  .topbar__role,
+  .topbar__time,
+  .topbar__user .anticon-down {
+    display: none;
+  }
+  .topbar .topbar__site {
+    min-width: 0;
+  }
+}

@@ -1,0 +1,89 @@
+.skeleton {
+  display: grid;
+  gap: var(--shell-gap);
+  height: 100%;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.skeleton__region {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--control-h);
+  background: var(--color-bg-surface);
+  border: var(--border-w) dashed var(--color-border-strong);
+  border-radius: var(--radius-surface);
+}
+
+.skeleton__name {
+  color: var(--color-text-secondary);
+  font-weight: 600;
+}
+
+.skeleton__note {
+  grid-area: note;
+  margin: 0;
+}
+
+.skeleton--dash {
+  grid-template-areas: 'kpi kpi kpi' 'main main side' 'foot foot side' 'note note note';
+  grid-template-rows: auto 2fr 1fr auto;
+}
+.skeleton--dash .skeleton__region:first-child {
+  min-height: calc(var(--control-h) * 3);
+}
+
+.skeleton--split {
+  grid-template-areas: 'side main main' 'note note note';
+  grid-template-rows: 1fr auto;
+}
+
+.skeleton--analysis {
+  grid-template-areas: 'side main main' 'side foot foot' 'note note note';
+  grid-template-rows: 2fr 1fr auto;
+}
+
+.skeleton--single,
+.skeleton--form {
+  grid-template-areas: 'main main main' 'foot foot foot' 'note note note';
+  grid-template-rows: 1fr auto auto;
+}
+.skeleton--single {
+  grid-template-areas: 'main main main' 'note note note';
+  grid-template-rows: 1fr auto;
+}
+
+.skeleton--worklist {
+  grid-template-areas: 'kpi kpi kpi' 'side main main' 'note note note';
+  grid-template-rows: auto 1fr auto;
+}
+
+.skeleton--column {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: 'kpi' 'main' 'foot' 'note';
+  grid-template-rows: auto 1fr 1fr auto;
+  max-width: var(--landing-max-w);
+  margin: 0 auto;
+  width: 100%;
+}
+
+.skeleton--evidence {
+  grid-template-areas: 'kpi kpi kpi' 'side main main' 'note note note';
+  grid-template-rows: auto 1fr auto;
+}
+
+.skeleton--report {
+  grid-template-areas: 'side main main' 'note note note';
+  grid-template-columns: minmax(0, 1fr) minmax(0, 3fr) minmax(0, 1fr);
+  grid-template-rows: 1fr auto;
+}
+
+.skeleton--cause {
+  grid-template-areas: 'kpi kpi kpi' 'main main side' 'foot foot side' 'note note note';
+  grid-template-rows: auto 2fr 1fr auto;
+}
+
+.skeleton--chat {
+  grid-template-areas: 'side main main' 'note note note';
+  grid-template-rows: 1fr auto;
+}

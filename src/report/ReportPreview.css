@@ -1,0 +1,122 @@
+.rp {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xl);
+  padding: var(--space-lg) 0;
+}
+
+/* A4 page at screen scale; the preview always uses the light palette tokens of the print output. */
+.rp__page {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  width: var(--report-page-w);
+  min-height: var(--report-page-h);
+  padding: calc(var(--space-xl) * 2) calc(var(--space-xl) * 2) calc(var(--space-xl) * 3);
+  background: var(--report-bg);
+  color: var(--report-ink);
+  box-shadow: var(--shadow-overlay);
+  border-radius: var(--radius-badge);
+}
+
+.rp__page .caption {
+  color: var(--report-muted);
+}
+
+.rp__head,
+.rp__foot {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--font-size-caption);
+  color: var(--report-muted);
+}
+
+.rp__foot {
+  position: absolute;
+  left: calc(var(--space-xl) * 2);
+  right: calc(var(--space-xl) * 2);
+  bottom: var(--space-xl);
+}
+
+.rp__cover {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  padding-top: calc(var(--space-xl) * 6);
+}
+
+.rp__title {
+  margin: 0;
+  font-size: calc(var(--font-size-kpi) * 1.3);
+  font-weight: 700;
+}
+
+.rp__subtitle {
+  font-size: var(--font-size-page);
+}
+
+.rp__summary {
+  margin-top: calc(var(--space-xl) * 2);
+  padding: var(--space-lg);
+  border-left: calc(var(--line-w) * 2) solid var(--report-accent);
+  background: var(--report-subtle);
+}
+
+.rp__summary ul {
+  margin: var(--space-sm) 0 0;
+  padding-left: var(--space-xl);
+  line-height: 1.7;
+}
+
+.rp__h {
+  margin: var(--space-md) 0 var(--space-xs);
+  font-size: var(--font-size-title);
+  font-weight: 600;
+}
+
+.rp__p {
+  margin: 0;
+  line-height: 1.6;
+}
+
+.rp__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-size-caption);
+}
+
+.rp__table th,
+.rp__table td {
+  padding: var(--space-xs) var(--space-sm);
+  border-bottom: var(--border-w) solid var(--report-line);
+  text-align: left;
+}
+
+.rp__table th {
+  background: var(--report-subtle);
+  color: var(--report-muted);
+  font-weight: 600;
+}
+
+.rp__num {
+  text-align: right !important;
+}
+
+.rp__total td {
+  font-weight: 600;
+}
+
+.rp__worse {
+  font-weight: 600;
+}
+
+.rp__chart {
+  height: calc(var(--chart-min-h) * 1.05);
+}
+
+.rp__notes {
+  margin: 0;
+  padding-left: var(--space-xl);
+}

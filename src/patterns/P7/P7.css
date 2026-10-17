@@ -1,0 +1,97 @@
+/* P7: one column, read top to bottom (guide 3). */
+.p7 {
+  display: flex;
+  flex-direction: column;
+  gap: var(--shell-gap);
+  width: 100%;
+  max-width: calc(var(--landing-max-w) * 1.45);
+  margin: 0 auto;
+}
+
+.p7--loading {
+  opacity: 0.7;
+}
+
+.p7__heading {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+}
+
+.p7__title {
+  margin: 0;
+  font-size: var(--font-size-page);
+  font-weight: 600;
+}
+
+.p7__spacer {
+  flex: 1 1 0;
+}
+
+.p7__facts {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-sm) var(--space-xl);
+  margin: 0;
+}
+
+.p7__fact dt {
+  margin: 0;
+}
+
+.p7__fact dd {
+  margin: 0;
+}
+
+.p7__fact-strong {
+  font-weight: 600;
+}
+
+.p7__ai {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.p7__impact {
+  margin: 0;
+}
+
+.p7__chart {
+  height: calc(var(--chart-min-h) * 1.5);
+}
+
+.p7__chart--short {
+  height: var(--chart-min-h);
+}
+
+.p7__chart .chart {
+  flex: 1 1 0;
+}
+
+.p7__chart > .caption {
+  margin: 0;
+}
+
+.p7__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--shell-gap);
+  height: calc(var(--chart-min-h) * 1.6);
+}
+
+.p7__history {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.p7__history .timeline {
+  overflow-y: auto;
+  min-height: 0;
+  flex: 1 1 0;
+}
+
+.p7__history .data-grid {
+  flex: 1 1 0;
+}

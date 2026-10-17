@@ -1,0 +1,125 @@
+.catalog {
+  display: flex;
+  flex-direction: column;
+  gap: var(--shell-gap);
+  padding: var(--shell-pad);
+  min-height: 100vh;
+  background: var(--color-bg-app);
+}
+
+.catalog__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-md);
+  min-height: var(--shell-title-h);
+}
+
+.catalog__title {
+  margin: 0;
+  font-size: var(--font-size-page);
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.catalog__spacer {
+  flex: 1 1 0;
+}
+
+.catalog__row {
+  display: flex;
+  gap: var(--shell-gap);
+  align-items: flex-start;
+}
+
+.catalog__row > * {
+  flex: 1 1 0;
+}
+
+.catalog__row > .catalog__wide {
+  flex-grow: 2;
+}
+
+.catalog__kpis {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--shell-gap);
+}
+
+.catalog__color-groups {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--space-lg);
+}
+
+.catalog__subtitle,
+.catalog__label {
+  margin: 0 0 var(--space-sm);
+  font-size: var(--font-size-caption);
+  font-weight: 600;
+  color: var(--color-text-secondary);
+}
+
+.catalog__label {
+  margin: var(--space-sm) 0 0;
+}
+
+.catalog__swatches,
+.catalog__scale {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.catalog__swatches li,
+.catalog__scale li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  min-height: var(--badge-h);
+}
+
+.catalog__swatch {
+  flex: none;
+  width: var(--icon-lg);
+  height: var(--icon-md);
+  border: var(--border-w) solid var(--color-border);
+  border-radius: var(--radius-badge);
+}
+
+.catalog__token-name {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--font-size-caption);
+}
+
+.catalog__token-value {
+  flex: none;
+  font-size: var(--font-size-caption);
+  color: var(--color-text-tertiary);
+}
+
+.catalog__bar {
+  flex: none;
+  height: var(--status-mark);
+  background: var(--color-action);
+  border-radius: var(--radius-badge);
+}
+
+.catalog__stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.catalog__form .ant-picker,
+.catalog__form .ant-select,
+.catalog__form .ant-input-number {
+  width: 100%;
+}

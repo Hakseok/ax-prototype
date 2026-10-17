@@ -1,0 +1,166 @@
+/* Shared pattern template styles. Tokens only. */
+.filter-bar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.filter-bar__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-sm) var(--space-lg);
+}
+
+.filter-bar__item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  min-width: calc(var(--shell-nav-w) - var(--space-xl));
+}
+
+.filter-bar__item--dateRange {
+  min-width: calc(var(--shell-nav-w) + var(--space-xl));
+}
+
+.filter-bar__item--multiSelect {
+  min-width: calc(var(--shell-nav-w) + var(--space-xl));
+  max-width: calc(var(--shell-drawer-w) + var(--shell-nav-w));
+}
+
+.filter-bar__label {
+  font-size: var(--font-size-caption);
+  font-weight: 600;
+  color: var(--color-text-secondary);
+}
+
+.filter-bar__required,
+.form-required {
+  color: var(--color-status-critical);
+}
+
+.filter-bar__toggle {
+  align-self: center;
+  white-space: nowrap;
+}
+
+.filter-bar__spacer {
+  flex: 1 1 0;
+}
+
+.field-control--wide {
+  width: 100%;
+}
+
+.toolbar__count {
+  font-size: var(--font-size-body);
+  color: var(--color-text-secondary);
+}
+
+.toolbar__count strong {
+  color: var(--color-text-primary);
+}
+
+.toolbar__spacer {
+  flex: 1 1 0;
+}
+
+.pending-tag {
+  margin-inline-start: var(--space-xs);
+}
+
+/* Plain data table inside panels (evidence, comparisons). */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table th,
+.data-table td {
+  padding: var(--space-xs) var(--space-sm);
+  border-bottom: var(--border-w) solid var(--color-border);
+  text-align: left;
+  vertical-align: top;
+}
+
+.data-table th {
+  font-size: var(--font-size-caption);
+  font-weight: 500;
+  color: var(--color-text-secondary);
+}
+
+.data-table .num-col {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.data-table tr.data-table__total td {
+  font-weight: 600;
+  background: var(--color-bg-subtle);
+}
+
+.data-table tr.data-table__selected td {
+  background: var(--color-action-subtle);
+}
+
+/* Hierarchy path (P3) */
+.crumbs {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+  font-size: var(--font-size-body);
+}
+
+.crumbs__sep {
+  color: var(--color-text-tertiary);
+}
+
+.crumbs__current {
+  font-weight: 600;
+}
+
+/* Definition list used in detail panels (P5, P7) */
+.facts {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: var(--space-xs) var(--space-lg);
+  margin: 0;
+}
+
+.facts dt {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-caption);
+  line-height: var(--control-h-sm);
+}
+
+.facts dd {
+  margin: 0;
+  line-height: var(--control-h-sm);
+}
+
+/* Process log (P5, P7) */
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.timeline__item {
+  display: grid;
+  grid-template-columns: max-content max-content minmax(0, 1fr);
+  gap: var(--space-md);
+  padding-left: var(--space-md);
+  border-left: var(--line-w) solid var(--color-border-strong);
+}
+
+.timeline__action {
+  font-weight: 600;
+}
+
+.data-table td.num {
+  white-space: nowrap;
+}

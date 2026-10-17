@@ -1,0 +1,29 @@
+{
+  "id": "AIX-020",
+  "pattern": "P4",
+  "title": "AI 결과·판정 이력",
+  "permission": { "view": "조회" },
+  "badges": ["가상 엔진"],
+  "dataSource": "aiResults",
+  "filters": [
+    { "field": "generatedAt", "label": "생성 기간", "control": "dateRange", "default": "thisYear", "required": true },
+    { "field": "kindLabel", "label": "결과 종류", "control": "select", "options": ["이상 탐지", "설비 건전성", "잔여수명 예측", "불량 원인 후보", "권장 조건", "에너지 낭비 탐지"] },
+    { "field": "decisionLabel", "label": "판정", "control": "select", "options": ["채택", "기각", "판정 전"] },
+    { "field": "conclusion", "label": "검색", "control": "text", "placeholder": "결론·대상·사유", "fields": ["conclusion", "targetLabel", "reason"] }
+  ],
+  "columns": [
+    { "field": "generatedAt", "label": "생성", "format": "datetime", "width": 140, "pinned": true },
+    { "field": "kindLabel", "label": "종류", "width": 120 },
+    { "field": "siteId", "label": "사업장", "ref": "sites", "width": 90, "showWhen": "company" },
+    { "field": "targetLabel", "label": "대상", "flex": 1, "wrap": true },
+    { "field": "conclusion", "label": "결론", "flex": 3, "wrap": true },
+    { "field": "confidence", "label": "신뢰도 (%)", "format": "number", "width": 100 },
+    { "field": "decisionLabel", "label": "판정", "width": 80 },
+    { "field": "reason", "label": "사유", "flex": 2, "wrap": true },
+    { "field": "decidedBy", "label": "판정자", "ref": "users", "width": 110 },
+    { "field": "decidedAt", "label": "판정 시각", "format": "datetime", "width": 140 }
+  ],
+  "summary": { "count": true },
+  "actions": ["조회", "내보내기"],
+  "note": "기각된 결과도 지우지 않고 사유와 함께 남깁니다. 현재 시각에 계산된 결과(가상 엔진)와 과거 결과를 함께 보입니다."
+}

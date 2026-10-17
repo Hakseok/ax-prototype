@@ -1,0 +1,12 @@
+.alert-page {
+  width: 100%;
+  max-width: calc(var(--shell-drawer-w) * 2);
+  min-height: 0;
+  overflow: hidden;
+}
+
+.alert-page__list {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+}

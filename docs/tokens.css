@@ -1,0 +1,187 @@
+/* 디자인 토큰 — v1(EMS·Historian)에서 이어받고 AX 범위(효과 금액, AI 결과, 보고서)를 더했다. 화면 코드는 2단·3단 토큰만 참조한다.
+   글꼴은 IBM Plex Sans KR / IBM Plex Mono 기준이며 --font-family-* 두 줄만 바꾸면 교체된다. */
+/* ============================================================
+   1단 · 원시 토큰 (Primitive) — 값 그 자체. 화면에서 직접 쓰지 않는다.
+   ============================================================ */
+:root{
+  --p-gray-0:#FFFFFF; --p-gray-50:#F5F6F8; --p-gray-100:#ECEEF1; --p-gray-200:#DCE0E5;
+  --p-gray-300:#C3C9D1; --p-gray-400:#A3ACB8; --p-gray-500:#646D79; --p-gray-600:#535C68;
+  --p-gray-700:#3B434D; --p-gray-750:#2B333D; --p-gray-800:#252B33; --p-gray-850:#1C2128;
+  --p-gray-900:#14181D; --p-gray-950:#0D1014;
+  --p-blue-100:#DCE8F8; --p-blue-400:#6BA3EE; --p-blue-600:#1456B8; --p-blue-900:#16263D;
+  --p-red-100:#FBE3E0; --p-red-400:#FF7A6E; --p-red-600:#B8261C; --p-red-900:#3A1A17;
+  --p-amber-100:#FCEBCB; --p-amber-400:#F2B441; --p-amber-700:#8F4A00; --p-amber-900:#3A2A0C;
+  /* Chart series hues. Red/orange/yellow are excluded so a series never resembles a status color.
+     Validated with the dataviz palette validator (adjacent pairs, light #FFFFFF / dark #1C2128). */
+  --p-series-blue-500:#2A78D6; --p-series-blue-400:#3987E5;
+  --p-series-aqua-500:#1BAF7A; --p-series-aqua-600:#199E70;
+  --p-series-violet-700:#4A3AA7; --p-series-violet-400:#9085E9;
+  --p-series-pink-400:#E87BA4; --p-series-pink-500:#D55181;
+  --p-series-green-700:#008300;
+  --p-series-cyan-500:#0094C4; --p-series-cyan-400:#22A6B8;
+  --p-white-a10:rgba(255,255,255,.10);
+  --p-black-a14:rgba(0,0,0,.14);
+  --p-space-1:4px; --p-space-2:8px; --p-space-3:12px; --p-space-4:16px; --p-space-5:20px; --p-space-6:24px;
+  --p-size-11:11px; --p-size-12:12px; --p-size-13:13px; --p-size-14:14px; --p-size-15:15px; --p-size-20:20px; --p-size-28:28px;
+  --p-radius-2:2px; --p-radius-4:4px; --p-radius-6:6px; --p-radius-full:999px;
+}
+
+/* ============================================================
+   2단 · 의미 토큰 (Semantic) — "무엇에 쓰는가". 테마는 이 단만 바꾼다.
+   ============================================================ */
+:root{
+  --color-bg-app:var(--p-gray-50);
+  --color-bg-surface:var(--p-gray-0);
+  --color-bg-subtle:var(--p-gray-50);
+  --color-bg-hover:var(--p-gray-100);
+  --color-bg-header:var(--p-gray-900);
+  --color-border:var(--p-gray-200);
+  --color-border-strong:var(--p-gray-300);
+  --color-text-primary:var(--p-gray-900);
+  --color-text-secondary:var(--p-gray-600);
+  --color-text-tertiary:var(--p-gray-500);
+  --color-text-on-header:var(--p-gray-0);
+  --color-text-on-header-muted:var(--p-gray-400);
+  --color-action:var(--p-blue-600);
+  --color-action-subtle:var(--p-blue-100);
+  --color-text-on-action:var(--p-gray-0);
+  --color-status-critical:var(--p-red-600);
+  --color-status-critical-bg:var(--p-red-100);
+  --color-status-warning:var(--p-amber-700);
+  --color-status-warning-bg:var(--p-amber-100);
+  --color-status-warning-mark:var(--p-amber-400);
+  --color-status-info:var(--p-gray-600);
+  --color-status-info-bg:var(--p-gray-100);
+  --color-data-actual:var(--p-gray-800);
+  --color-data-band:rgba(20,86,184,.14);
+  --color-data-grid:var(--p-gray-200);
+  --color-data-compare:var(--p-gray-400);
+  --color-data-reference:var(--p-gray-600);
+  --color-series-1:var(--p-series-blue-500);
+  --color-series-2:var(--p-series-aqua-500);
+  --color-series-3:var(--p-series-violet-700);
+  --color-series-4:var(--p-series-pink-400);
+  --color-series-5:var(--p-series-green-700);
+  --color-series-6:var(--p-series-cyan-500);
+  --color-series-other:var(--p-gray-400);
+  /* Energy sources keep the same color on every screen. Slot order follows company.json energySources order. */
+  --color-energy-electricity:var(--color-series-1);
+  --color-energy-lng:var(--color-series-2);
+  --color-energy-fuel-gas:var(--color-series-3);
+  --color-energy-steam:var(--color-series-4);
+  --color-energy-water:var(--color-series-5);
+  --color-energy-compressed-air:var(--color-series-6);
+  --color-bg-header-hover:var(--p-white-a10);
+  --color-border-on-header:var(--p-gray-600);
+  --color-counter-bg:var(--color-status-critical);
+  --color-counter-text:var(--p-gray-0);
+  /* AX effect amounts: one hue; 확정·추정·잠재 differ by fill, hatch and outline (guide 9). Never a status color. */
+  --color-effect:var(--color-series-1);
+  --color-effect-subtle:var(--p-blue-100);
+  /* AI result cards are marked by a neutral accent so they never read as a status. */
+  --color-ai:var(--color-series-3);
+  --color-ai-bg:var(--color-bg-subtle);
+  --shadow-overlay:0 4px 14px var(--p-black-a14);
+  --space-xs:var(--p-space-1); --space-sm:var(--p-space-2); --space-md:var(--p-space-3);
+  --space-lg:var(--p-space-4); --space-xl:var(--p-space-6);
+  --font-family-base:'IBM Plex Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+  --font-family-num:'IBM Plex Mono',ui-monospace,Consolas,monospace;
+  --font-size-micro:var(--p-size-11);
+  --font-size-caption:var(--p-size-12);
+  --font-size-body:var(--p-size-13);
+  --font-size-title:var(--p-size-15);
+  --font-size-page:var(--p-size-20);
+  --font-size-kpi:var(--p-size-28);
+  --radius-control:var(--p-radius-4);
+  --radius-surface:var(--p-radius-6);
+  --radius-badge:var(--p-radius-2);
+  --radius-pill:var(--p-radius-full);
+}
+:root[data-theme="dark"]{
+  --color-bg-app:var(--p-gray-950);
+  --color-bg-surface:var(--p-gray-850);
+  --color-bg-subtle:var(--p-gray-800);
+  --color-bg-hover:var(--p-gray-750);
+  --color-bg-header:var(--p-gray-900);
+  --color-border:var(--p-gray-750);
+  --color-border-strong:var(--p-gray-700);
+  --color-text-primary:var(--p-gray-100);
+  --color-text-secondary:var(--p-gray-400);
+  --color-text-tertiary:var(--p-gray-400);
+  --color-action:var(--p-blue-400);
+  --color-action-subtle:var(--p-blue-900);
+  --color-text-on-action:var(--p-gray-950);
+  --color-status-critical:var(--p-red-400);
+  --color-status-critical-bg:var(--p-red-900);
+  --color-status-warning:var(--p-amber-400);
+  --color-status-warning-bg:var(--p-amber-900);
+  --color-status-info:var(--p-gray-400);
+  --color-status-info-bg:var(--p-gray-750);
+  --color-data-actual:var(--p-gray-100);
+  --color-data-band:rgba(107,163,238,.22);
+  --color-data-grid:var(--p-gray-750);
+  --color-data-compare:var(--p-gray-500);
+  --color-data-reference:var(--p-gray-300);
+  --color-series-1:var(--p-series-blue-400);
+  --color-series-2:var(--p-series-aqua-600);
+  --color-series-3:var(--p-series-violet-400);
+  --color-series-4:var(--p-series-pink-500);
+  --color-series-5:var(--p-series-green-700);
+  --color-series-6:var(--p-series-cyan-400);
+  --color-series-other:var(--p-gray-500);
+  --color-counter-text:var(--p-gray-950);
+  --color-effect-subtle:var(--p-blue-900);
+}
+
+/* ============================================================
+   3단 · 컴포넌트 토큰 (Component) — 부품별 치수. 밀도는 이 단만 바꾼다.
+   ============================================================ */
+:root{
+  --shell-header-h:48px;
+  --shell-nav-w:220px;
+  --shell-title-h:48px;
+  --shell-toolbar-h:32px;
+  --shell-drawer-w:360px;
+  --shell-gap:var(--space-md);
+  --shell-pad:var(--space-lg);
+  --control-h:32px;
+  --control-h-sm:26px;
+  --card-pad:var(--space-lg);
+  --grid-row-h:32px;
+  --grid-head-h:34px;
+  --kpi-pad:14px;
+  --badge-h:20px;
+  --status-mark:8px;
+  --counter-h:16px;
+  --icon-sm:12px;
+  --icon-md:16px;
+  --icon-lg:20px;
+  --meter-h:6px;
+  --chart-axis-w:44px;
+  --chart-legend-swatch:18px;
+  --line-w:2px;
+  --border-w:1px;
+  --chart-min-h:240px;
+  --focus-ring-w:2px;
+  --tip-min-w:190px;
+  --shell-assistant-w:440px;
+  --landing-max-w:960px;
+  --hatch-gap:4px;
+  --report-page-w:794px;
+  --report-page-h:1123px;
+  /* Print palette of the report preview and PDF: light in every theme. */
+  --report-bg:var(--p-gray-0);
+  --report-ink:var(--p-gray-900);
+  --report-muted:var(--p-gray-600);
+  --report-line:var(--p-gray-200);
+  --report-subtle:var(--p-gray-50);
+  --report-accent:var(--p-series-blue-500);
+}
+:root[data-density="standard"]{
+  --control-h:36px;
+  --control-h-sm:30px;
+  --card-pad:var(--p-space-5);
+  --grid-row-h:40px;
+  --grid-head-h:42px;
+  --kpi-pad:18px;
+}

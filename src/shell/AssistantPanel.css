@@ -1,0 +1,82 @@
+.assistant-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  height: 100%;
+  min-height: 0;
+}
+
+.assistant-panel--full {
+  max-width: calc(var(--landing-max-w) * 1.1);
+  margin: 0 auto;
+  width: 100%;
+}
+
+.assistant-panel__log {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.assistant-panel__examples {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+}
+
+.assistant-panel__example {
+  border: var(--border-w) solid var(--color-border);
+}
+
+.assistant-panel__input {
+  display: flex;
+  gap: var(--space-sm);
+}
+
+.assistant-panel__note {
+  margin: 0;
+}
+
+.assistant-turn {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.assistant-turn__q {
+  align-self: flex-end;
+  max-width: 85%;
+  padding: var(--space-sm) var(--space-md);
+  background: var(--color-action-subtle);
+  border-radius: var(--radius-surface);
+}
+
+.assistant-turn__a {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.assistant-turn__text {
+  margin: 0;
+}
+
+.assistant-turn__list {
+  margin: 0;
+  padding-left: var(--space-xl);
+}
+
+.assistant-turn__params {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs) var(--space-md);
+}
+
+.assistant-turn__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs) var(--space-lg);
+}

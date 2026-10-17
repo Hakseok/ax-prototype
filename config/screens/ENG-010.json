@@ -1,0 +1,20 @@
+{
+  "id": "ENG-010",
+  "pattern": "P1",
+  "title": "에너지 현황",
+  "permission": { "view": "조회" },
+  "badges": ["시연용", "가상 엔진"],
+  "period": { "options": ["today", "thisWeek", "thisMonth", "thisYear"], "default": "thisMonth" },
+  "kpis": [
+    { "metric": "energy.electricity" },
+    { "metric": "energy.kwhPerUnit" },
+    { "metric": "energy.compressedAir" },
+    { "metric": "energy.idleShare" },
+    { "metric": "energy.cost", "link": { "label": "AX 성과·ROI", "to": "EXE-020" } }
+  ],
+  "panels": [
+    { "id": "daily", "type": "dailyEnergy", "title": "일별 전력 사용량", "area": "main-top" },
+    { "id": "sites", "type": "siteTable", "title": "사업장별 에너지", "area": "main-bottom", "rowTo": "ENG-010", "metrics": ["energy.electricity", "energy.kwhPerUnit", "energy.compressedAir", "energy.idleShare", "energy.cost"] },
+    { "id": "waste", "type": "energyWaste", "title": "비생산 시간 낭비 (AI 탐지)", "area": "side" }
+  ]
+}

@@ -1,0 +1,39 @@
+.login {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: var(--shell-pad);
+  background: var(--color-bg-header);
+}
+
+.login__card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  width: 100%;
+  max-width: calc(var(--shell-drawer-w) + var(--space-xl) * 2);
+  padding: var(--space-xl);
+  background: var(--color-bg-surface);
+  border-radius: var(--radius-surface);
+}
+
+.login__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-size: var(--font-size-title);
+}
+
+.login__title {
+  margin: 0;
+  font-size: var(--font-size-page);
+}
+
+.login__users {
+  width: 100%;
+}
+
+.login__user {
+  padding: var(--space-sm) 0;
+}

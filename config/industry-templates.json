@@ -1,0 +1,111 @@
+{
+  "_notice": "업종 템플릿. SET-010에서 고르면 지표 세트, 손실 분류, 품질 지표, 원가 항목, 단가 입력 항목이 채워진다. 지표 ID는 docs/kpi-dictionary.md를 따른다. 데이터는 auto-parts만 있다(D-09).",
+  "kpiNames": {
+    "yield.material": { "label": "원료 수율", "unit": "%" },
+    "quality.batchDeviation": { "label": "배치 일탈률", "unit": "%" },
+    "quality.ccpDeviation": { "label": "중요관리점 이탈", "unit": "건" },
+    "mnt.cipTime": { "label": "세척(CIP) 시간", "unit": "시간" },
+    "energy.steamPerUnit": { "label": "스팀 원단위", "unit": "t/t" },
+    "energy.refrigerationKwhPerUnit": { "label": "냉동 전력 원단위", "unit": "kWh/t" },
+    "quality.hardnessReject": { "label": "경도 불합격률", "unit": "%" },
+    "mnt.dieLife": { "label": "다이 수명 소진율", "unit": "%" },
+    "energy.fuelPerTon": { "label": "연료 원단위", "unit": "Nm³/t" },
+    "energy.kwhPerTon": { "label": "전력 원단위(톤)", "unit": "kWh/t" },
+    "carbon.perTon": { "label": "탄소 원단위", "unit": "tCO2eq/t" }
+  },
+  "costItemNames": {
+    "materialKrw": "제품별 재료비 (원/개)",
+    "conversionKrw": "제품별 가공비 (원/개)",
+    "reworkKrw": "제품별 재작업비 (원/개)",
+    "lineLossKrwPerHour": "라인 손실 단가 (원/시간)",
+    "electricityKrwPerKwh": "전력 단가 (원/kWh)",
+    "compressedAirKrwPerNm3": "압축공기 원가 (원/Nm³)",
+    "lngKrwPerNm3": "LNG 단가 (원/Nm³)",
+    "maintenanceLaborKrwPerHour": "정비 인건비 (원/시간)",
+    "claimHandlingKrwPerCase": "클레임 처리비 (원/건)",
+    "materialKrwPerKg": "원료 단가 (원/kg)",
+    "steamKrwPerTon": "스팀 단가 (원/t)",
+    "materialKrwPerTon": "소재 단가 (원/t)",
+    "carbonKrwPerTon": "탄소 배출권 가격 (원/tCO2eq)"
+  },
+  "templates": [
+    {
+      "id": "auto-parts",
+      "name": "자동차 부품",
+      "description": "프레스·용접, 사출·도장, 가공, 조립 같은 이산형 반복 생산",
+      "productionUnit": "개",
+      "headlineKpis": ["plan.attainment", "oee", "quality.ppmInternal", "loss.downtimeCost", "ax.effect"],
+      "kpis": [
+        "plan.attainment", "oee", "oee.availability", "oee.performance", "oee.quality",
+        "loss.sixBig", "loss.downtimeCost", "quality.fpy", "quality.ppmInternal", "quality.ppmCustomer",
+        "quality.cost", "mnt.mtbf", "mnt.mttr", "mnt.pmCompliance", "delivery.otd",
+        "energy.kwhPerUnit", "energy.airPerUnit", "energy.idleShare", "ax.effect"
+      ],
+      "lossCategories": [
+        { "id": "breakdown", "name": "고장", "group": "가용성" },
+        { "id": "changeover", "name": "금형·품번 교체", "group": "가용성" },
+        { "id": "minorStop", "name": "소정지", "group": "성능" },
+        { "id": "speed", "name": "속도 저하", "group": "성능" },
+        { "id": "defect", "name": "공정 불량·재작업", "group": "품질" },
+        { "id": "startup", "name": "초기 불량", "group": "품질" }
+      ],
+      "qualityMetrics": ["quality.fpy", "quality.ppmInternal", "quality.ppmCustomer", "quality.cost"],
+      "defectTypes": {
+        "press": ["크랙", "주름", "버", "치수 불량"],
+        "welding": ["너깃 불량", "용접 누락", "스패터", "위치 불량"],
+        "injection": ["웰드라인", "싱크마크", "미성형", "변형"],
+        "painting": ["먼지 부착", "흐름", "도막 두께 불량", "색차"],
+        "machining": ["치수 불량", "표면 거칠기", "버", "공구 자국"],
+        "assembly": ["체결 토크 불량", "부품 누락", "EOL 불합격", "외관 손상"]
+      },
+      "costItems": ["materialKrw", "conversionKrw", "reworkKrw", "lineLossKrwPerHour", "electricityKrwPerKwh", "compressedAirKrwPerNm3", "lngKrwPerNm3", "maintenanceLaborKrwPerHour", "claimHandlingKrwPerCase"],
+      "aiUseCases": ["예지 정비(진동·온도·전류)", "불량 원인 후보(공정 조건·금형·자재 로트)", "권장 공정 조건", "에너지 비생산 낭비 탐지", "자연어 질의"]
+    },
+    {
+      "id": "food-beverage",
+      "name": "식품·음료",
+      "description": "배합·살균·충전·포장. 배치와 연속 충전 라인이 섞인 생산",
+      "productionUnit": "kg 또는 병",
+      "headlineKpis": ["plan.attainment", "yield.material", "oee", "quality.batchDeviation", "energy.steamPerUnit"],
+      "kpis": [
+        "plan.attainment", "yield.material", "oee", "oee.availability", "oee.performance", "oee.quality",
+        "loss.downtimeCost", "quality.batchDeviation", "quality.ccpDeviation", "mnt.cipTime",
+        "energy.steamPerUnit", "energy.refrigerationKwhPerUnit", "ax.effect"
+      ],
+      "lossCategories": [
+        { "id": "breakdown", "name": "고장", "group": "가용성" },
+        { "id": "changeover", "name": "품목 교체·세척(CIP)", "group": "가용성" },
+        { "id": "minorStop", "name": "소정지(충전·포장)", "group": "성능" },
+        { "id": "speed", "name": "속도 저하", "group": "성능" },
+        { "id": "defect", "name": "규격 외·재가공", "group": "품질" },
+        { "id": "giveaway", "name": "과충전(기브어웨이)", "group": "품질" }
+      ],
+      "qualityMetrics": ["quality.batchDeviation", "quality.ccpDeviation", "yield.material"],
+      "costItems": ["materialKrwPerKg", "steamKrwPerTon", "electricityKrwPerKwh", "lineLossKrwPerHour", "maintenanceLaborKrwPerHour"],
+      "aiUseCases": ["원료 수율 손실 원인", "살균·냉동 설비 예지 정비", "과충전 최적화", "스팀·냉동 에너지 최적화"]
+    },
+    {
+      "id": "metal-forming",
+      "name": "금속 가공(주조·단조·열처리)",
+      "description": "가열로·용해로를 쓰는 에너지 다소비 공정과 후가공",
+      "productionUnit": "톤",
+      "headlineKpis": ["plan.attainment", "yield.material", "quality.ppmInternal", "energy.fuelPerTon", "carbon.perTon"],
+      "kpis": [
+        "plan.attainment", "yield.material", "oee", "oee.availability", "oee.performance",
+        "loss.downtimeCost", "quality.ppmInternal", "quality.hardnessReject", "mnt.dieLife",
+        "energy.fuelPerTon", "energy.kwhPerTon", "carbon.perTon", "ax.effect"
+      ],
+      "lossCategories": [
+        { "id": "breakdown", "name": "고장", "group": "가용성" },
+        { "id": "changeover", "name": "금형·다이 교체", "group": "가용성" },
+        { "id": "heating", "name": "승온·대기", "group": "가용성" },
+        { "id": "speed", "name": "속도 저하", "group": "성능" },
+        { "id": "defect", "name": "결함·재열처리", "group": "품질" },
+        { "id": "scrap", "name": "소재 손실(스크랩)", "group": "품질" }
+      ],
+      "qualityMetrics": ["quality.ppmInternal", "quality.hardnessReject", "yield.material"],
+      "costItems": ["materialKrwPerTon", "lngKrwPerNm3", "electricityKrwPerKwh", "carbonKrwPerTon", "lineLossKrwPerHour"],
+      "aiUseCases": ["가열로 연료 원단위 최적화", "경도·결함 원인 후보", "다이 수명 예측", "탄소 원단위 관리"]
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+.assistant__title {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+}

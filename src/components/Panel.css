@@ -1,0 +1,29 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  min-width: 0;
+  padding: var(--card-pad);
+  background: var(--color-bg-surface);
+  border: var(--border-w) solid var(--color-border);
+  border-radius: var(--radius-surface);
+}
+
+.panel__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-sm) var(--space-lg);
+  min-height: var(--control-h);
+}
+
+.panel__title {
+  margin: 0;
+  font-size: var(--font-size-title);
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.panel__spacer {
+  flex: 1 1 0;
+}

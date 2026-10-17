@@ -1,0 +1,84 @@
+.ai-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  min-width: 0;
+  padding: var(--card-pad);
+  background: var(--color-ai-bg);
+  border: var(--border-w) solid var(--color-border);
+  border-left: var(--line-w) solid var(--color-ai);
+  border-radius: var(--radius-surface);
+}
+
+.ai-card--rejected {
+  opacity: 0.75;
+}
+
+.ai-card__head,
+.ai-card__foot,
+.ai-card__confidence {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+.ai-card__kind {
+  font-weight: 600;
+}
+
+.ai-card__target {
+  min-width: 0;
+}
+
+.ai-card__spacer {
+  flex: 1 1 0;
+}
+
+.ai-card__conclusion {
+  margin: 0;
+  font-size: var(--font-size-title);
+  font-weight: 500;
+}
+
+.ai-card__meter {
+  position: relative;
+  width: calc(var(--chart-legend-swatch) * 5);
+  height: var(--meter-h);
+  border-radius: var(--radius-badge);
+  background: var(--color-bg-hover);
+  overflow: hidden;
+}
+
+.ai-card__meter-fill {
+  display: block;
+  height: 100%;
+  background: var(--color-ai);
+}
+
+.ai-card__evidence {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-size-caption);
+}
+
+.ai-card__evidence th,
+.ai-card__evidence td {
+  padding: var(--space-xs) var(--space-sm);
+  border-bottom: var(--border-w) solid var(--color-border);
+  text-align: left;
+}
+
+.ai-card__evidence th {
+  color: var(--color-text-secondary);
+  font-weight: 500;
+}
+
+.ai-card__evidence .num-col {
+  text-align: right;
+}
+
+.ai-card__reject {
+  display: inline-flex;
+  gap: var(--space-xs);
+}

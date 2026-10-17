@@ -1,0 +1,49 @@
+{
+  "_notice": "버튼·상태·표시 용어의 단일 출처. docs/decisions.md D-02.",
+  "buttons": {
+    "commands": ["조회", "신규", "저장", "삭제", "내보내기", "확인"],
+    "auxiliary": [
+      { "label": "취소", "where": "확인 대화상자, P6 하단" },
+      { "label": "링크 복사", "where": "모든 화면 제목 줄" },
+      { "label": "이전", "where": "P6 단계형" },
+      { "label": "다음", "where": "P6 단계형" }
+    ],
+    "judgement": [
+      { "label": "채택", "where": "AI 결과 카드" },
+      { "label": "기각", "where": "AI 결과 카드, 사유 필수" }
+    ],
+    "workflow": [
+      { "label": "승인", "where": "P5 처리 목록형(MNT-020, QUA-030)" },
+      { "label": "반려", "where": "P5 처리 목록형, 사유 필수" },
+      { "label": "완료", "where": "P5 처리 목록형" }
+    ],
+    "exportFormats": ["CSV", "PDF"]
+  },
+  "status": ["긴급", "주의", "참고", "정상"],
+  "noData": "미수신",
+  "chart": {
+    "actual": "실적",
+    "compare": "비교 기간",
+    "baseline": "기준선",
+    "target": "목표",
+    "forecast": "예측",
+    "band": "예측 구간 (가상 엔진)",
+    "threshold": "주의 기준"
+  },
+  "alertStates": ["미확인", "확인", "조치 완료"],
+  "workOrderStages": ["요청", "승인", "작업 중", "완료", "효과 확인"],
+  "claimStages": ["접수", "원인 분석", "대책", "종결"],
+  "effectClasses": ["확정", "추정", "잠재"],
+  "confidence": [
+    { "label": "높음", "min": 0.8 },
+    { "label": "보통", "min": 0.6 },
+    { "label": "낮음", "min": 0 }
+  ],
+  "badges": {
+    "virtualData": "가상 데이터",
+    "demoOnly": "시연용",
+    "virtualEngine": "가상 엔진",
+    "nextVersion": "다음 버전에서 제공",
+    "specPending": "규격 확정 전"
+  }
+}

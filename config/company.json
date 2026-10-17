@@ -1,0 +1,795 @@
+{
+  "_notice": "모든 값은 화면 시연을 위한 가상값이다. 규모 감각만 맞췄으며 실제 회사, 제품, 통계와 무관하다. 단가와 투자비는 demoOnly다.",
+  "company": {
+    "id": "HGM",
+    "name": "한결모빌리티",
+    "displayName": "한결모빌리티 (가상)",
+    "industryTemplate": "auto-parts"
+  },
+  "now": "2026-09-30T14:30:00+09:00",
+  "seed": 20261017,
+  "dataPeriod": {
+    "production": {
+      "from": "2025-10-01",
+      "to": "2026-09-30",
+      "note": "교대·로트 단위"
+    },
+    "energyHourly": {
+      "from": "2025-10-01",
+      "to": "2026-09-30"
+    },
+    "energyQuarter": {
+      "from": "2026-09-24",
+      "to": "2026-09-30"
+    },
+    "sensorHourly": {
+      "from": "2026-04-01",
+      "to": "2026-09-30",
+      "note": "감시 대상 설비만, 특징값(진동 RMS, 온도, 전류)"
+    },
+    "sensorMinute": {
+      "from": "2026-09-29T14:30",
+      "to": "2026-09-30T14:30",
+      "note": "시나리오 설비만"
+    }
+  },
+  "ax": {
+    "baseline": {
+      "from": "2025-10-01",
+      "to": "2026-03-31",
+      "note": "AX 적용 전 6개월"
+    },
+    "goLive": "2026-04-01",
+    "investment": {
+      "demoOnly": true,
+      "items": [
+        {
+          "id": "INV-SW",
+          "name": "솔루션 라이선스·구축",
+          "amountKrw": 620000000,
+          "date": "2026-02-15"
+        },
+        {
+          "id": "INV-HW",
+          "name": "센서·수집 장비",
+          "amountKrw": 380000000,
+          "date": "2026-03-10"
+        },
+        {
+          "id": "INV-SVC",
+          "name": "데이터 정비·교육",
+          "amountKrw": 150000000,
+          "date": "2026-03-25"
+        }
+      ],
+      "monthlyOperatingKrw": 22000000
+    }
+  },
+  "shifts": {
+    "3shift": [
+      {
+        "id": "A",
+        "name": "1조",
+        "from": "06:00",
+        "to": "14:00"
+      },
+      {
+        "id": "B",
+        "name": "2조",
+        "from": "14:00",
+        "to": "22:00"
+      },
+      {
+        "id": "C",
+        "name": "3조",
+        "from": "22:00",
+        "to": "06:00"
+      }
+    ],
+    "2shift": [
+      {
+        "id": "D",
+        "name": "주간",
+        "from": "07:00",
+        "to": "16:00"
+      },
+      {
+        "id": "N",
+        "name": "야간",
+        "from": "16:00",
+        "to": "01:00"
+      }
+    ],
+    "plannedBreakMinPerShift": 60,
+    "workdays": "월~금, 첫째·셋째 토요일 특근, 일요일·공휴일 휴무. 휴무일에도 일부 유틸리티는 운전한다",
+    "holidays": [
+      "2025-10-03",
+      "2025-10-05",
+      "2025-10-06",
+      "2025-10-07",
+      "2025-10-08",
+      "2025-10-09",
+      "2025-12-25",
+      "2026-01-01",
+      "2026-02-16",
+      "2026-02-17",
+      "2026-02-18",
+      "2026-03-02",
+      "2026-05-01",
+      "2026-05-05",
+      "2026-05-25",
+      "2026-06-03",
+      "2026-08-17",
+      "2026-09-24",
+      "2026-09-25",
+      "2026-09-26"
+    ],
+    "_holidayNote": "가상 달력. 국내 공휴일과 근로자의 날을 반영했으나 정확성은 시연 목적 범위다"
+  },
+  "customers": [
+    {
+      "id": "CUS-A",
+      "name": "고객사 A",
+      "share": 0.55
+    },
+    {
+      "id": "CUS-B",
+      "name": "고객사 B",
+      "share": 0.3
+    },
+    {
+      "id": "CUS-C",
+      "name": "고객사 C",
+      "share": 0.15
+    }
+  ],
+  "sites": [
+    {
+      "id": "ASN",
+      "name": "아산공장",
+      "region": "충남 아산",
+      "profile": "차체 부품 프레스와 로봇 용접. 설비가 크고 고장 한 번의 정지 손실이 크다.",
+      "shiftPattern": "3shift",
+      "energy": [
+        "electricity",
+        "compressedAir"
+      ],
+      "contractPowerKw": 3500,
+      "lines": [
+        {
+          "id": "ASN-PR1",
+          "name": "탠덤 프레스 1라인",
+          "process": "press",
+          "machines": 5,
+          "idealRatePerHour": 600,
+          "crew": 6,
+          "constrained": false,
+          "note": "1,200톤 메인 + 800톤 4대"
+        },
+        {
+          "id": "ASN-PR2",
+          "name": "트랜스퍼 프레스 2라인",
+          "process": "press",
+          "machines": 1,
+          "idealRatePerHour": 1000,
+          "crew": 4,
+          "constrained": false,
+          "note": "1,000톤 트랜스퍼"
+        },
+        {
+          "id": "ASN-WD1",
+          "name": "로봇 용접 1라인",
+          "process": "welding",
+          "machines": 12,
+          "idealRatePerHour": 72,
+          "crew": 5,
+          "constrained": false
+        },
+        {
+          "id": "ASN-WD2",
+          "name": "로봇 용접 2라인",
+          "process": "welding",
+          "machines": 10,
+          "idealRatePerHour": 66,
+          "crew": 5,
+          "constrained": false
+        }
+      ],
+      "products": [
+        {
+          "id": "HG-FSM-210",
+          "name": "프런트 사이드 멤버",
+          "lines": [
+            "ASN-PR1",
+            "ASN-WD1"
+          ],
+          "customer": "CUS-B"
+        },
+        {
+          "id": "HG-DCM-120",
+          "name": "대시 크로스 멤버",
+          "lines": [
+            "ASN-PR1",
+            "ASN-WD2"
+          ],
+          "customer": "CUS-A"
+        },
+        {
+          "id": "HG-RFB-330",
+          "name": "리어 플로어 브래킷",
+          "lines": [
+            "ASN-PR2"
+          ],
+          "customer": "CUS-A"
+        }
+      ],
+      "counts": {
+        "equipment": 46,
+        "monitored": 18,
+        "sensors": 54,
+        "molds": 22
+      }
+    },
+    {
+      "id": "GMH",
+      "name": "김해공장",
+      "region": "경남 김해",
+      "profile": "범퍼·내장 트림 사출과 도장. 외관 불량과 도장 건조로 LNG 비중이 크다.",
+      "shiftPattern": "3shift",
+      "energy": [
+        "electricity",
+        "compressedAir",
+        "lng"
+      ],
+      "contractPowerKw": 4500,
+      "lines": [
+        {
+          "id": "GMH-IM1",
+          "name": "대형 사출 1라인",
+          "process": "injection",
+          "machines": 6,
+          "idealRatePerHour": 240,
+          "crew": 6,
+          "constrained": false,
+          "note": "2,500~3,000톤 사출기"
+        },
+        {
+          "id": "GMH-IM2",
+          "name": "중형 사출 2라인",
+          "process": "injection",
+          "machines": 10,
+          "idealRatePerHour": 380,
+          "crew": 8,
+          "constrained": false
+        },
+        {
+          "id": "GMH-PT1",
+          "name": "도장 1라인",
+          "process": "painting",
+          "machines": 8,
+          "idealRatePerHour": 240,
+          "crew": 12,
+          "constrained": true,
+          "note": "LNG 건조로 2기"
+        }
+      ],
+      "products": [
+        {
+          "id": "HG-FBC-410",
+          "name": "프런트 범퍼 커버",
+          "lines": [
+            "GMH-IM1",
+            "GMH-PT1"
+          ],
+          "customer": "CUS-A"
+        },
+        {
+          "id": "HG-RBC-420",
+          "name": "리어 범퍼 커버",
+          "lines": [
+            "GMH-IM1",
+            "GMH-PT1"
+          ],
+          "customer": "CUS-A"
+        },
+        {
+          "id": "HG-DTR-510",
+          "name": "도어 트림",
+          "lines": [
+            "GMH-IM2"
+          ],
+          "customer": "CUS-C"
+        }
+      ],
+      "counts": {
+        "equipment": 38,
+        "monitored": 16,
+        "sensors": 48,
+        "molds": 16
+      }
+    },
+    {
+      "id": "DGU",
+      "name": "대구공장",
+      "region": "대구 달성",
+      "profile": "샤시 부품 정밀 가공. 공구 마모와 소정지가 성능 손실의 주원인이다.",
+      "shiftPattern": "3shift",
+      "energy": [
+        "electricity",
+        "compressedAir"
+      ],
+      "contractPowerKw": 1500,
+      "lines": [
+        {
+          "id": "DGU-MC1",
+          "name": "너클 가공 1라인",
+          "process": "machining",
+          "machines": 12,
+          "idealRatePerHour": 150,
+          "crew": 6,
+          "constrained": false
+        },
+        {
+          "id": "DGU-MC2",
+          "name": "하우징 가공 2라인",
+          "process": "machining",
+          "machines": 14,
+          "idealRatePerHour": 180,
+          "crew": 7,
+          "constrained": false
+        }
+      ],
+      "products": [
+        {
+          "id": "HG-SKN-610",
+          "name": "스티어링 너클",
+          "lines": [
+            "DGU-MC1"
+          ],
+          "customer": "CUS-A"
+        },
+        {
+          "id": "HG-HHS-620",
+          "name": "허브 하우징",
+          "lines": [
+            "DGU-MC2"
+          ],
+          "customer": "CUS-B"
+        }
+      ],
+      "counts": {
+        "equipment": 34,
+        "monitored": 14,
+        "sensors": 42,
+        "molds": 0
+      }
+    },
+    {
+      "id": "HWS",
+      "name": "화성공장",
+      "region": "경기 화성",
+      "profile": "모듈 조립과 고객사 직서열 납품. 납기와 체결 품질이 핵심이다.",
+      "shiftPattern": "2shift",
+      "energy": [
+        "electricity",
+        "compressedAir"
+      ],
+      "contractPowerKw": 900,
+      "lines": [
+        {
+          "id": "HWS-AS1",
+          "name": "프런트 엔드 모듈 조립 1라인",
+          "process": "assembly",
+          "machines": 16,
+          "idealRatePerHour": 62,
+          "crew": 18,
+          "constrained": true
+        },
+        {
+          "id": "HWS-AS2",
+          "name": "콕핏 모듈 조립 2라인",
+          "process": "assembly",
+          "machines": 14,
+          "idealRatePerHour": 56,
+          "crew": 16,
+          "constrained": true
+        }
+      ],
+      "products": [
+        {
+          "id": "HG-FEM-710",
+          "name": "프런트 엔드 모듈",
+          "lines": [
+            "HWS-AS1"
+          ],
+          "customer": "CUS-A"
+        },
+        {
+          "id": "HG-CPM-720",
+          "name": "콕핏 모듈",
+          "lines": [
+            "HWS-AS2"
+          ],
+          "customer": "CUS-B"
+        }
+      ],
+      "counts": {
+        "equipment": 36,
+        "monitored": 8,
+        "sensors": 24,
+        "molds": 0
+      }
+    }
+  ],
+  "processParameters": {
+    "press": [
+      {
+        "id": "tonnage",
+        "name": "가압력",
+        "unit": "톤",
+        "digits": 0
+      },
+      {
+        "id": "spm",
+        "name": "분당 타수",
+        "unit": "SPM",
+        "digits": 1
+      },
+      {
+        "id": "dieTemp",
+        "name": "금형 온도",
+        "unit": "℃",
+        "digits": 1
+      }
+    ],
+    "welding": [
+      {
+        "id": "current",
+        "name": "용접 전류",
+        "unit": "kA",
+        "digits": 2
+      },
+      {
+        "id": "weldTime",
+        "name": "통전 시간",
+        "unit": "ms",
+        "digits": 0
+      },
+      {
+        "id": "tipCount",
+        "name": "전극 팁 사용 타점",
+        "unit": "타점",
+        "digits": 0
+      }
+    ],
+    "injection": [
+      {
+        "id": "meltTemp",
+        "name": "수지 온도",
+        "unit": "℃",
+        "digits": 1
+      },
+      {
+        "id": "moldTempFixed",
+        "name": "금형 온도(고정측)",
+        "unit": "℃",
+        "digits": 1
+      },
+      {
+        "id": "moldTempMoving",
+        "name": "금형 온도(가동측)",
+        "unit": "℃",
+        "digits": 1
+      },
+      {
+        "id": "injPressure",
+        "name": "사출 압력",
+        "unit": "MPa",
+        "digits": 1
+      },
+      {
+        "id": "holdTime",
+        "name": "보압 시간",
+        "unit": "s",
+        "digits": 1
+      },
+      {
+        "id": "dryingTime",
+        "name": "재료 건조 시간",
+        "unit": "h",
+        "digits": 1
+      }
+    ],
+    "painting": [
+      {
+        "id": "ovenTemp",
+        "name": "건조로 온도",
+        "unit": "℃",
+        "digits": 1
+      },
+      {
+        "id": "boothHumidity",
+        "name": "부스 습도",
+        "unit": "%",
+        "digits": 0
+      },
+      {
+        "id": "filmThickness",
+        "name": "도막 두께",
+        "unit": "㎛",
+        "digits": 0
+      }
+    ],
+    "machining": [
+      {
+        "id": "spindleLoad",
+        "name": "주축 부하",
+        "unit": "%",
+        "digits": 0
+      },
+      {
+        "id": "toolLife",
+        "name": "공구 사용 수명",
+        "unit": "%",
+        "digits": 0
+      },
+      {
+        "id": "coolantTemp",
+        "name": "절삭유 온도",
+        "unit": "℃",
+        "digits": 1
+      }
+    ],
+    "assembly": [
+      {
+        "id": "torque",
+        "name": "체결 토크",
+        "unit": "N·m",
+        "digits": 1
+      },
+      {
+        "id": "angle",
+        "name": "체결 각도",
+        "unit": "°",
+        "digits": 0
+      },
+      {
+        "id": "eolPass",
+        "name": "EOL 시험 합격",
+        "unit": "",
+        "digits": 0
+      }
+    ]
+  },
+  "unitCosts": {
+    "demoOnly": true,
+    "_note": "시연용 가상 단가. SET-020에서 적용 시작일과 함께 바꿀 수 있다.",
+    "electricityKrwPerKwh": 165,
+    "lngKrwPerNm3": 980,
+    "compressedAirKrwPerNm3": 24,
+    "maintenanceLaborKrwPerHour": 48000,
+    "overtimeLaborKrwPerHour": 42000,
+    "lineLossKrwPerHour": {
+      "ASN-PR1": 3000000,
+      "ASN-PR2": 2400000,
+      "ASN-WD1": 900000,
+      "ASN-WD2": 680000,
+      "GMH-IM1": 9800000,
+      "GMH-IM2": 4100000,
+      "GMH-PT1": 9600000,
+      "DGU-MC1": 3550000,
+      "DGU-MC2": 3530000,
+      "HWS-AS1": 3470000,
+      "HWS-AS2": 4100000,
+      "_basis": "라인 정지 1시간당 잃는 공헌이익(가상) ≈ 이상 생산 속도 × (판매가 − 재료비). 납기 제약 라인(constrained)만 이 단가로 환산하고, 나머지 라인은 잔업으로 만회한다고 보고 투입 인원 × 잔업 단가로 환산한다(roi-method.md 3장)"
+    },
+    "products": {
+      "HG-FSM-210": {
+        "materialKrw": 18500,
+        "conversionKrw": 6200,
+        "reworkKrw": 4100,
+        "priceKrw": 31000
+      },
+      "HG-DCM-120": {
+        "materialKrw": 14200,
+        "conversionKrw": 5100,
+        "reworkKrw": 3600,
+        "priceKrw": 24500
+      },
+      "HG-RFB-330": {
+        "materialKrw": 3200,
+        "conversionKrw": 1100,
+        "reworkKrw": 900,
+        "priceKrw": 5600
+      },
+      "HG-FBC-410": {
+        "materialKrw": 41000,
+        "conversionKrw": 22500,
+        "reworkKrw": 15500,
+        "priceKrw": 82000
+      },
+      "HG-RBC-420": {
+        "materialKrw": 38000,
+        "conversionKrw": 21000,
+        "reworkKrw": 14800,
+        "priceKrw": 76000
+      },
+      "HG-DTR-510": {
+        "materialKrw": 12600,
+        "conversionKrw": 6400,
+        "reworkKrw": 3900,
+        "priceKrw": 23500
+      },
+      "HG-SKN-610": {
+        "materialKrw": 22800,
+        "conversionKrw": 14600,
+        "reworkKrw": 8800,
+        "priceKrw": 46500
+      },
+      "HG-HHS-620": {
+        "materialKrw": 19400,
+        "conversionKrw": 12100,
+        "reworkKrw": 7200,
+        "priceKrw": 39000
+      },
+      "HG-FEM-710": {
+        "materialKrw": 312000,
+        "conversionKrw": 26000,
+        "reworkKrw": 18000,
+        "priceKrw": 368000
+      },
+      "HG-CPM-720": {
+        "materialKrw": 455000,
+        "conversionKrw": 31000,
+        "reworkKrw": 21000,
+        "priceKrw": 528000
+      }
+    },
+    "claimHandlingKrwPerCase": 3500000
+  },
+  "users": [
+    {
+      "id": "u-ceo",
+      "name": "대표이사",
+      "role": "executive",
+      "permission": "조회",
+      "sites": [
+        "ASN",
+        "GMH",
+        "DGU",
+        "HWS"
+      ]
+    },
+    {
+      "id": "u-plant-asn",
+      "name": "아산 공장장",
+      "role": "plant",
+      "permission": "편집",
+      "sites": [
+        "ASN"
+      ]
+    },
+    {
+      "id": "u-qe-gmh",
+      "name": "김해 품질 담당",
+      "role": "quality",
+      "permission": "편집",
+      "sites": [
+        "GMH"
+      ]
+    },
+    {
+      "id": "u-me",
+      "name": "설비 엔지니어",
+      "role": "maintenance",
+      "permission": "편집",
+      "sites": [
+        "ASN",
+        "DGU"
+      ]
+    },
+    {
+      "id": "u-admin",
+      "name": "시스템 관리자",
+      "role": "admin",
+      "permission": "관리",
+      "sites": [
+        "ASN",
+        "GMH",
+        "DGU",
+        "HWS"
+      ]
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "SC-01",
+      "title": "아산 프레스 이상 징후 → 예지 정비",
+      "where": "ASN-PR1 1,200톤 메인 프레스(가상 설비 ASN-PR1-M01) 메인 모터 베어링",
+      "what": "09-18부터 진동 RMS가 정상 범위를 벗어나 오르고 베어링 온도가 따라 오른다. 09-22에 AI 이상 탐지(주의), 09-30 현재 건전성 지수 61, 잔여수명 7~15일(중앙값 10일). 정비 요청은 '요청' 단계에 있다. 6월에도 같은 라인에서 유사 징후를 예지 정비로 처리한 이력이 있다.",
+      "screens": [
+        "EXE-010",
+        "MNT-010",
+        "MNT-011",
+        "MNT-020",
+        "EXE-020"
+      ]
+    },
+    {
+      "id": "SC-02",
+      "title": "김해 범퍼 외관 불량 급증과 원인",
+      "where": "GMH-IM1 사출기 4호기, 프런트 범퍼 커버(HG-FBC-410)",
+      "what": "09-21부터 웰드라인·싱크마크 불량률이 평소의 약 3배로 오른다. 불량 로트는 금형 고정측 온도 편차가 크고(냉각 회로 막힘), 특정 수지 자재 로트에서 건조 시간이 짧다. AI 원인 후보 1순위는 금형 고정측 온도 편차이고, 이어 금형 고정측 온도와 재료 건조 시간(09-22 한 자재 로트)이 나온다. 관련 집단은 4호기다.",
+      "screens": [
+        "EXE-010",
+        "QUA-020",
+        "OPS-020",
+        "EXE-020"
+      ]
+    },
+    {
+      "id": "SC-03",
+      "title": "대구 가공 라인 성능 손실",
+      "where": "DGU-MC1 너클 가공 라인, 주로 3조",
+      "what": "공구 수명 후반에 사이클 타임이 늘고, 칩 배출 정체로 소정지가 잦다. OEE 손실 중 속도 저하와 소정지가 고장보다 크다.",
+      "screens": [
+        "OPS-010",
+        "OPS-020",
+        "OPS-050"
+      ]
+    },
+    {
+      "id": "SC-04",
+      "title": "화성 압축공기 비생산 시간 낭비",
+      "where": "화성공장 압축기실",
+      "what": "09-07 이후 야간 비가동 시간과 휴일에 압축공기 기저 사용량이 이전보다 높다(배관 누설 추정). 추석 연휴(09-24~09-27)에 특히 뚜렷하다. 비생산 시간 사용량과 금액이 드러난다.",
+      "screens": [
+        "ENG-010",
+        "EXE-020"
+      ]
+    },
+    {
+      "id": "SC-05",
+      "title": "고객 클레임과 로트 역추적",
+      "where": "고객사 B, 프런트 사이드 멤버(HG-FSM-210), ASN-WD1",
+      "what": "09-28 고객사 B가 용접 너깃 불량 클레임을 접수했다. 로트 추적 결과 09-14~09-16 생산분 3개 로트가 같은 용접건의 전극 팁 사용 타점 상한 근처에서 생산됐다. 출하 범위와 재고 위치를 찾는다.",
+      "screens": [
+        "QUA-030",
+        "QUA-020",
+        "EXE-010"
+      ]
+    },
+    {
+      "id": "SC-06",
+      "title": "AX 적용 전후 개선",
+      "where": "전사",
+      "what": "2026-04 적용 이후 고장 정지 시간, 공정 불량률, 에너지 원단위가 기준선보다 낮다. 효과는 확정·추정·잠재로 나뉘어 원장에 쌓이고 회수 시점이 보인다.",
+      "screens": [
+        "EXE-010",
+        "EXE-020",
+        "EXE-030"
+      ]
+    },
+    {
+      "id": "SC-07",
+      "title": "데이터 수집 중단",
+      "where": "DGU-MC2 수집 장치 1대(설비 4대)",
+      "what": "09-30 14:05부터 설비 4대 데이터가 미수신이다. 화면은 0이 아니라 미수신으로 표시한다.",
+      "screens": [
+        "OPS-010",
+        "MNT-010",
+        "COM-020"
+      ]
+    },
+    {
+      "id": "SC-08",
+      "title": "AI 오탐과 기각",
+      "where": "GMH-PT1 도장 건조로 2호",
+      "what": "09-23 건조로 온도 이상 탐지가 나왔으나 현장 확인 결과 온도 센서 교정 문제였다. 품질 담당이 사유와 함께 기각했고 이력에 남았다. 'AI가 틀리면?'에 대한 시연 근거다.",
+      "screens": [
+        "AIX-020",
+        "MNT-011"
+      ]
+    }
+  ]
+}
