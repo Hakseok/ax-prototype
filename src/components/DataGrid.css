@@ -40,6 +40,12 @@
   justify-content: flex-end;
 }
 
+/* Overlay scrollbars (macOS, touch) draw over the last column; keep its numbers clear of them. */
+.data-grid .ag-cell.ag-right-aligned-cell.ag-column-last,
+.data-grid .ag-header-cell.ag-right-aligned-header.ag-column-last {
+  padding-right: calc(var(--space-lg) + var(--space-sm));
+}
+
 .data-grid__empty {
   color: var(--color-text-secondary);
 }
