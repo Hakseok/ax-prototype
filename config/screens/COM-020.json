@@ -1,0 +1,12 @@
+{
+  "id": "COM-020",
+  "pattern": "P7",
+  "title": "알림 상세",
+  "permission": { "view": "조회", "edit": "편집" },
+  "badges": ["시연용"],
+  "dataSource": "alerts",
+  "param": "alertId",
+  "mobile": true,
+  "actions": ["확인", "저장"],
+  "links": [{ "label": "알림 센터", "to": "COM-010" }]
+}

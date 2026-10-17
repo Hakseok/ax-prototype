@@ -16,6 +16,7 @@ import { useApp } from '../../shell/AppContext';
 import { useShellLink } from '../../shell/links';
 import { useAsync } from '../common/useAsync';
 import { ProcessLog } from './ProcessLog';
+import { OutOfScope } from './WorkOrderPanel';
 
 const STAGES = terms.claimStages as Claim['stage'][];
 
@@ -30,6 +31,7 @@ export function ClaimPanel({ id, canEdit }: { id: string; canEdit: boolean }) {
   }, `${id}|${!!claims}`);
   if (!claims) return <Skeleton active />;
   if (!claim) return <Panel title="클레임">{`${id}를 찾지 못했습니다.`}</Panel>;
+  if (!app.selectedSiteIds.includes(claim.siteId)) return <OutOfScope title="클레임" what="이 클레임" siteName={app.siteName(claim.siteId)} />;
   const rejected = claim.log.some((l) => l.action === '반려');
   const STEP_ACTIONS: Record<string, string[]> = { '원인 분석': ['원인 분석 시작', '접수 승인'], 대책: ['원인 기록', '대책'], 종결: ['대책·종결', '반려', '종결'] };
   const stepAt = (s: string) => claim.log.find((l) => (STEP_ACTIONS[s] ?? [s]).includes(l.action))?.at;

@@ -9,7 +9,7 @@ import { METRICS, metric, type MetricScope } from './metrics/catalog';
 import { changeRatio, comparisonOf, recentWindow, type Period } from './period';
 import { GO_LIVE, NOW, PRODUCTION_FROM, addMonths, formatDate, parseTime, startOfMonth } from './time';
 import { baselinePeriod } from './baseline';
-import type { Grade } from './types';
+import type { Alert, Claim, Grade } from './types';
 
 export interface KpiValue {
   metric: string;
@@ -83,6 +83,19 @@ export interface Risk {
   source: 'AI' | '규칙' | '시스템';
 }
 
+/** The screen an alert leads to (risk list, alert detail). Same branches as riskFeed below. */
+export const alertLink = (a: Alert, claims: Claim[]): { label: string; to: string } => {
+  if (a.equipmentId && a.source === 'AI') return { label: '설비 진단', to: `/MNT-011?site=${a.siteId}&id=${a.equipmentId}` };
+  if (a.scenario === 'SC-02' || /PPM/.test(a.title)) return { label: '원인 분석', to: `/QUA-020?site=${a.siteId}&f.productId=HG-FBC-410${a.lineId ? `&f.lineId=${a.lineId}` : ''}` };
+  if (/클레임/.test(a.title)) {
+    const c = claims.find((x) => a.detail.includes(x.id));
+    return { label: '클레임 추적', to: `/QUA-030?site=${a.siteId}${c ? `&id=${c.id}` : ''}` };
+  }
+  if (/압축공기|에너지/.test(a.title)) return { label: '에너지 현황', to: `/ENG-010?site=${a.siteId}` };
+  if (a.source === '시스템') return { label: '알림 상세', to: `/COM-020?site=${a.siteId}&alertId=${a.id}` };
+  return { label: '손실 분석', to: `/OPS-020?site=${a.siteId}${a.lineId ? `&line=${a.lineId}` : ''}&period=thisWeek` };
+};
+
 /**
  * Open risks of the selected sites: active alerts joined with the engine result that prices them.
  * Ordered by level, then by the high end of the impact.
@@ -98,30 +111,30 @@ export const riskFeed = async (siteIds: string[]): Promise<Risk[]> => {
       out.push({
         ...base, kind: '설비', detail: h ? `${h.target.label} · ${h.conclusion}` : a.detail, impactKrw: h?.impact?.costKrw ?? null,
         impactNote: h?.impact?.downtimeHours ? `고장 시 정지 ${h.impact.downtimeHours[0]}~${h.impact.downtimeHours[1]}시간` : '',
-        link: { label: '설비 진단', to: `/MNT-011?site=${a.siteId}&id=${a.equipmentId}` }, level: h?.level ?? a.grade
+        link: alertLink(a, claims), level: h?.level ?? a.grade
       });
     } else if (a.scenario === 'SC-02' || /PPM/.test(a.title)) {
       const rec = await recommend({ siteIds: [a.siteId], productId: 'HG-FBC-410', lineId: a.lineId ?? undefined, ...recentWindow(14) });
       out.push({
         ...base, kind: '품질', detail: `${a.target} · ${a.detail}`, impactKrw: rec ? [Math.round(rec.payload.monthlySavingKrw * 0.7), rec.payload.monthlySavingKrw] : null,
-        impactNote: '월 불량 손실 (권장 조건 미적용 시)', link: { label: '원인 분석', to: `/QUA-020?site=${a.siteId}&f.productId=HG-FBC-410${a.lineId ? `&f.lineId=${a.lineId}` : ''}` }
+        impactNote: '월 불량 손실 (권장 조건 미적용 시)', link: alertLink(a, claims)
       });
     } else if (/클레임/.test(a.title)) {
       const c = claims.find((x) => a.detail.includes(x.id));
       out.push({
         ...base, kind: '납기·고객', detail: `${a.target} · ${a.detail}`, impactKrw: c ? [c.costKrw, Math.round(c.costKrw * 2.5)] : null,
-        impactNote: '반품·처리비, 추가 반품 가능성 포함', link: { label: '클레임 추적', to: `/QUA-030?site=${a.siteId}${c ? `&id=${c.id}` : ''}` }
+        impactNote: '반품·처리비, 추가 반품 가능성 포함', link: alertLink(a, claims)
       });
     } else if (/압축공기|에너지/.test(a.title)) {
       const w = await energyWaste(a.siteId);
       out.push({
         ...base, kind: '에너지', detail: w?.conclusion ?? a.detail, impactKrw: w ? [Math.round(w.payload.monthlyCostKrw * 0.8), w.payload.monthlyCostKrw] : null,
-        impactNote: '월 낭비 금액', link: { label: '에너지 현황', to: `/ENG-010?site=${a.siteId}` }
+        impactNote: '월 낭비 금액', link: alertLink(a, claims)
       });
     } else if (a.source === '시스템') {
-      out.push({ ...base, kind: '데이터', detail: `${a.target} · ${a.detail}`, impactKrw: null, impactNote: '해당 구간은 미수신으로 표시', link: { label: '알림 상세', to: `/COM-020?site=${a.siteId}&alertId=${a.id}` } });
+      out.push({ ...base, kind: '데이터', detail: `${a.target} · ${a.detail}`, impactKrw: null, impactNote: '해당 구간은 미수신으로 표시', link: alertLink(a, claims) });
     } else {
-      out.push({ ...base, kind: '설비', detail: `${a.target} · ${a.detail}`, impactKrw: null, impactNote: '', link: { label: '손실 분석', to: `/OPS-020?site=${a.siteId}${a.lineId ? `&line=${a.lineId}` : ''}&period=thisWeek` } });
+      out.push({ ...base, kind: '설비', detail: `${a.target} · ${a.detail}`, impactKrw: null, impactNote: '', link: alertLink(a, claims) });
     }
   }
   const rank = { critical: 0, warning: 1, info: 2 };

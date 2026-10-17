@@ -95,3 +95,35 @@
 .p7__history .data-grid {
   flex: 1 1 0;
 }
+
+.p7__lead {
+  margin: var(--space-sm) 0;
+}
+
+.p7__list {
+  margin: var(--space-sm) 0 0;
+}
+
+.p7__action {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-sm);
+}
+
+.p7__action-row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+/* Phone width (D-08): COM-020 reads in one column with two facts per row. */
+@media (max-width: 48em) {
+  .p7__facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .p7--alert .data-table th:nth-child(3),
+  .p7--alert .data-table td:nth-child(3) {
+    display: none;
+  }
+}

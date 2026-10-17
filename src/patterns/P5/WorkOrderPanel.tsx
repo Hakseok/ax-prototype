@@ -1,7 +1,7 @@
 // Content panel of one maintenance order (MNT-020): stage steps, facts, the AI result behind a
 // predictive order, the expected and recorded effect, the action for the current stage and the log.
 import { useState } from 'react';
-import { App, Button, Input, InputNumber, Skeleton, Steps } from 'antd';
+import { App, Button, Empty, Input, InputNumber, Skeleton, Steps } from 'antd';
 import { Link } from 'react-router-dom';
 import { AiResultCard } from '../../components/AiResultCard';
 import { formatNumber } from '../../components/KpiCard';
@@ -27,6 +27,7 @@ const label = (name: string) => [...terms.buttons.commands, ...terms.buttons.wor
 const at = (s: string | null) => (s ? formatDateTime(parseTime(s)) : '-');
 
 export function WorkOrderPanel({ id, canEdit }: { id: string; canEdit: boolean }) {
+  const app = useApp();
   const orders = useWorkOrders();
   const wo = orders?.find((o) => o.id === id);
   const { value: ctx } = useAsync(async () => {
@@ -42,6 +43,8 @@ export function WorkOrderPanel({ id, canEdit }: { id: string; canEdit: boolean }
 
   if (!orders) return <Skeleton active />;
   if (!wo) return <Panel title="정비 오더">{`${id}를 찾지 못했습니다.`}</Panel>;
+  // An id in the address must not open (or let anyone process) an order outside the selected sites.
+  if (!app.selectedSiteIds.includes(wo.siteId)) return <OutOfScope title="정비 오더" what="이 정비 오더" siteName={app.siteName(wo.siteId)} />;
   const rejected = wo.log.some((l) => l.action === '반려');
   const current = STAGES.indexOf(wo.stage);
   return (
@@ -247,5 +250,14 @@ function StageAction({ wo, est }: { wo: WorkOrder; est: { minutes: number } | nu
         </Button>
       </div>
     </section>
+  );
+}
+
+/** Shown instead of a record from a site outside the current selection (same rule as MNT-011). */
+export function OutOfScope({ title, what, siteName }: { title: string; what: string; siteName: string }) {
+  return (
+    <Panel title={title}>
+      <Empty description={`${what}은(는) ${siteName} 소속입니다. 사업장 선택을 바꾸거나 권한을 요청하세요.`} />
+    </Panel>
   );
 }

@@ -1,4 +1,4 @@
-// P7 상세 랜딩형 (MNT-011): one equipment from a link (?id=). One column: summary, AI diagnosis
+// P7 상세 랜딩형. MNT-011 (this file): one equipment from a link (?id=). One column: summary, AI diagnosis
 // with its evidence and decision, signal trend against the normal range, health trend,
 // a past case of the same failure, maintenance and stop history, and the next action.
 import { useMemo } from 'react';
@@ -24,6 +24,7 @@ import { ScreenLayout } from '../../shell/ScreenLayout';
 import type { TemplateProps } from '../../shell/ScreenHost';
 import { useAsync } from '../common/useAsync';
 import '../common/patterns.css';
+import { P7Alert } from './P7Alert';
 import './P7.css';
 
 interface P7Definition {
@@ -32,7 +33,15 @@ interface P7Definition {
   links?: { label: string; to: string }[];
 }
 
-export function P7Detail({ entry, def: rawDef, badges }: TemplateProps) {
+/** P7 draws one record from a link: an alert (COM-020, dataSource alerts) or an equipment (MNT-011). */
+export function P7Detail(props: TemplateProps) {
+  const [params] = useSearchParams();
+  const def = props.def as unknown as P7Definition & { dataSource?: string };
+  if (def.dataSource === 'alerts') return <P7Alert {...props} alertId={params.get(def.param)} />;
+  return <P7Equipment {...props} />;
+}
+
+function P7Equipment({ entry, def: rawDef, badges }: TemplateProps) {
   const def = rawDef as unknown as P7Definition;
   const app = useApp();
   const link = useShellLink();
@@ -249,7 +258,7 @@ export function P7Detail({ entry, def: rawDef, badges }: TemplateProps) {
   );
 }
 
-function Fact({ label, value, strong }: { label: string; value: string; strong?: boolean }) {
+export function Fact({ label, value, strong }: { label: string; value: string; strong?: boolean }) {
   return (
     <div className="p7__fact">
       <dt className="caption">{label}</dt>
