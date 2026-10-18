@@ -911,3 +911,78 @@
 .hmi-iso--ill .hmi-iso-crates polygon { stroke: none; }
 .hmi-iso--ill .hmi-iso-pipe__line { stroke: var(--hmi-ill-blue-right); stroke-dasharray: none; }
 .hmi-iso--ill .hmi-iso-shadow { fill: var(--hmi-iso-shadow); }
+
+/* ---- model details ---- */
+.hmi-iso-t.hmi-iso--lamp,
+.hmi-iso-l.hmi-iso--lamp {
+  fill: var(--hmi-iso-top);
+  stroke: var(--hmi-iso-edge);
+}
+
+.hmi-iso-recess {
+  fill: var(--hmi-iso-dark-right);
+  opacity: 0.55;
+}
+
+.hmi-iso-plate {
+  fill: var(--hmi-iso-metal-top);
+  stroke: var(--hmi-iso-edge);
+  stroke-width: var(--hmi-iso-edge-w);
+}
+
+.hmi-iso-seam,
+.hmi-iso-louvre {
+  fill: none;
+  stroke: var(--hmi-iso-edge);
+  stroke-width: var(--hmi-iso-edge-w);
+}
+
+.hmi-iso-louvre {
+  stroke: var(--hmi-iso-dark-left);
+  opacity: 0.6;
+}
+
+.hmi-iso-cable {
+  fill: none;
+  stroke: var(--hmi-iso-dark-left);
+  stroke-width: var(--hmi-stroke);
+  stroke-linecap: round;
+}
+
+.hmi-iso-opening {
+  fill: var(--hmi-iso-dark-right);
+}
+
+.hmi-iso-guard {
+  fill: var(--hmi-iso-glass);
+  opacity: 0.55;
+  stroke: var(--hmi-iso-metal-right);
+  stroke-width: var(--hmi-stroke);
+}
+
+.hmi-iso-fan {
+  fill: var(--hmi-iso-dark-left);
+  stroke: var(--hmi-iso-metal-right);
+  stroke-width: var(--hmi-stroke);
+  stroke-dasharray: 3 3;
+}
+
+.hmi-iso-dome {
+  fill: var(--hmi-iso-metal-top);
+  stroke: var(--hmi-iso-edge);
+  stroke-width: var(--hmi-iso-edge-w);
+}
+
+.hmi-iso-roller {
+  fill: none;
+  stroke: var(--hmi-iso-metal-left);
+  stroke-width: var(--hmi-iso-edge-w);
+}
+
+.hmi-iso:not(.hmi-iso--ill) .hmi-iso-cyl-v { fill: url(#hmi-g-body); }
+.hmi-iso:not(.hmi-iso--ill) .hmi-iso-cyl-v.hmi-iso--metal { fill: url(#hmi-g-metal); }
+.hmi-iso:not(.hmi-iso--ill) .hmi-iso-cyl-v.hmi-iso--dark { fill: url(#hmi-g-dark); }
+
+.hmi-iso-link {
+  stroke: none;
+}

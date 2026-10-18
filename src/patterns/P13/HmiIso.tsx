@@ -29,6 +29,33 @@ const MATERIAL: Record<string, 'blue' | 'teal' | 'slate'> = {
 
 export type IsoLook = 'standard' | 'illustrated';
 
+const CONV_W = 26;
+const CONV_Z = 26;
+const CHUNK = 60;
+
+/**
+ * One piece of an axis-aligned conveyor (legs, side rails, belt and rollers), so conveyors can be
+ * depth-sorted with the machines along them. `along` is the axis the belt runs on.
+ */
+function conveyorChunk(along: 'x' | 'y', a0: number, a1: number, c: number, crate: boolean): ReactNode[] {
+  const k = isoKit();
+  const h = CONV_W / 2;
+  const box = (p0: number, p1: number, q0: number, q1: number, z0: number, z1: number, tone: string) =>
+    along === 'x' ? k.box(p0, q0, p1 - p0, q1 - q0, z0, z1, tone) : k.box(q0, p0, q1 - q0, p1 - p0, z0, z1, tone);
+  const pt = (p: number, q: number, z: number): [number, number, number] => (along === 'x' ? [p, q, z] : [q, p, z]);
+  const rollers: [[number, number, number], [number, number, number]][] = [];
+  for (let p = a0 + 5; p < a1; p += 10) rollers.push([pt(p, c - h + 3, CONV_Z), pt(p, c + h - 3, CONV_Z)]);
+  return [
+    ...box(a0 + 2, a0 + 5, c - h + 1, c - h + 4, 0, CONV_Z - 4, 'metal'),
+    ...box(a0, a1, c - h, c - h + 3, CONV_Z - 5, CONV_Z + 2, 'metal'),
+    ...box(a0, a1, c - h + 3, c + h - 3, CONV_Z - 4, CONV_Z, 'dark'),
+    k.lines(rollers, 'hmi-iso-roller'),
+    ...(crate ? box((a0 + a1) / 2 - 10, (a0 + a1) / 2 + 10, c - 9, c + 9, CONV_Z, CONV_Z + 15, 'crate') : []),
+    ...box(a0 + 2, a0 + 5, c + h - 4, c + h - 1, 0, CONV_Z - 4, 'metal'),
+    ...box(a0, a1, c + h - 3, c + h, CONV_Z - 5, CONV_Z + 2, 'metal')
+  ];
+}
+
 /** Crates riding a conveyor (decoration of the illustrated look, not data). */
 function crates(points: [number, number][], z: number): ReactNode[] {
   const k = isoKit();
@@ -124,9 +151,37 @@ export function HmiIso({ screen, snap, view, selected, names, maxSignals = 2, on
     );
   }
   const lines: ReactNode[] = [];
+  // Machines and conveyor pieces share one back-to-front order.
+  const sorted: { depth: number; node: ReactNode }[] = [];
   for (const o of screen.objects) {
     if (o.kind !== 'line') continue;
     const pts = o.points.map((p) => p.join(',')).join(' ');
+    const axisAligned = o.style === 'conveyor' && o.points.every((p, i) => i === 0 || p[0] === o.points[i - 1][0] || p[1] === o.points[i - 1][1]);
+    if (axisAligned) {
+      let n = 0;
+      for (let i = 0; i < o.points.length - 1; i++) {
+        const [x1, y1] = o.points[i];
+        const [x2, y2] = o.points[i + 1];
+        const along = y1 === y2 ? 'x' : 'y';
+        const a0 = along === 'x' ? Math.min(x1, x2) : Math.min(y1, y2);
+        const a1 = along === 'x' ? Math.max(x1, x2) : Math.max(y1, y2);
+        const c = along === 'x' ? y1 : x1;
+        for (let t = a0; t < a1; t += CHUNK) {
+          const t1 = Math.min(a1, t + CHUNK);
+          const mid = (t + t1) / 2;
+          const crate = look === 'illustrated' && n++ % 2 === 1;
+          sorted.push({
+            depth: mid + c,
+            node: (
+              <g key={`${o.id}-${i}-${t}`} className={`hmi-iso-conveyor${selected === o.id ? ' hmi-obj--selected' : ''}`} transform={`translate(0 ${-SLAB})`} onClick={onObject ? click(o) : undefined} data-oid={o.id}>
+                {conveyorChunk(along, t, t1, c, crate)}
+              </g>
+            )
+          });
+        }
+      }
+      continue;
+    }
     lines.push(
       o.style === 'conveyor' ? (
         <g key={o.id} className={`hmi-iso-conveyor${selected === o.id ? ' hmi-obj--selected' : ''}`} onClick={onObject ? click(o) : undefined} data-oid={o.id}>
@@ -145,17 +200,16 @@ export function HmiIso({ screen, snap, view, selected, names, maxSignals = 2, on
     );
   }
 
-  const models: ReactNode[] = [];
   const overlays: ReactNode[] = [];
   for (const o of eqs) {
     const v = o.equipmentId ? snap?.equipment.get(o.equipmentId) : undefined;
     const name = o.label || v?.name || (o.equipmentId ? names?.get(o.equipmentId) : undefined) || SYMBOL_NAMES[o.symbol];
     const state = v?.state;
     const level = v?.health?.level === 'warning' || v?.health?.level === 'critical' ? v.health.level : null;
-    const model = isoModel(o.symbol, o.x, o.y, o.w, o.h);
+    const model = isoModel(o.symbol, o.x, o.y, o.w, o.h, name);
     const pick = onPick && o.equipmentId ? () => onPick(o.equipmentId!) : onObject ? click(o) : undefined;
     const isSel = selected === o.id;
-    models.push(
+    sorted.push({ depth: o.x + o.w / 2 + o.y + o.h / 2, node: (
       <g
         key={o.id}
         className={`hmi-iso-eq${state ? ` hmi-iso-eq--${STATE_CLASS[state]}` : ''}${isSel ? ' hmi-obj--selected' : ''}${!o.equipmentId && editing ? ' hmi-iso-eq--unbound' : ''}`}
@@ -174,7 +228,7 @@ export function HmiIso({ screen, snap, view, selected, names, maxSignals = 2, on
         {state === '미수신' && <polygon className="hmi-iso-hatch" points={hull(o.x, o.y, o.w, o.h, model.z)} />}
         <polygon className="hmi-iso-hit" points={hull(o.x, o.y, o.w, o.h, model.z)} />
       </g>
-    );
+    ) });
 
     // Floating labels: state chip, health badge and signal values above, the name below.
     const [ax, ay] = P(o.x + o.w / 2, o.y + o.h / 2, model.z + SLAB);
@@ -223,7 +277,7 @@ export function HmiIso({ screen, snap, view, selected, names, maxSignals = 2, on
       </g>
       {floor}
       {lines}
-      {models}
+      {sorted.sort((a, b) => a.depth - b.depth).map((x) => x.node)}
       {overlays}
       {titles.map((t) =>
         t.kind !== 'text' ? null : t.size === 'title' ? (
@@ -244,6 +298,14 @@ export function IsoDefs() {
       <pattern id="hmi-iso-grid" width="50" height="50" patternUnits="userSpaceOnUse">
         <path className="hmi-iso-grid-line" d="M 50 0 L 0 0 0 50" />
       </pattern>
+      {/* Cylinder shading: light along the top, dark along the bottom. */}
+      {(['body', 'metal', 'dark'] as const).map((t) => (
+        <linearGradient key={t} id={`hmi-g-${t}`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" style={{ stopColor: `var(--hmi-iso-${t === 'body' ? '' : `${t}-`}top)` }} />
+          <stop offset="0.55" style={{ stopColor: `var(--hmi-iso-${t === 'body' ? '' : `${t}-`}left)` }} />
+          <stop offset="1" style={{ stopColor: `var(--hmi-iso-${t === 'body' ? '' : `${t}-`}right)` }} />
+        </linearGradient>
+      ))}
       <pattern id="hmi-iso-tile" width="100" height="100" patternUnits="userSpaceOnUse">
         <rect className="hmi-iso-tile-a" x="0" y="0" width="50" height="50" />
         <rect className="hmi-iso-tile-a" x="50" y="50" width="50" height="50" />
