@@ -24,6 +24,7 @@ import { ScreenLayout } from '../../shell/ScreenLayout';
 import type { TemplateProps } from '../../shell/ScreenHost';
 import { useAsync } from '../common/useAsync';
 import { HmiDefs, HmiDrawing, STATE_CLASS, type HmiView } from './HmiDrawing';
+import { HmiIso, IsoDefs, isoBox } from './HmiIso';
 import '../common/patterns.css';
 import '../P2/P2.css';
 import './P13.css';
@@ -34,6 +35,8 @@ export interface P13Definition {
 
 const STATES: MachineState[] = ['가동', '정지', '계획 비가동', '미수신'];
 const VIEW_LABEL: Record<HmiView, string> = { process: '공정', energy: '에너지' };
+export type Projection = 'iso' | 'plan';
+export const PROJECTION_OPTIONS = [{ value: 'iso', label: '입체' }, { value: 'plan', label: '평면' }];
 const CATEGORY: Record<string, string> = { breakdown: '고장', changeover: '금형·품번 교체' };
 
 export function P13Viewer({ entry, def: rawDef, badges }: TemplateProps) {
@@ -54,6 +57,7 @@ export function P13Viewer({ entry, def: rawDef, badges }: TemplateProps) {
   const views = def.hmi.views ?? ['process', 'energy'];
   const view = (views.includes(params.get('view') as HmiView) ? params.get('view') : views[0]) as HmiView;
   const selected = params.get('eq');
+  const projection: Projection = params.get('proj') === 'plan' ? 'plan' : 'iso';
 
   const times = useMemo(() => playbackTimes(def.hmi.playbackStepMin ?? 15), [def.hmi.playbackStepMin]);
   const [idx, setIdx] = useState(times.length - 1);
@@ -113,6 +117,7 @@ export function P13Viewer({ entry, def: rawDef, badges }: TemplateProps) {
         <>
           {screens.length > 1 && <Segmented size="small" value={screen?.id} onChange={(v) => set('screen', String(v))} options={screens.map((s) => ({ value: s.id, label: s.name }))} />}
           <Segmented size="small" value={view} onChange={(v) => set('view', String(v))} options={views.map((v) => ({ value: v, label: VIEW_LABEL[v] }))} />
+          <Segmented size="small" value={projection} onChange={(v) => set('proj', v === 'plan' ? 'plan' : null)} options={PROJECTION_OPTIONS} aria-label="표현" />
           <Legend snap={snap} />
           <span className="toolbar__spacer" />
           {playback}
@@ -129,7 +134,7 @@ export function P13Viewer({ entry, def: rawDef, badges }: TemplateProps) {
             title={screen.name}
             caption={`${view === 'process' ? '상태 · 신호값(직전 1시간 평균)' : '라인 전력·압축공기(15분 평균) · 비생산 시간 비중(오늘)'} · 게시 v${screen.version}`}
           >
-            <Canvas screen={screen} snap={snap} view={view} selected={pick ? screen.objects.find((o) => o.kind === 'equipment' && o.equipmentId === pick.id)?.id ?? null : null} maxSignals={def.hmi.maxSignals} onPick={(id) => set('eq', id === selected ? null : id)} />
+            <Canvas screen={screen} snap={snap} view={view} projection={projection} selected={pick ? screen.objects.find((o) => o.kind === 'equipment' && o.equipmentId === pick.id)?.id ?? null : null} maxSignals={def.hmi.maxSignals} onPick={(id) => set('eq', id === selected ? null : id)} />
           </Panel>
           <div className="p13__side">
             <Panel title="선택 설비" className="p13__detail">
@@ -141,17 +146,23 @@ export function P13Viewer({ entry, def: rawDef, badges }: TemplateProps) {
           </div>
         </div>
       )}
-      {wall && screen && <Wallboard screen={screen} snap={snap} view={view} setView={(v) => set('view', v)} views={views} at={at} risks={risks} siteName={app.siteName(siteId)} maxSignals={def.hmi.maxSignals} onClose={() => setWall(false)} />}
+      {wall && screen && <Wallboard screen={screen} snap={snap} view={view} projection={projection} setView={(v) => set('view', v)} views={views} at={at} risks={risks} siteName={app.siteName(siteId)} maxSignals={def.hmi.maxSignals} onClose={() => setWall(false)} />}
     </ScreenLayout>
   );
 }
 
-export function Canvas({ screen, snap, view, selected, maxSignals, onPick }: { screen: HmiScreen; snap: HmiSnapshot | null; view: HmiView; selected?: string | null; maxSignals?: number; onPick?: (id: string) => void }) {
+export function Canvas({ screen, snap, view, projection = 'iso', selected, maxSignals, onPick }: { screen: HmiScreen; snap: HmiSnapshot | null; view: HmiView; projection?: Projection; selected?: string | null; maxSignals?: number; onPick?: (id: string) => void }) {
+  const vb = projection === 'iso' ? isoBox(screen) : [0, 0, screen.size[0], screen.size[1]];
   return (
-    <svg className="hmi-canvas" viewBox={`0 0 ${screen.size[0]} ${screen.size[1]}`} preserveAspectRatio="xMidYMid meet" role="img" aria-label={`${screen.name} 공정도`}>
+    <svg className={`hmi-canvas hmi-canvas--${projection}`} viewBox={vb.join(' ')} preserveAspectRatio="xMidYMid meet" role="img" aria-label={`${screen.name} 공정도`}>
       <HmiDefs />
-      <rect className="hmi-canvas__bg" x="0" y="0" width={screen.size[0]} height={screen.size[1]} />
-      <HmiDrawing screen={screen} snap={snap} view={view} selected={selected} maxSignals={maxSignals} onPick={onPick} />
+      <IsoDefs />
+      <rect className={projection === 'iso' ? 'hmi-canvas__bg hmi-canvas__bg--iso' : 'hmi-canvas__bg'} x={vb[0]} y={vb[1]} width={vb[2]} height={vb[3]} />
+      {projection === 'iso' ? (
+        <HmiIso screen={screen} snap={snap} view={view} selected={selected} maxSignals={maxSignals} onPick={onPick} />
+      ) : (
+        <HmiDrawing screen={screen} snap={snap} view={view} selected={selected} maxSignals={maxSignals} onPick={onPick} />
+      )}
     </svg>
   );
 }
@@ -251,8 +262,8 @@ function RiskList({ risks, limit }: { risks: Risk[]; limit?: number }) {
 }
 
 /** Dark full-screen wallboard: the same drawing and data, larger, with nothing but what a control room needs. */
-function Wallboard({ screen, snap, view, setView, views, at, risks, siteName, maxSignals, onClose }: {
-  screen: HmiScreen; snap: HmiSnapshot | null; view: HmiView; setView: (v: HmiView) => void; views: HmiView[]; at: number;
+function Wallboard({ screen, snap, view, projection, setView, views, at, risks, siteName, maxSignals, onClose }: {
+  screen: HmiScreen; snap: HmiSnapshot | null; view: HmiView; projection: Projection; setView: (v: HmiView) => void; views: HmiView[]; at: number;
   risks: Risk[] | null; siteName: string; maxSignals?: number; onClose: () => void;
 }) {
   const theme = useTheme();
@@ -300,7 +311,7 @@ function Wallboard({ screen, snap, view, setView, views, at, risks, siteName, ma
       </header>
       <div className="p13-wall__body">
         <div className="p13-wall__canvas">
-          <Canvas screen={screen} snap={snap} view={view} maxSignals={maxSignals} />
+          <Canvas screen={screen} snap={snap} view={view} projection={projection} maxSignals={maxSignals} />
         </div>
         <aside className="p13-wall__side">
           <section>

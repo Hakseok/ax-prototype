@@ -90,3 +90,15 @@ describe('화면 디자이너 · 게시 전 검사', () => {
     expect(issues.map((i) => i.objectId)).toEqual(['a', 'c', 'd', 'e']);
   });
 });
+
+describe('설비 가동 화면 · 2.5D 모델', () => {
+  it('모든 심볼이 입체 모델을 만들고 높이가 있다', async () => {
+    const { isoModel } = await import('../patterns/P13/isoModels');
+    const { SYMBOL_NAMES } = await import('./hmi');
+    for (const s of Object.keys(SYMBOL_NAMES) as (keyof typeof SYMBOL_NAMES)[]) {
+      const m = isoModel(s, 0, 0, 80, 60);
+      expect(m.parts.length).toBeGreaterThan(0);
+      expect(m.z).toBeGreaterThan(0);
+    }
+  });
+});

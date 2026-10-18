@@ -81,6 +81,26 @@
   /* AX effect amounts: one hue; 확정·추정·잠재 differ by fill, hatch and outline (guide 9). Never a status color. */
   --color-effect:var(--color-series-1);
   --color-effect-subtle:var(--p-blue-100);
+  /* P13 2.5D process view: three shades per material (top, face toward +y, face toward +x), floor and slab.
+     Neutral only — state and status are drawn on top with their own tokens. */
+  --hmi-iso-top:var(--p-gray-0);
+  --hmi-iso-left:var(--p-gray-100);
+  --hmi-iso-right:var(--p-gray-200);
+  --hmi-iso-metal-top:var(--p-gray-200);
+  --hmi-iso-metal-left:var(--p-gray-300);
+  --hmi-iso-metal-right:var(--p-gray-400);
+  --hmi-iso-dark-top:var(--p-gray-600);
+  --hmi-iso-dark-left:var(--p-gray-700);
+  --hmi-iso-dark-right:var(--p-gray-750);
+  --hmi-iso-edge:var(--p-gray-400);
+  --hmi-iso-glass:var(--p-blue-100);
+  --hmi-iso-screen:var(--p-gray-800);
+  --hmi-iso-shadow:rgba(20,24,29,.10);
+  --hmi-iso-floor:var(--p-gray-100);
+  --hmi-iso-floor-line:var(--p-gray-200);
+  --hmi-iso-slab-top:var(--p-gray-0);
+  --hmi-iso-slab-side:var(--p-gray-300);
+  --hmi-iso-chip:rgba(255,255,255,.94);
   /* AI result cards are marked by a neutral accent so they never read as a status. */
   --color-ai:var(--color-series-3);
   --color-ai-bg:var(--color-bg-subtle);
@@ -136,6 +156,24 @@
   --color-series-other:var(--p-gray-500);
   --color-counter-text:var(--p-gray-950);
   --color-effect-subtle:var(--p-blue-900);
+  --hmi-iso-top:var(--p-gray-700);
+  --hmi-iso-left:var(--p-gray-750);
+  --hmi-iso-right:var(--p-gray-800);
+  --hmi-iso-metal-top:var(--p-gray-600);
+  --hmi-iso-metal-left:var(--p-gray-700);
+  --hmi-iso-metal-right:var(--p-gray-750);
+  --hmi-iso-dark-top:var(--p-gray-850);
+  --hmi-iso-dark-left:var(--p-gray-900);
+  --hmi-iso-dark-right:var(--p-gray-950);
+  --hmi-iso-edge:var(--p-gray-500);
+  --hmi-iso-glass:var(--p-blue-900);
+  --hmi-iso-screen:var(--p-gray-950);
+  --hmi-iso-shadow:rgba(0,0,0,.35);
+  --hmi-iso-floor:var(--p-gray-950);
+  --hmi-iso-floor-line:var(--p-gray-850);
+  --hmi-iso-slab-top:var(--p-gray-900);
+  --hmi-iso-slab-side:var(--p-gray-750);
+  --hmi-iso-chip:rgba(28,33,40,.94);
 }
 
 /* ============================================================
@@ -182,6 +220,14 @@
   --hmi-conveyor-w:10px;
   --hmi-handle:10px;
   --hmi-hatch:8px;
+  --hmi-iso-font-title:40px;
+  --hmi-iso-font-zone:30px;
+  --hmi-iso-font-figure:22px;
+  --hmi-iso-font-label:19px;
+  --hmi-iso-font-chip:18px;
+  --hmi-iso-edge-w:0.8px;
+  --hmi-iso-arm-w:9px;
+  --hmi-iso-belt-w:26px;
   --report-page-w:794px;
   --report-page-h:1123px;
   /* Print palette of the report preview and PDF: light in every theme. */

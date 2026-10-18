@@ -20,8 +20,10 @@ import { ScreenLayout } from '../../shell/ScreenLayout';
 import type { TemplateProps } from '../../shell/ScreenHost';
 import { useAsync } from '../common/useAsync';
 import { HmiDefs, HmiDrawing, type HmiView } from './HmiDrawing';
-import { Canvas, type P13Definition } from './P13Viewer';
-import { SymbolArt } from './symbols';
+import { HmiIso, IsoDefs, isoBox } from './HmiIso';
+import { Canvas, PROJECTION_OPTIONS, type P13Definition, type Projection } from './P13Viewer';
+import { ISO_C, ISO_S } from './iso';
+import { isoModel } from './isoModels';
 import '../common/patterns.css';
 import './P13.css';
 
@@ -81,6 +83,7 @@ export function P13Designer({ entry, def: rawDef, badges }: TemplateProps) {
   const [lineDraft, setLineDraft] = useState<[number, number][]>([]);
   const [cursor, setCursor] = useState<[number, number] | null>(null);
   const [preview, setPreview] = useState(false);
+  const [proj, setProj] = useState<'plan' | 'iso'>('plan');
   const drag = useRef<Drag | null>(null);
   const svgRef = useRef<SVGSVGElement>(null);
 
@@ -301,10 +304,11 @@ export function P13Designer({ entry, def: rawDef, badges }: TemplateProps) {
             aria-label="편집할 화면"
           />
           {status && <Tag bordered>{status}</Tag>}
-          <Segmented size="small" value={tool} onChange={(v) => { setTool(v as Tool); setLineDraft([]); }} options={[{ value: 'select', label: '선택·이동' }, { value: 'line', label: '선 그리기' }]} />
+          <Segmented size="small" value={proj} onChange={(v) => { setProj(v as 'plan' | 'iso'); setTool('select'); setLineDraft([]); }} options={[{ value: 'plan', label: '평면 편집' }, { value: 'iso', label: '입체 보기' }]} aria-label="편집 화면" />
+          <Segmented size="small" value={tool} disabled={proj === 'iso'} onChange={(v) => { setTool(v as Tool); setLineDraft([]); }} options={[{ value: 'select', label: '선택·이동' }, { value: 'line', label: '선 그리기' }]} />
           <span className="toolbar__spacer" />
           <span className="caption">
-            {tool === 'line' ? '점을 차례로 누르고, 두 번 누르거나 Enter로 끝냅니다. Esc는 취소.' : `팔레트에서 끌어다 놓거나 누르면 가운데에 놓입니다. 격자 ${grid} 단위로 맞춥니다. Delete 삭제, 방향키 이동.`}
+            {proj === 'iso' ? '입체 보기에서는 객체를 눌러 고르고 속성·방향키로 고칩니다. 끌어 옮기기와 선 그리기는 평면 편집에서 합니다.' : tool === 'line' ? '점을 차례로 누르고, 두 번 누르거나 Enter로 끝냅니다. Esc는 취소.' : `팔레트에서 끌어다 놓거나 누르면 가운데에 놓입니다. 격자 ${grid} 단위로 맞춥니다. Delete 삭제, 방향키 이동.`}
           </span>
         </>
       }
@@ -318,6 +322,14 @@ export function P13Designer({ entry, def: rawDef, badges }: TemplateProps) {
             <Palette eqs={master.eqs} placed={placed} onAdd={(d) => addObject(d, center)} />
           </Panel>
           <Panel title={doc.name} caption={`${doc.id} · ${doc.objects.length}개 객체`} className="p13d__stage">
+            {proj === 'iso' ? (
+              <svg className="hmi-canvas hmi-canvas--iso" viewBox={isoBox(doc).join(' ')} preserveAspectRatio="xMidYMid meet" onClick={(e) => e.target === e.currentTarget && setSelected(null)} aria-label={`${doc.name} 입체 보기`}>
+                <HmiDefs />
+                <IsoDefs />
+                <rect className="hmi-canvas__bg hmi-canvas__bg--iso" x={isoBox(doc)[0]} y={isoBox(doc)[1]} width={isoBox(doc)[2]} height={isoBox(doc)[3]} onClick={() => setSelected(null)} />
+                <HmiIso screen={doc} snap={null} view="process" selected={selected} names={names} maxSignals={maxSignals} onObject={(o) => setSelected(o.id)} editing />
+              </svg>
+            ) : (
             <svg
               ref={svgRef}
               className={`hmi-canvas hmi-canvas--edit${tool === 'line' ? ' hmi-canvas--line' : ''}`}
@@ -343,6 +355,7 @@ export function P13Designer({ entry, def: rawDef, badges }: TemplateProps) {
               {sel && <Handles o={sel} onDown={onHandleDown} />}
               {lineDraft.length > 0 && <polyline className="hmi-line-draft" points={[...lineDraft, ...(cursor ? [cursor] : [])].map((p) => p.join(',')).join(' ')} />}
             </svg>
+            )}
           </Panel>
           <Panel title={sel ? '속성' : '화면'} className="p13d__props">
             {sel ? (
@@ -403,9 +416,7 @@ function Palette({ eqs, placed, onAdd }: { eqs: Equipment[]; placed: Set<string>
         <div className="p13d__symbols">
           {SYMBOLS.map((s) => (
             <button key={s} type="button" className="p13d__symbol" draggable onDragStart={start({ kind: 'symbol', symbol: s })} onClick={() => onAdd({ kind: 'symbol', symbol: s })} title={SYMBOL_NAMES[s]}>
-              <svg viewBox="0 0 100 100" className="p13d__symbol-art" aria-hidden="true">
-                <SymbolArt symbol={s} x={4} y={4} w={92} h={92} />
-              </svg>
+              <IsoThumb symbol={s} />
               <span>{SYMBOL_NAMES[s]}</span>
             </button>
           ))}
@@ -427,6 +438,19 @@ function Palette({ eqs, placed, onAdd }: { eqs: Equipment[]; placed: Set<string>
         ))}
       </section>
     </div>
+  );
+}
+
+/** The palette picture of a symbol: its 2.5D model in its default footprint. */
+function IsoThumb({ symbol }: { symbol: HmiSymbol }) {
+  const [w, d] = SIZE[symbol];
+  const m = isoModel(symbol, 0, 0, w, d);
+  const pad = 6;
+  const vb = [-d * ISO_C - pad, -m.z - pad, (w + d) * ISO_C + pad * 2, (w + d) * ISO_S + m.z + pad * 2];
+  return (
+    <svg viewBox={vb.join(' ')} className="p13d__symbol-art hmi-canvas--iso" aria-hidden="true">
+      {m.parts}
+    </svg>
   );
 }
 
@@ -567,6 +591,7 @@ function ScreenProps({ doc, onName, issues, onPick, published }: { doc: HmiScree
 /** The draft as the viewer would show it now, without publishing. */
 function Preview({ screen, siteId, maxSignals, onClose }: { screen: HmiScreen; siteId: string; maxSignals: number; onClose: () => void }) {
   const [view, setView] = useState<HmiView>('process');
+  const [projection, setProjection] = useState<Projection>('iso');
   const { value: snap } = useAsync(() => hmiSnapshot(siteId, NOW), `${siteId}|preview`);
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
@@ -579,11 +604,12 @@ function Preview({ screen, siteId, maxSignals, onClose }: { screen: HmiScreen; s
         <strong>{screen.name}</strong>
         <Tag bordered>미리보기 · 게시 전</Tag>
         <Segmented size="small" value={view} onChange={(v) => setView(v as HmiView)} options={[{ value: 'process', label: '공정' }, { value: 'energy', label: '에너지' }]} />
+        <Segmented size="small" value={projection} onChange={(v) => setProjection(v as Projection)} options={PROJECTION_OPTIONS} />
         <span className="toolbar__spacer" />
         <Button onClick={onClose}>{button('닫기')}</Button>
       </header>
       <div className="p13-preview__body">
-        <Canvas screen={screen} snap={snap} view={view} maxSignals={maxSignals} />
+        <Canvas screen={screen} snap={snap} view={view} projection={projection} maxSignals={maxSignals} />
       </div>
     </div>
   );

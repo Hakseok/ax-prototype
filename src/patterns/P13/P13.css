@@ -598,3 +598,268 @@
 .p13-preview a {
   color: var(--color-action);
 }
+
+/* ---- 2.5D (isometric) rendering ---- */
+.hmi-iso-floor {
+  fill: var(--hmi-iso-floor);
+}
+
+.hmi-iso-floor-grid {
+  fill: url(#hmi-iso-grid);
+  pointer-events: none;
+}
+
+.hmi-iso-grid-line {
+  fill: none;
+  stroke: var(--hmi-iso-floor-line);
+  stroke-width: var(--border-w);
+}
+
+.hmi-iso-slab-top {
+  fill: var(--hmi-iso-slab-top);
+  stroke: var(--hmi-iso-edge);
+  stroke-width: var(--hmi-iso-edge-w);
+}
+
+.hmi-iso-slab-side {
+  fill: var(--hmi-iso-slab-side);
+}
+
+.hmi-iso-slab-side--r {
+  filter: brightness(0.92);
+}
+
+.hmi-iso-zone.hmi-obj--selected .hmi-iso-slab-top {
+  stroke: var(--color-action);
+  stroke-width: var(--hmi-stroke-strong);
+}
+
+.hmi-iso-zone-label {
+  font-size: var(--hmi-iso-font-figure);
+  font-weight: 700;
+  fill: var(--color-text-secondary);
+}
+
+.hmi-iso-zone-figure {
+  font-weight: 400;
+  font-family: var(--font-family-num);
+  fill: var(--color-text-tertiary);
+}
+
+.hmi-iso--energy .hmi-iso-zone-label,
+.hmi-iso--energy .hmi-iso-zone-figure {
+  fill: var(--color-text-primary);
+}
+
+.hmi-iso--energy .hmi-iso-zone-figure {
+  font-weight: 700;
+}
+
+.hmi-iso-conveyor__side {
+  fill: none;
+  stroke: var(--hmi-iso-metal-right);
+  stroke-width: var(--hmi-iso-belt-w);
+  stroke-linejoin: round;
+}
+
+.hmi-iso-conveyor__top {
+  fill: none;
+  stroke: var(--hmi-iso-metal-top);
+  stroke-width: var(--hmi-iso-belt-w);
+  stroke-linejoin: round;
+}
+
+.hmi-iso-conveyor__belt {
+  fill: none;
+  stroke: var(--hmi-iso-metal-left);
+  stroke-width: calc(var(--hmi-iso-belt-w) * 0.6);
+  stroke-dasharray: 4 6;
+}
+
+.hmi-iso-conveyor.hmi-obj--selected .hmi-iso-conveyor__top,
+.hmi-iso-pipe.hmi-obj--selected .hmi-iso-pipe__line {
+  stroke: var(--color-action);
+}
+
+.hmi-iso-pipe__line {
+  fill: none;
+  stroke: var(--hmi-iso-metal-right);
+  stroke-width: var(--hmi-stroke-strong);
+  stroke-dasharray: 10 8;
+  stroke-linecap: round;
+}
+
+.hmi-iso-shadow {
+  fill: var(--hmi-iso-shadow);
+}
+
+.hmi-iso-t,
+.hmi-iso-l,
+.hmi-iso-r {
+  stroke: var(--hmi-iso-edge);
+  stroke-width: var(--hmi-iso-edge-w);
+  stroke-linejoin: round;
+}
+
+.hmi-iso-t { fill: var(--hmi-iso-top); }
+.hmi-iso-l { fill: var(--hmi-iso-left); }
+.hmi-iso-r { fill: var(--hmi-iso-right); }
+.hmi-iso-t.hmi-iso--metal { fill: var(--hmi-iso-metal-top); }
+.hmi-iso-l.hmi-iso--metal { fill: var(--hmi-iso-metal-left); }
+.hmi-iso-r.hmi-iso--metal { fill: var(--hmi-iso-metal-right); }
+.hmi-iso-t.hmi-iso--dark { fill: var(--hmi-iso-dark-top); }
+.hmi-iso-l.hmi-iso--dark { fill: var(--hmi-iso-dark-left); }
+.hmi-iso-r.hmi-iso--dark { fill: var(--hmi-iso-dark-right); }
+
+.hmi-iso-glass {
+  fill: var(--hmi-iso-glass);
+  stroke: var(--hmi-iso-edge);
+  stroke-width: var(--hmi-iso-edge-w);
+}
+
+.hmi-iso-screen {
+  fill: var(--hmi-iso-screen);
+}
+
+.hmi-iso-door {
+  fill: var(--hmi-iso-metal-left);
+  stroke: var(--hmi-iso-edge);
+  stroke-width: var(--hmi-iso-edge-w);
+}
+
+.hmi-iso-grille {
+  fill: var(--hmi-iso-dark-left);
+  opacity: 0.55;
+}
+
+.hmi-iso-arm {
+  fill: none;
+  stroke: var(--hmi-iso-dark-top);
+  stroke-width: var(--hmi-iso-arm-w);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.hmi-iso-joint {
+  fill: var(--hmi-iso-metal-top);
+  stroke: var(--hmi-iso-dark-top);
+  stroke-width: var(--hmi-stroke-strong);
+}
+
+.hmi-iso-hit {
+  fill: transparent;
+  stroke: transparent;
+  stroke-width: var(--hmi-stroke-strong);
+}
+
+.hmi-iso-eq[role='button'] {
+  cursor: pointer;
+  outline: none;
+}
+
+.hmi-iso-eq[role='button']:hover .hmi-iso-hit,
+.hmi-iso-eq:focus-visible .hmi-iso-hit {
+  stroke: var(--color-border-strong);
+}
+
+.hmi-iso-eq.hmi-obj--selected .hmi-iso-hit {
+  stroke: var(--color-action);
+  stroke-width: calc(var(--hmi-stroke-strong) * 1.5);
+}
+
+/* States, neutral as in the plan view (D-65). */
+.hmi-iso-eq--stop .hmi-iso-hit {
+  stroke: var(--color-text-primary);
+  stroke-width: var(--hmi-stroke-strong);
+}
+
+.hmi-iso-eq--idle .hmi-iso-model {
+  opacity: 0.4;
+}
+
+.hmi-iso-eq--missing .hmi-iso-model {
+  opacity: 0.55;
+}
+
+.hmi-iso-hatch {
+  fill: url(#hmi-hatch);
+  pointer-events: none;
+}
+
+.hmi-iso-eq--unbound .hmi-iso-hit {
+  stroke: var(--color-text-tertiary);
+  stroke-dasharray: 6 4;
+}
+
+.hmi-iso--energy .hmi-iso-eq,
+.hmi-iso--energy .hmi-iso-conveyor {
+  opacity: 0.45;
+}
+
+.hmi-iso-overlay {
+  pointer-events: none;
+}
+
+.hmi-iso-leader {
+  stroke: var(--color-text-tertiary);
+  stroke-width: var(--hmi-stroke);
+}
+
+.hmi-iso-label {
+  font-size: var(--hmi-iso-font-label);
+  font-weight: 600;
+  fill: var(--color-text-primary);
+  paint-order: stroke;
+  stroke: var(--hmi-iso-floor);
+  stroke-width: var(--hmi-stroke-strong);
+  stroke-linejoin: round;
+}
+
+.hmi-iso-label--selected {
+  fill: var(--color-action);
+}
+
+.hmi-iso-title {
+  font-size: var(--hmi-iso-font-title);
+  font-weight: 700;
+  fill: var(--color-text-primary);
+}
+
+.hmi-iso-floor-text {
+  font-size: var(--hmi-iso-font-zone);
+  fill: var(--color-text-tertiary);
+}
+
+.hmi-chip__box {
+  fill: var(--hmi-iso-chip);
+  stroke: var(--color-border-strong);
+  stroke-width: var(--hmi-stroke);
+}
+
+.hmi-chip__text {
+  font-size: var(--hmi-iso-font-chip);
+  font-family: var(--font-family-num);
+  fill: var(--color-text-primary);
+}
+
+.hmi-chip--state .hmi-chip__text {
+  font-family: var(--font-family-base);
+  font-weight: 700;
+}
+
+.hmi-chip--stop .hmi-chip__box {
+  stroke: var(--color-text-primary);
+  stroke-width: var(--hmi-stroke-strong);
+}
+
+.hmi-chip--warning .hmi-chip__box { fill: var(--color-status-warning-bg); stroke: var(--color-status-warning); }
+.hmi-chip--warning .hmi-chip__shape { fill: var(--color-status-warning-mark); }
+.hmi-chip--warning .hmi-chip__text { fill: var(--color-status-warning); font-weight: 700; font-family: var(--font-family-base); }
+.hmi-chip--critical .hmi-chip__box { fill: var(--color-status-critical-bg); stroke: var(--color-status-critical); }
+.hmi-chip--critical .hmi-chip__shape { fill: var(--color-status-critical); }
+.hmi-chip--critical .hmi-chip__text { fill: var(--color-status-critical); font-weight: 700; font-family: var(--font-family-base); }
+
+.hmi-canvas__bg--iso {
+  fill: var(--hmi-iso-floor);
+  opacity: 0;
+}
