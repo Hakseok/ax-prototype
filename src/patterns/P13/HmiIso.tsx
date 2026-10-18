@@ -87,6 +87,8 @@ interface Props {
   onObject?: (o: HmiObject) => void;
   editing?: boolean;
   look?: IsoLook;
+  /** Viewer: double-click a zone to zoom to it. */
+  onZoneFocus?: (z: HmiObject) => void;
 }
 
 const zoneFigure = (view: HmiView, l: LineView | undefined): string => {
@@ -111,7 +113,7 @@ function Chip({ x, y, text, cls = '', mark }: { x: number; y: number; text: stri
   );
 }
 
-export function HmiIso({ screen, snap, view, selected, names, maxSignals = 2, onPick, onObject, editing, look = 'standard' }: Props) {
+export function HmiIso({ screen, snap, view, selected, names, maxSignals = 2, onPick, onObject, editing, look = 'standard', onZoneFocus }: Props) {
   const [hover, setHover] = useState<string | null>(null);
   const [W, H] = screen.size;
   const vb = isoBox(screen);
@@ -132,7 +134,7 @@ export function HmiIso({ screen, snap, view, selected, names, maxSignals = 2, on
     const left = [P(z.x, z.y + z.h, 0), P(z.x + z.w, z.y + z.h, 0), P(z.x + z.w, z.y + z.h, SLAB), P(z.x, z.y + z.h, SLAB)].map((p) => p.join(',')).join(' ');
     const right = [P(z.x + z.w, z.y, 0), P(z.x + z.w, z.y + z.h, 0), P(z.x + z.w, z.y + z.h, SLAB), P(z.x + z.w, z.y, SLAB)].map((p) => p.join(',')).join(' ');
     floor.push(
-      <g key={z.id} className={`hmi-iso-zone${selected === z.id ? ' hmi-obj--selected' : ''}`} onClick={onObject ? click(z) : undefined} data-oid={z.id}>
+      <g key={z.id} className={`hmi-iso-zone${selected === z.id ? ' hmi-obj--selected' : ''}`} onClick={onObject ? click(z) : undefined} onDoubleClick={onZoneFocus ? () => onZoneFocus(z) : undefined} data-oid={z.id}>
         <polygon className="hmi-iso-slab-side" points={left} />
         <polygon className="hmi-iso-slab-side hmi-iso-slab-side--r" points={right} />
         <polygon

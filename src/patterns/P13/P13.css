@@ -986,3 +986,42 @@
 .hmi-iso-link {
   stroke: none;
 }
+
+/* ---- zoom and pan ---- */
+.hmi-zoom {
+  position: relative;
+  display: flex;
+  flex: 1 1 0;
+  min-height: 0;
+  height: 100%;
+}
+
+.hmi-zoom .hmi-canvas {
+  flex: 1 1 0;
+  cursor: grab;
+  touch-action: none;
+}
+
+.hmi-zoom .hmi-canvas:active {
+  cursor: grabbing;
+}
+
+.hmi-zoom__controls {
+  position: absolute;
+  right: var(--space-sm);
+  bottom: var(--space-sm);
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-xs);
+  background: var(--color-bg-surface);
+  border: var(--border-w) solid var(--color-border);
+  border-radius: var(--radius-control);
+}
+
+.hmi-zoom__level {
+  min-width: calc(var(--chart-axis-w) * 0.9);
+  text-align: right;
+  font-size: var(--font-size-caption);
+  color: var(--color-text-secondary);
+}

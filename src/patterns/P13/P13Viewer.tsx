@@ -6,14 +6,14 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Button, Empty, Segmented, Skeleton, Slider, Tooltip } from 'antd';
-import { CaretRightOutlined, FullscreenOutlined, PauseOutlined, StepForwardOutlined } from '@ant-design/icons';
+import { CaretRightOutlined, CompressOutlined, FullscreenOutlined, PauseOutlined, StepForwardOutlined, ZoomInOutlined, ZoomOutOutlined } from '@ant-design/icons';
 import { Link, useSearchParams } from 'react-router-dom';
 import { formatNumber } from '../../components/KpiCard';
 import { Panel } from '../../components/Panel';
 import { StatusBadge } from '../../components/StatusBadge';
 import { button, terms } from '../../config';
 import { riskFeed, type Risk } from '../../data/executive';
-import { hmiSnapshot, hmiStore, playbackTimes, publishedScreens, type HmiScreen, type HmiSnapshot } from '../../data/hmi';
+import { hmiSnapshot, hmiStore, playbackTimes, publishedScreens, type HmiObject, type HmiScreen, type HmiSnapshot } from '../../data/hmi';
 import type { MachineState } from '../../data/lineMonitor';
 import { useLocalStore } from '../../data/localStore';
 import { NOW, formatDate, formatDateTime, formatTime, parseTime } from '../../data/time';
@@ -25,6 +25,8 @@ import type { TemplateProps } from '../../shell/ScreenHost';
 import { useAsync } from '../common/useAsync';
 import { HmiDefs, HmiDrawing, STATE_CLASS, type HmiView } from './HmiDrawing';
 import { HmiIso, IsoDefs, isoBox, type IsoLook } from './HmiIso';
+import { ISO_C, ISO_S, P } from './iso';
+import { usePanZoom, type Box } from './usePanZoom';
 import '../common/patterns.css';
 import '../P2/P2.css';
 import './P13.css';
@@ -155,18 +157,45 @@ export function P13Viewer({ entry, def: rawDef, badges }: TemplateProps) {
 }
 
 export function Canvas({ screen, snap, view, projection = 'iso', look = 'standard', selected, maxSignals, onPick }: { screen: HmiScreen; snap: HmiSnapshot | null; view: HmiView; projection?: Projection; look?: IsoLook; selected?: string | null; maxSignals?: number; onPick?: (id: string) => void }) {
-  const vb = projection === 'iso' ? isoBox(screen) : [0, 0, screen.size[0], screen.size[1]];
+  const base: Box = projection === 'iso' ? isoBox(screen) : [0, 0, screen.size[0], screen.size[1]];
+  const svgRef = useRef<SVGSVGElement>(null);
+  const pz = usePanZoom(base, svgRef);
+  // Double-click anywhere on a zone (its floor or a machine on it): zoom to that line.
+  const onDoubleClick = (e: { clientX: number; clientY: number }) => {
+    const u = pz.toUser(e.clientX, e.clientY);
+    if (!u) return;
+    // Back to plan coordinates on the slab (z = 6) for the 2.5D view.
+    const [px, py] = projection === 'iso' ? [((u[0] / ISO_C + (u[1] + 6) / ISO_S) / 2), (((u[1] + 6) / ISO_S - u[0] / ISO_C) / 2)] : u;
+    const z = screen.objects.find((o) => o.kind === 'zone' && px >= o.x && px <= o.x + o.w && py >= o.y && py <= o.y + o.h);
+    if (z) focusZone(z);
+  };
+  const focusZone = (z: HmiObject) => {
+    if (z.kind !== 'zone') return;
+    if (projection === 'plan') return pz.fitRect(z.x, z.y, z.w, z.h);
+    const xs = [P(z.x, z.y + z.h)[0], P(z.x + z.w, z.y)[0]];
+    const top = P(z.x, z.y, 180)[1];
+    const bottom = P(z.x + z.w, z.y + z.h)[1] + 30;
+    pz.fitRect(xs[0], top, xs[1] - xs[0], bottom - top);
+  };
   return (
-    <svg className={`hmi-canvas hmi-canvas--${projection}`} viewBox={vb.join(' ')} preserveAspectRatio="xMidYMid meet" role="img" aria-label={`${screen.name} 공정도`}>
-      <HmiDefs />
-      <IsoDefs />
-      <rect className={projection === 'iso' ? 'hmi-canvas__bg hmi-canvas__bg--iso' : 'hmi-canvas__bg'} x={vb[0]} y={vb[1]} width={vb[2]} height={vb[3]} />
-      {projection === 'iso' ? (
-        <HmiIso screen={screen} snap={snap} view={view} selected={selected} maxSignals={maxSignals} onPick={onPick} look={look} />
-      ) : (
-        <HmiDrawing screen={screen} snap={snap} view={view} selected={selected} maxSignals={maxSignals} onPick={onPick} />
-      )}
-    </svg>
+    <div className="hmi-zoom">
+      <svg ref={svgRef} className={`hmi-canvas hmi-canvas--${projection}${pz.zoom > 1.01 ? ' hmi-canvas--zoomed' : ''}`} viewBox={pz.viewBox} preserveAspectRatio="xMidYMid meet" role="img" aria-label={`${screen.name} 공정도`} {...pz.handlers} onDoubleClick={onDoubleClick}>
+        <HmiDefs />
+        <IsoDefs />
+        <rect className={projection === 'iso' ? 'hmi-canvas__bg hmi-canvas__bg--iso' : 'hmi-canvas__bg'} x={base[0] - base[2]} y={base[1] - base[3]} width={base[2] * 3} height={base[3] * 3} />
+        {projection === 'iso' ? (
+          <HmiIso screen={screen} snap={snap} view={view} selected={selected} maxSignals={maxSignals} onPick={onPick} look={look} />
+        ) : (
+          <HmiDrawing screen={screen} snap={snap} view={view} selected={selected} maxSignals={maxSignals} onPick={onPick} />
+        )}
+      </svg>
+      <div className="hmi-zoom__controls">
+        <Tooltip title="확대 (마우스 휠)"><Button size="small" aria-label="확대" icon={<ZoomInOutlined />} onClick={pz.zoomIn} disabled={pz.zoom >= 7.99} /></Tooltip>
+        <Tooltip title="축소"><Button size="small" aria-label="축소" icon={<ZoomOutOutlined />} onClick={pz.zoomOut} disabled={pz.zoom <= 1.001} /></Tooltip>
+        <Tooltip title="전체 보기"><Button size="small" aria-label="전체 보기" icon={<CompressOutlined />} onClick={pz.reset} disabled={pz.zoom <= 1.001} /></Tooltip>
+        <span className="hmi-zoom__level num">{Math.round(pz.zoom * 100)}%</span>
+      </div>
+    </div>
   );
 }
 

@@ -30,6 +30,7 @@ interface Props {
   /** Designer: start a drag on an object. */
   onObjectDown?: (e: ReactPointerEvent<SVGGElement>, o: HmiObject) => void;
   editing?: boolean;
+  onZoneFocus?: (z: HmiObject) => void;
 }
 
 export function HmiDefs() {
@@ -54,7 +55,7 @@ const zoneFigures = (view: HmiView, l: LineView | undefined): string => {
   return `오늘 생산 ${formatNumber(l.produced, 0)} / 계획 ${formatNumber(l.planned ?? 0, 0)}`;
 };
 
-export function HmiDrawing({ screen, snap, view, selected, names, maxSignals = 2, onPick, onObjectDown, editing }: Props) {
+export function HmiDrawing({ screen, snap, view, selected, names, maxSignals = 2, onPick, onObjectDown, editing, onZoneFocus }: Props) {
   const zones = screen.objects.filter((o) => o.kind === 'zone');
   const kws = zones.map((z) => (z.kind === 'zone' && z.lineId ? snap?.lines.get(z.lineId)?.kw ?? null : null)).filter((v): v is number => v !== null);
   const maxKw = kws.length ? Math.max(...kws) : 0;
@@ -67,7 +68,7 @@ export function HmiDrawing({ screen, snap, view, selected, names, maxSignals = 2
     const l = o.lineId ? snap?.lines.get(o.lineId) : undefined;
     const heat = view === 'energy' && l?.kw != null && maxKw > 0 ? Math.round((l.kw / maxKw) * 100) : null;
     out.push(
-      <g key={o.id} className={`hmi-zone${sel(o.id)}`} onPointerDown={down(o)} data-oid={o.id}>
+      <g key={o.id} className={`hmi-zone${sel(o.id)}`} onPointerDown={down(o)} onDoubleClick={onZoneFocus ? () => onZoneFocus(o) : undefined} data-oid={o.id}>
         <rect
           className={heat === null ? 'hmi-zone__box' : 'hmi-zone__box hmi-zone__box--heat'}
           x={o.x} y={o.y} width={o.w} height={o.h}
