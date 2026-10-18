@@ -9,7 +9,7 @@ import { statusLabel } from '../../config';
 import { SYMBOL_NAMES, type HmiEquipmentObject, type HmiObject, type HmiScreen, type HmiSnapshot, type LineView } from '../../data/hmi';
 import type { HmiView } from './HmiDrawing';
 import { STATE_CLASS } from './HmiDrawing';
-import { P, floorTransform, hull, isoViewBox, shadow } from './iso';
+import { P, floorTransform, hull, isoKit, isoViewBox, shadow } from './iso';
 import { isoModel } from './isoModels';
 
 const SLAB = 6;
@@ -20,6 +20,31 @@ const CHIP_H = 28;
 
 /** Rough text width in canvas units: Hangul and full-width glyphs are square, others narrower. */
 const textWidth = (s: string, fs: number) => [...s].reduce((a, ch) => a + (/[ᄀ-ᇿ　-鿿가-힯℃³]/.test(ch) ? fs : fs * 0.6), 0);
+
+/** Body material of each symbol in the illustrated review look (D-73). */
+const MATERIAL: Record<string, 'blue' | 'teal' | 'slate'> = {
+  press: 'blue', injection: 'blue', machining: 'blue', lathe: 'blue', paintBooth: 'slate', oven: 'slate',
+  robot: 'teal', fastening: 'teal', inspection: 'teal', agv: 'teal', compressor: 'slate', utility: 'slate', generic: 'slate'
+};
+
+export type IsoLook = 'standard' | 'illustrated';
+
+/** Crates riding a conveyor (decoration of the illustrated look, not data). */
+function crates(points: [number, number][], z: number): ReactNode[] {
+  const k = isoKit();
+  const out: ReactNode[] = [];
+  for (let i = 0; i < points.length - 1; i++) {
+    const [x1, y1] = points[i];
+    const [x2, y2] = points[i + 1];
+    const len = Math.hypot(x2 - x1, y2 - y1);
+    for (let t = 60; t < len - 20; t += 130) {
+      const cx = x1 + ((x2 - x1) * t) / len;
+      const cy = y1 + ((y2 - y1) * t) / len;
+      out.push(...k.box(cx - 11, cy - 11, 22, 22, z, z + 16, 'crate'));
+    }
+  }
+  return out;
+}
 
 export const isoBox = (screen: HmiScreen) => isoViewBox(screen.size[0], screen.size[1]);
 
@@ -34,6 +59,7 @@ interface Props {
   /** Designer: pick an object by id. */
   onObject?: (o: HmiObject) => void;
   editing?: boolean;
+  look?: IsoLook;
 }
 
 const zoneFigure = (view: HmiView, l: LineView | undefined): string => {
@@ -58,7 +84,7 @@ function Chip({ x, y, text, cls = '', mark }: { x: number; y: number; text: stri
   );
 }
 
-export function HmiIso({ screen, snap, view, selected, names, maxSignals = 2, onPick, onObject, editing }: Props) {
+export function HmiIso({ screen, snap, view, selected, names, maxSignals = 2, onPick, onObject, editing, look = 'standard' }: Props) {
   const [hover, setHover] = useState<string | null>(null);
   const [W, H] = screen.size;
   const vb = isoBox(screen);
@@ -109,6 +135,7 @@ export function HmiIso({ screen, snap, view, selected, names, maxSignals = 2, on
             <polyline className="hmi-iso-conveyor__top" points={pts} />
             <polyline className="hmi-iso-conveyor__belt" points={pts} />
           </g>
+          {look === 'illustrated' && <g className="hmi-iso-crates">{crates(o.points, SLAB + BELT)}</g>}
         </g>
       ) : (
         <g key={o.id} className={`hmi-iso-pipe${selected === o.id ? ' hmi-obj--selected' : ''}`} transform={floorTransform(SLAB)} onClick={onObject ? click(o) : undefined} data-oid={o.id}>
@@ -143,7 +170,7 @@ export function HmiIso({ screen, snap, view, selected, names, maxSignals = 2, on
         aria-label={pick ? `${name} ${state ?? ''}${level ? ` · ${statusLabel(level)}` : ''}` : undefined}
       >
         <polygon className="hmi-iso-shadow" points={shadow(o.x, o.y, o.w, o.h)} />
-        <g className="hmi-iso-model">{model.parts}</g>
+        <g className={`hmi-iso-model hmi-mat--${MATERIAL[o.symbol] ?? 'slate'}`}>{model.parts}</g>
         {state === '미수신' && <polygon className="hmi-iso-hatch" points={hull(o.x, o.y, o.w, o.h, model.z)} />}
         <polygon className="hmi-iso-hit" points={hull(o.x, o.y, o.w, o.h, model.z)} />
       </g>
@@ -189,10 +216,10 @@ export function HmiIso({ screen, snap, view, selected, names, maxSignals = 2, on
 
   const titles = screen.objects.filter((o) => o.kind === 'text');
   return (
-    <g className={`hmi-iso hmi-iso--${view}`}>
+    <g className={`hmi-iso hmi-iso--${view}${look === 'illustrated' ? ' hmi-iso--ill' : ''}`}>
       <g transform={floorTransform(0)}>
         <rect className="hmi-iso-floor" x="0" y="0" width={W} height={H} />
-        <rect className="hmi-iso-floor-grid" x="0" y="0" width={W} height={H} />
+        <rect className={look === 'illustrated' ? 'hmi-iso-floor-grid hmi-iso-floor-grid--tile' : 'hmi-iso-floor-grid'} x="0" y="0" width={W} height={H} />
       </g>
       {floor}
       {lines}
@@ -216,6 +243,11 @@ export function IsoDefs() {
     <defs>
       <pattern id="hmi-iso-grid" width="50" height="50" patternUnits="userSpaceOnUse">
         <path className="hmi-iso-grid-line" d="M 50 0 L 0 0 0 50" />
+      </pattern>
+      <pattern id="hmi-iso-tile" width="100" height="100" patternUnits="userSpaceOnUse">
+        <rect className="hmi-iso-tile-a" x="0" y="0" width="50" height="50" />
+        <rect className="hmi-iso-tile-a" x="50" y="50" width="50" height="50" />
+        <path className="hmi-iso-grid-line" d="M 100 0 L 0 0 0 100 M 50 0 L 50 100 M 0 50 L 100 50" />
       </pattern>
     </defs>
   );

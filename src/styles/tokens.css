@@ -19,6 +19,14 @@
   --p-series-pink-400:#E87BA4; --p-series-pink-500:#D55181;
   --p-series-green-700:#008300;
   --p-series-cyan-500:#0094C4; --p-series-cyan-400:#22A6B8;
+  /* P13 illustrated review look (D-73): soft flat material hues. No red/orange/yellow, so no hue
+     resembles a status color. */
+  --p-ill-blue-100:#B9D7F5; --p-ill-blue-300:#86B4E6; --p-ill-blue-500:#5E92CF; --p-ill-blue-700:#2F527E; --p-ill-blue-800:#243F61; --p-ill-blue-900:#1B3049;
+  --p-ill-teal-100:#AEE3D9; --p-ill-teal-300:#72C7B8; --p-ill-teal-500:#45A493; --p-ill-teal-700:#24685D; --p-ill-teal-800:#1C5249; --p-ill-teal-900:#153E37;
+  --p-ill-slate-100:#DCE3EC; --p-ill-slate-300:#B7C3D3; --p-ill-slate-500:#93A2B7; --p-ill-slate-700:#4A586B; --p-ill-slate-800:#3B4757; --p-ill-slate-900:#2E3845;
+  --p-ill-ink-500:#4A5568; --p-ill-ink-700:#323C4C; --p-ill-ink-900:#222A36;
+  --p-ill-floor:#E9EEF4; --p-ill-floor-alt:#E1E8F0; --p-ill-floor-dark:#1A2029; --p-ill-floor-dark-alt:#1E2530;
+  --p-ill-glass:#D4EBFF; --p-ill-glass-dark:#2C4A6B;
   --p-white-a10:rgba(255,255,255,.10);
   --p-black-a14:rgba(0,0,0,.14);
   --p-space-1:4px; --p-space-2:8px; --p-space-3:12px; --p-space-4:16px; --p-space-5:20px; --p-space-6:24px;
@@ -101,6 +109,21 @@
   --hmi-iso-slab-top:var(--p-gray-0);
   --hmi-iso-slab-side:var(--p-gray-300);
   --hmi-iso-chip:rgba(255,255,255,.94);
+  --hmi-ill-blue-top:var(--p-ill-blue-100);
+  --hmi-ill-blue-left:var(--p-ill-blue-300);
+  --hmi-ill-blue-right:var(--p-ill-blue-500);
+  --hmi-ill-teal-top:var(--p-ill-teal-100);
+  --hmi-ill-teal-left:var(--p-ill-teal-300);
+  --hmi-ill-teal-right:var(--p-ill-teal-500);
+  --hmi-ill-slate-top:var(--p-ill-slate-100);
+  --hmi-ill-slate-left:var(--p-ill-slate-300);
+  --hmi-ill-slate-right:var(--p-ill-slate-500);
+  --hmi-ill-ink-top:var(--p-ill-ink-500);
+  --hmi-ill-ink-left:var(--p-ill-ink-700);
+  --hmi-ill-ink-right:var(--p-ill-ink-900);
+  --hmi-ill-floor:var(--p-ill-floor);
+  --hmi-ill-floor-alt:var(--p-ill-floor-alt);
+  --hmi-ill-glass:var(--p-ill-glass);
   /* AI result cards are marked by a neutral accent so they never read as a status. */
   --color-ai:var(--color-series-3);
   --color-ai-bg:var(--color-bg-subtle);
@@ -174,6 +197,21 @@
   --hmi-iso-slab-top:var(--p-gray-900);
   --hmi-iso-slab-side:var(--p-gray-750);
   --hmi-iso-chip:rgba(28,33,40,.94);
+  --hmi-ill-blue-top:var(--p-ill-blue-700);
+  --hmi-ill-blue-left:var(--p-ill-blue-800);
+  --hmi-ill-blue-right:var(--p-ill-blue-900);
+  --hmi-ill-teal-top:var(--p-ill-teal-700);
+  --hmi-ill-teal-left:var(--p-ill-teal-800);
+  --hmi-ill-teal-right:var(--p-ill-teal-900);
+  --hmi-ill-slate-top:var(--p-ill-slate-700);
+  --hmi-ill-slate-left:var(--p-ill-slate-800);
+  --hmi-ill-slate-right:var(--p-ill-slate-900);
+  --hmi-ill-ink-top:var(--p-ill-ink-700);
+  --hmi-ill-ink-left:var(--p-ill-ink-900);
+  --hmi-ill-ink-right:var(--p-ill-ink-900);
+  --hmi-ill-floor:var(--p-ill-floor-dark);
+  --hmi-ill-floor-alt:var(--p-ill-floor-dark-alt);
+  --hmi-ill-glass:var(--p-ill-glass-dark);
 }
 
 /* ============================================================

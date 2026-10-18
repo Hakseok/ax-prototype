@@ -863,3 +863,55 @@
   fill: var(--hmi-iso-floor);
   opacity: 0;
 }
+
+/* ---- illustrated review look (D-73): flat colored materials, no outlines, tiled floor ---- */
+.hmi-iso--ill .hmi-iso-t,
+.hmi-iso--ill .hmi-iso-l,
+.hmi-iso--ill .hmi-iso-r,
+.hmi-iso--ill .hmi-iso-glass,
+.hmi-iso--ill .hmi-iso-door,
+.hmi-iso--ill .hmi-iso-slab-top {
+  stroke: none;
+}
+
+.hmi-iso--ill .hmi-iso-floor { fill: var(--hmi-ill-floor); }
+.hmi-iso--ill .hmi-iso-floor-grid--tile { fill: url(#hmi-iso-tile); }
+.hmi-iso-tile-a { fill: var(--hmi-ill-floor-alt); }
+.hmi-iso--ill .hmi-iso-slab-top { fill: var(--hmi-iso-slab-top); }
+
+.hmi-mat--blue .hmi-iso-t { fill: var(--hmi-ill-blue-top); }
+.hmi-mat--blue .hmi-iso-l { fill: var(--hmi-ill-blue-left); }
+.hmi-mat--blue .hmi-iso-r { fill: var(--hmi-ill-blue-right); }
+.hmi-mat--teal .hmi-iso-t { fill: var(--hmi-ill-teal-top); }
+.hmi-mat--teal .hmi-iso-l { fill: var(--hmi-ill-teal-left); }
+.hmi-mat--teal .hmi-iso-r { fill: var(--hmi-ill-teal-right); }
+.hmi-mat--slate .hmi-iso-t { fill: var(--hmi-ill-slate-top); }
+.hmi-mat--slate .hmi-iso-l { fill: var(--hmi-ill-slate-left); }
+.hmi-mat--slate .hmi-iso-r { fill: var(--hmi-ill-slate-right); }
+
+/* Standard look keeps the neutral shades: material classes only apply in the illustrated look. */
+.hmi-iso:not(.hmi-iso--ill) .hmi-iso-model .hmi-iso-t:not(.hmi-iso--metal):not(.hmi-iso--dark) { fill: var(--hmi-iso-top); }
+.hmi-iso:not(.hmi-iso--ill) .hmi-iso-model .hmi-iso-l:not(.hmi-iso--metal):not(.hmi-iso--dark) { fill: var(--hmi-iso-left); }
+.hmi-iso:not(.hmi-iso--ill) .hmi-iso-model .hmi-iso-r:not(.hmi-iso--metal):not(.hmi-iso--dark) { fill: var(--hmi-iso-right); }
+
+.hmi-iso--ill .hmi-iso-t.hmi-iso--metal { fill: var(--hmi-ill-slate-top); }
+.hmi-iso--ill .hmi-iso-l.hmi-iso--metal { fill: var(--hmi-ill-slate-left); }
+.hmi-iso--ill .hmi-iso-r.hmi-iso--metal { fill: var(--hmi-ill-slate-right); }
+.hmi-iso--ill .hmi-iso-t.hmi-iso--dark { fill: var(--hmi-ill-ink-top); }
+.hmi-iso--ill .hmi-iso-l.hmi-iso--dark { fill: var(--hmi-ill-ink-left); }
+.hmi-iso--ill .hmi-iso-r.hmi-iso--dark { fill: var(--hmi-ill-ink-right); }
+.hmi-iso--ill .hmi-iso-glass { fill: var(--hmi-ill-glass); }
+.hmi-iso--ill .hmi-iso-door { fill: var(--hmi-ill-slate-right); }
+.hmi-iso--ill .hmi-iso-screen { fill: var(--hmi-ill-ink-right); }
+.hmi-iso--ill .hmi-iso-arm { stroke: var(--hmi-ill-teal-right); }
+.hmi-iso--ill .hmi-iso-joint { fill: var(--hmi-ill-teal-top); stroke: var(--hmi-ill-ink-left); }
+
+.hmi-iso--ill .hmi-iso-conveyor__side { stroke: var(--hmi-ill-ink-top); }
+.hmi-iso--ill .hmi-iso-conveyor__top { stroke: var(--hmi-ill-slate-right); }
+.hmi-iso--ill .hmi-iso-conveyor__belt { stroke: var(--hmi-ill-ink-left); stroke-dasharray: 2 8; }
+.hmi-iso-t.hmi-iso--crate { fill: var(--hmi-ill-slate-top); }
+.hmi-iso-l.hmi-iso--crate { fill: var(--hmi-ill-slate-left); }
+.hmi-iso-r.hmi-iso--crate { fill: var(--hmi-ill-slate-right); }
+.hmi-iso--ill .hmi-iso-crates polygon { stroke: none; }
+.hmi-iso--ill .hmi-iso-pipe__line { stroke: var(--hmi-ill-blue-right); stroke-dasharray: none; }
+.hmi-iso--ill .hmi-iso-shadow { fill: var(--hmi-iso-shadow); }
