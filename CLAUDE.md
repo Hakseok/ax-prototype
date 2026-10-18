@@ -8,7 +8,7 @@
 ## 먼저 읽을 것
 
 - `prompts/00-진행-순서.md` — 단계와 모든 단계에 적용하는 규칙
-- `docs/screen-guide.md` — 공통 틀, 화면 패턴 12종, 공통 규칙. 화면 구조의 기준이다.
+- `docs/screen-guide.md` — 공통 틀, 화면 패턴 13종, 공통 규칙. 화면 구조의 기준이다.
 - `docs/decisions.md` — 가이드에 없어 따로 정한 사항
 - `config/menu.json` — 화면 ID, 메뉴, 패턴, 사업장 범위, 역할, 구현 단계. 메뉴의 단일 출처다.
 - `config/company.json` — 가상 회사, 사업장, 라인, 설비, 제품, 고객사, 단가, 시나리오
@@ -48,7 +48,7 @@
 ```
 src/
   shell/        공통 틀, 역할별 메뉴, 사업장 선택, 알림 센터, AI 도우미 창
-  patterns/     P1~P12 템플릿
+  patterns/     P1~P13 템플릿
   components/   상태 배지, 지표 카드, 금액 카드, AI 결과 카드, 그리드·차트 래퍼
   data/         로더, 집계, metrics/, roi/, aiEngine.ts, 비교 기간
   report/       PDF 보고서 구성

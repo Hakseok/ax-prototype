@@ -172,6 +172,16 @@
   --shell-assistant-w:440px;
   --landing-max-w:960px;
   --hatch-gap:4px;
+  /* P13 process view: sizes in canvas units (the drawing is 1600 × 900 and scales to fit). */
+  --hmi-font-title:26px;
+  --hmi-font-zone:17px;
+  --hmi-font-label:14px;
+  --hmi-font-value:13px;
+  --hmi-stroke:1.5px;
+  --hmi-stroke-strong:3px;
+  --hmi-conveyor-w:10px;
+  --hmi-handle:10px;
+  --hmi-hatch:8px;
   --report-page-w:794px;
   --report-page-h:1123px;
   /* Print palette of the report preview and PDF: light in every theme. */

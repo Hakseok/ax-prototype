@@ -1,0 +1,558 @@
+{
+  "id": "HMI-ASN-01",
+  "siteId": "ASN",
+  "name": "아산 프레스·용접동",
+  "size": [
+    1600,
+    900
+  ],
+  "grid": 10,
+  "version": 1,
+  "publishedAt": "2026-09-15T09:00",
+  "publishedBy": "시스템 관리자",
+  "objects": [
+    {
+      "id": "t1",
+      "kind": "text",
+      "x": 40,
+      "y": 44,
+      "text": "아산 프레스·용접동",
+      "size": "title"
+    },
+    {
+      "id": "z2",
+      "kind": "zone",
+      "x": 40,
+      "y": 80,
+      "w": 1060,
+      "h": 250,
+      "label": "탠덤 프레스 1라인",
+      "lineId": "ASN-PR1"
+    },
+    {
+      "id": "l3",
+      "kind": "line",
+      "style": "conveyor",
+      "points": [
+        [
+          90,
+          230
+        ],
+        [
+          1050,
+          230
+        ]
+      ]
+    },
+    {
+      "id": "e4",
+      "kind": "equipment",
+      "symbol": "press",
+      "x": 105,
+      "y": 155,
+      "w": 110,
+      "h": 90,
+      "equipmentId": "ASN-PR1-M01",
+      "signals": [
+        "vibration",
+        "temperature"
+      ]
+    },
+    {
+      "id": "e5",
+      "kind": "equipment",
+      "symbol": "press",
+      "x": 305,
+      "y": 155,
+      "w": 110,
+      "h": 90,
+      "equipmentId": "ASN-PR1-M02"
+    },
+    {
+      "id": "e6",
+      "kind": "equipment",
+      "symbol": "press",
+      "x": 505,
+      "y": 155,
+      "w": 110,
+      "h": 90,
+      "equipmentId": "ASN-PR1-M03"
+    },
+    {
+      "id": "e7",
+      "kind": "equipment",
+      "symbol": "press",
+      "x": 705,
+      "y": 155,
+      "w": 110,
+      "h": 90,
+      "equipmentId": "ASN-PR1-M04"
+    },
+    {
+      "id": "e8",
+      "kind": "equipment",
+      "symbol": "press",
+      "x": 905,
+      "y": 155,
+      "w": 110,
+      "h": 90,
+      "equipmentId": "ASN-PR1-M05"
+    },
+    {
+      "id": "z9",
+      "kind": "zone",
+      "x": 1130,
+      "y": 80,
+      "w": 430,
+      "h": 250,
+      "label": "트랜스퍼 프레스 2라인",
+      "lineId": "ASN-PR2"
+    },
+    {
+      "id": "l10",
+      "kind": "line",
+      "style": "conveyor",
+      "points": [
+        [
+          1170,
+          230
+        ],
+        [
+          1520,
+          230
+        ]
+      ]
+    },
+    {
+      "id": "e11",
+      "kind": "equipment",
+      "symbol": "press",
+      "x": 1290,
+      "y": 155,
+      "w": 110,
+      "h": 90,
+      "equipmentId": "ASN-PR2-M01",
+      "signals": [
+        "vibration"
+      ]
+    },
+    {
+      "id": "z12",
+      "kind": "zone",
+      "x": 40,
+      "y": 360,
+      "w": 1060,
+      "h": 250,
+      "label": "로봇 용접 1라인",
+      "lineId": "ASN-WD1"
+    },
+    {
+      "id": "l13",
+      "kind": "line",
+      "style": "conveyor",
+      "points": [
+        [
+          90,
+          485
+        ],
+        [
+          1050,
+          485
+        ]
+      ]
+    },
+    {
+      "id": "e14",
+      "kind": "equipment",
+      "symbol": "robot",
+      "x": 114,
+      "y": 389,
+      "w": 72,
+      "h": 72,
+      "equipmentId": "ASN-WD1-M01"
+    },
+    {
+      "id": "e15",
+      "kind": "equipment",
+      "symbol": "robot",
+      "x": 279,
+      "y": 389,
+      "w": 72,
+      "h": 72,
+      "equipmentId": "ASN-WD1-M02"
+    },
+    {
+      "id": "e16",
+      "kind": "equipment",
+      "symbol": "robot",
+      "x": 444,
+      "y": 389,
+      "w": 72,
+      "h": 72,
+      "equipmentId": "ASN-WD1-M03"
+    },
+    {
+      "id": "e17",
+      "kind": "equipment",
+      "symbol": "robot",
+      "x": 609,
+      "y": 389,
+      "w": 72,
+      "h": 72,
+      "equipmentId": "ASN-WD1-M04"
+    },
+    {
+      "id": "e18",
+      "kind": "equipment",
+      "symbol": "robot",
+      "x": 774,
+      "y": 389,
+      "w": 72,
+      "h": 72,
+      "equipmentId": "ASN-WD1-M05"
+    },
+    {
+      "id": "e19",
+      "kind": "equipment",
+      "symbol": "robot",
+      "x": 939,
+      "y": 389,
+      "w": 72,
+      "h": 72,
+      "equipmentId": "ASN-WD1-M06"
+    },
+    {
+      "id": "e20",
+      "kind": "equipment",
+      "symbol": "robot",
+      "x": 114,
+      "y": 519,
+      "w": 72,
+      "h": 72,
+      "equipmentId": "ASN-WD1-M07"
+    },
+    {
+      "id": "e21",
+      "kind": "equipment",
+      "symbol": "robot",
+      "x": 279,
+      "y": 519,
+      "w": 72,
+      "h": 72,
+      "equipmentId": "ASN-WD1-M08"
+    },
+    {
+      "id": "e22",
+      "kind": "equipment",
+      "symbol": "robot",
+      "x": 444,
+      "y": 519,
+      "w": 72,
+      "h": 72,
+      "equipmentId": "ASN-WD1-M09"
+    },
+    {
+      "id": "e23",
+      "kind": "equipment",
+      "symbol": "robot",
+      "x": 609,
+      "y": 519,
+      "w": 72,
+      "h": 72,
+      "equipmentId": "ASN-WD1-M10"
+    },
+    {
+      "id": "e24",
+      "kind": "equipment",
+      "symbol": "robot",
+      "x": 774,
+      "y": 519,
+      "w": 72,
+      "h": 72,
+      "equipmentId": "ASN-WD1-M11"
+    },
+    {
+      "id": "e25",
+      "kind": "equipment",
+      "symbol": "robot",
+      "x": 939,
+      "y": 519,
+      "w": 72,
+      "h": 72,
+      "equipmentId": "ASN-WD1-M12"
+    },
+    {
+      "id": "z26",
+      "kind": "zone",
+      "x": 40,
+      "y": 640,
+      "w": 1060,
+      "h": 230,
+      "label": "로봇 용접 2라인",
+      "lineId": "ASN-WD2"
+    },
+    {
+      "id": "l27",
+      "kind": "line",
+      "style": "conveyor",
+      "points": [
+        [
+          90,
+          762
+        ],
+        [
+          1050,
+          762
+        ]
+      ]
+    },
+    {
+      "id": "e28",
+      "kind": "equipment",
+      "symbol": "robot",
+      "x": 114,
+      "y": 669,
+      "w": 72,
+      "h": 72,
+      "equipmentId": "ASN-WD2-M01"
+    },
+    {
+      "id": "e29",
+      "kind": "equipment",
+      "symbol": "robot",
+      "x": 314,
+      "y": 669,
+      "w": 72,
+      "h": 72,
+      "equipmentId": "ASN-WD2-M02"
+    },
+    {
+      "id": "e30",
+      "kind": "equipment",
+      "symbol": "robot",
+      "x": 514,
+      "y": 669,
+      "w": 72,
+      "h": 72,
+      "equipmentId": "ASN-WD2-M03"
+    },
+    {
+      "id": "e31",
+      "kind": "equipment",
+      "symbol": "robot",
+      "x": 714,
+      "y": 669,
+      "w": 72,
+      "h": 72,
+      "equipmentId": "ASN-WD2-M04"
+    },
+    {
+      "id": "e32",
+      "kind": "equipment",
+      "symbol": "robot",
+      "x": 914,
+      "y": 669,
+      "w": 72,
+      "h": 72,
+      "equipmentId": "ASN-WD2-M05"
+    },
+    {
+      "id": "e33",
+      "kind": "equipment",
+      "symbol": "robot",
+      "x": 194,
+      "y": 776,
+      "w": 72,
+      "h": 72,
+      "equipmentId": "ASN-WD2-M06"
+    },
+    {
+      "id": "e34",
+      "kind": "equipment",
+      "symbol": "robot",
+      "x": 394,
+      "y": 776,
+      "w": 72,
+      "h": 72,
+      "equipmentId": "ASN-WD2-M07"
+    },
+    {
+      "id": "e35",
+      "kind": "equipment",
+      "symbol": "robot",
+      "x": 594,
+      "y": 776,
+      "w": 72,
+      "h": 72,
+      "equipmentId": "ASN-WD2-M08"
+    },
+    {
+      "id": "e36",
+      "kind": "equipment",
+      "symbol": "robot",
+      "x": 794,
+      "y": 776,
+      "w": 72,
+      "h": 72,
+      "equipmentId": "ASN-WD2-M09"
+    },
+    {
+      "id": "e37",
+      "kind": "equipment",
+      "symbol": "robot",
+      "x": 994,
+      "y": 776,
+      "w": 72,
+      "h": 72,
+      "equipmentId": "ASN-WD2-M10"
+    },
+    {
+      "id": "z38",
+      "kind": "zone",
+      "x": 1130,
+      "y": 360,
+      "w": 430,
+      "h": 510,
+      "label": "유틸리티",
+      "lineId": "ASN-UTL"
+    },
+    {
+      "id": "l39",
+      "kind": "line",
+      "style": "pipe",
+      "points": [
+        [
+          1180,
+          520
+        ],
+        [
+          1510,
+          520
+        ]
+      ]
+    },
+    {
+      "id": "e40",
+      "kind": "equipment",
+      "symbol": "compressor",
+      "x": 1155,
+      "y": 418,
+      "w": 80,
+      "h": 64,
+      "equipmentId": "ASN-UTL-M01",
+      "signals": [
+        "current"
+      ]
+    },
+    {
+      "id": "e41",
+      "kind": "equipment",
+      "symbol": "compressor",
+      "x": 1255,
+      "y": 418,
+      "w": 80,
+      "h": 64,
+      "equipmentId": "ASN-UTL-M02"
+    },
+    {
+      "id": "e42",
+      "kind": "equipment",
+      "symbol": "compressor",
+      "x": 1355,
+      "y": 418,
+      "w": 80,
+      "h": 64,
+      "equipmentId": "ASN-UTL-M03"
+    },
+    {
+      "id": "e43",
+      "kind": "equipment",
+      "symbol": "compressor",
+      "x": 1455,
+      "y": 418,
+      "w": 80,
+      "h": 64,
+      "equipmentId": "ASN-UTL-M04"
+    },
+    {
+      "id": "e44",
+      "kind": "equipment",
+      "symbol": "utility",
+      "x": 1159,
+      "y": 590,
+      "w": 72,
+      "h": 60,
+      "equipmentId": "ASN-UTL-M05"
+    },
+    {
+      "id": "e45",
+      "kind": "equipment",
+      "symbol": "utility",
+      "x": 1259,
+      "y": 590,
+      "w": 72,
+      "h": 60,
+      "equipmentId": "ASN-UTL-M06"
+    },
+    {
+      "id": "e46",
+      "kind": "equipment",
+      "symbol": "utility",
+      "x": 1359,
+      "y": 590,
+      "w": 72,
+      "h": 60,
+      "equipmentId": "ASN-UTL-M07"
+    },
+    {
+      "id": "e47",
+      "kind": "equipment",
+      "symbol": "utility",
+      "x": 1459,
+      "y": 590,
+      "w": 72,
+      "h": 60,
+      "equipmentId": "ASN-UTL-M08"
+    },
+    {
+      "id": "e48",
+      "kind": "equipment",
+      "symbol": "utility",
+      "x": 1159,
+      "y": 730,
+      "w": 72,
+      "h": 60,
+      "equipmentId": "ASN-UTL-M11"
+    },
+    {
+      "id": "e49",
+      "kind": "equipment",
+      "symbol": "utility",
+      "x": 1259,
+      "y": 730,
+      "w": 72,
+      "h": 60,
+      "equipmentId": "ASN-UTL-M13"
+    },
+    {
+      "id": "e50",
+      "kind": "equipment",
+      "symbol": "utility",
+      "x": 1359,
+      "y": 730,
+      "w": 72,
+      "h": 60,
+      "equipmentId": "ASN-UTL-M14"
+    },
+    {
+      "id": "e51",
+      "kind": "equipment",
+      "symbol": "utility",
+      "x": 1459,
+      "y": 730,
+      "w": 72,
+      "h": 60,
+      "equipmentId": "ASN-UTL-M15"
+    }
+  ]
+}

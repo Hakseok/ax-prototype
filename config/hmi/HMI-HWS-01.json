@@ -1,0 +1,483 @@
+{
+  "id": "HMI-HWS-01",
+  "siteId": "HWS",
+  "name": "화성 조립동",
+  "size": [
+    1600,
+    900
+  ],
+  "grid": 10,
+  "version": 1,
+  "publishedAt": "2026-09-15T09:00",
+  "publishedBy": "시스템 관리자",
+  "objects": [
+    {
+      "id": "t1",
+      "kind": "text",
+      "x": 40,
+      "y": 44,
+      "text": "화성 조립동",
+      "size": "title"
+    },
+    {
+      "id": "z2",
+      "kind": "zone",
+      "x": 40,
+      "y": 80,
+      "w": 1100,
+      "h": 380,
+      "label": "프런트 엔드 모듈 조립 1라인",
+      "lineId": "HWS-AS1"
+    },
+    {
+      "id": "l3",
+      "kind": "line",
+      "style": "conveyor",
+      "points": [
+        [
+          90,
+          250
+        ],
+        [
+          1090,
+          250
+        ]
+      ]
+    },
+    {
+      "id": "e4",
+      "kind": "equipment",
+      "symbol": "fastening",
+      "x": 94,
+      "y": 144,
+      "w": 72,
+      "h": 72,
+      "equipmentId": "HWS-AS1-M01",
+      "label": "체결 1호",
+      "signals": [
+        "current"
+      ]
+    },
+    {
+      "id": "e5",
+      "kind": "equipment",
+      "symbol": "fastening",
+      "x": 199,
+      "y": 144,
+      "w": 72,
+      "h": 72,
+      "equipmentId": "HWS-AS1-M02",
+      "label": "체결 2호"
+    },
+    {
+      "id": "e6",
+      "kind": "equipment",
+      "symbol": "fastening",
+      "x": 304,
+      "y": 144,
+      "w": 72,
+      "h": 72,
+      "equipmentId": "HWS-AS1-M03",
+      "label": "체결 3호"
+    },
+    {
+      "id": "e7",
+      "kind": "equipment",
+      "symbol": "fastening",
+      "x": 409,
+      "y": 144,
+      "w": 72,
+      "h": 72,
+      "equipmentId": "HWS-AS1-M04",
+      "label": "체결 4호"
+    },
+    {
+      "id": "e8",
+      "kind": "equipment",
+      "symbol": "fastening",
+      "x": 514,
+      "y": 144,
+      "w": 72,
+      "h": 72,
+      "equipmentId": "HWS-AS1-M05",
+      "label": "체결 5호"
+    },
+    {
+      "id": "e9",
+      "kind": "equipment",
+      "symbol": "fastening",
+      "x": 619,
+      "y": 144,
+      "w": 72,
+      "h": 72,
+      "equipmentId": "HWS-AS1-M06",
+      "label": "체결 6호"
+    },
+    {
+      "id": "e10",
+      "kind": "equipment",
+      "symbol": "fastening",
+      "x": 724,
+      "y": 144,
+      "w": 72,
+      "h": 72,
+      "equipmentId": "HWS-AS1-M07",
+      "label": "체결 7호"
+    },
+    {
+      "id": "e11",
+      "kind": "equipment",
+      "symbol": "fastening",
+      "x": 829,
+      "y": 144,
+      "w": 72,
+      "h": 72,
+      "equipmentId": "HWS-AS1-M08",
+      "label": "체결 8호"
+    },
+    {
+      "id": "e12",
+      "kind": "equipment",
+      "symbol": "fastening",
+      "x": 934,
+      "y": 144,
+      "w": 72,
+      "h": 72,
+      "equipmentId": "HWS-AS1-M09",
+      "label": "체결 9호"
+    },
+    {
+      "id": "e13",
+      "kind": "equipment",
+      "symbol": "fastening",
+      "x": 1039,
+      "y": 144,
+      "w": 72,
+      "h": 72,
+      "equipmentId": "HWS-AS1-M10",
+      "label": "체결 10호"
+    },
+    {
+      "id": "e14",
+      "kind": "equipment",
+      "symbol": "inspection",
+      "x": 124,
+      "y": 324,
+      "w": 72,
+      "h": 72,
+      "equipmentId": "HWS-AS1-M11"
+    },
+    {
+      "id": "e15",
+      "kind": "equipment",
+      "symbol": "inspection",
+      "x": 274,
+      "y": 324,
+      "w": 72,
+      "h": 72,
+      "equipmentId": "HWS-AS1-M12"
+    },
+    {
+      "id": "e16",
+      "kind": "equipment",
+      "symbol": "inspection",
+      "x": 424,
+      "y": 324,
+      "w": 72,
+      "h": 72,
+      "equipmentId": "HWS-AS1-M13"
+    },
+    {
+      "id": "e17",
+      "kind": "equipment",
+      "symbol": "agv",
+      "x": 658,
+      "y": 338,
+      "w": 64,
+      "h": 44,
+      "equipmentId": "HWS-AS1-M14"
+    },
+    {
+      "id": "e18",
+      "kind": "equipment",
+      "symbol": "agv",
+      "x": 798,
+      "y": 338,
+      "w": 64,
+      "h": 44,
+      "equipmentId": "HWS-AS1-M15"
+    },
+    {
+      "id": "e19",
+      "kind": "equipment",
+      "symbol": "agv",
+      "x": 938,
+      "y": 338,
+      "w": 64,
+      "h": 44,
+      "equipmentId": "HWS-AS1-M16"
+    },
+    {
+      "id": "z20",
+      "kind": "zone",
+      "x": 40,
+      "y": 490,
+      "w": 1100,
+      "h": 380,
+      "label": "콕핏 모듈 조립 2라인",
+      "lineId": "HWS-AS2"
+    },
+    {
+      "id": "l21",
+      "kind": "line",
+      "style": "conveyor",
+      "points": [
+        [
+          90,
+          660
+        ],
+        [
+          1090,
+          660
+        ]
+      ]
+    },
+    {
+      "id": "e22",
+      "kind": "equipment",
+      "symbol": "fastening",
+      "x": 104,
+      "y": 554,
+      "w": 72,
+      "h": 72,
+      "equipmentId": "HWS-AS2-M01",
+      "label": "체결 1호"
+    },
+    {
+      "id": "e23",
+      "kind": "equipment",
+      "symbol": "fastening",
+      "x": 219,
+      "y": 554,
+      "w": 72,
+      "h": 72,
+      "equipmentId": "HWS-AS2-M02",
+      "label": "체결 2호"
+    },
+    {
+      "id": "e24",
+      "kind": "equipment",
+      "symbol": "fastening",
+      "x": 334,
+      "y": 554,
+      "w": 72,
+      "h": 72,
+      "equipmentId": "HWS-AS2-M03",
+      "label": "체결 3호"
+    },
+    {
+      "id": "e25",
+      "kind": "equipment",
+      "symbol": "fastening",
+      "x": 449,
+      "y": 554,
+      "w": 72,
+      "h": 72,
+      "equipmentId": "HWS-AS2-M04",
+      "label": "체결 4호"
+    },
+    {
+      "id": "e26",
+      "kind": "equipment",
+      "symbol": "fastening",
+      "x": 564,
+      "y": 554,
+      "w": 72,
+      "h": 72,
+      "equipmentId": "HWS-AS2-M05",
+      "label": "체결 5호"
+    },
+    {
+      "id": "e27",
+      "kind": "equipment",
+      "symbol": "fastening",
+      "x": 679,
+      "y": 554,
+      "w": 72,
+      "h": 72,
+      "equipmentId": "HWS-AS2-M06",
+      "label": "체결 6호"
+    },
+    {
+      "id": "e28",
+      "kind": "equipment",
+      "symbol": "fastening",
+      "x": 794,
+      "y": 554,
+      "w": 72,
+      "h": 72,
+      "equipmentId": "HWS-AS2-M07",
+      "label": "체결 7호"
+    },
+    {
+      "id": "e29",
+      "kind": "equipment",
+      "symbol": "fastening",
+      "x": 909,
+      "y": 554,
+      "w": 72,
+      "h": 72,
+      "equipmentId": "HWS-AS2-M08",
+      "label": "체결 8호"
+    },
+    {
+      "id": "e30",
+      "kind": "equipment",
+      "symbol": "fastening",
+      "x": 1024,
+      "y": 554,
+      "w": 72,
+      "h": 72,
+      "equipmentId": "HWS-AS2-M09",
+      "label": "체결 9호"
+    },
+    {
+      "id": "e31",
+      "kind": "equipment",
+      "symbol": "inspection",
+      "x": 124,
+      "y": 739,
+      "w": 72,
+      "h": 72,
+      "equipmentId": "HWS-AS2-M10"
+    },
+    {
+      "id": "e32",
+      "kind": "equipment",
+      "symbol": "inspection",
+      "x": 274,
+      "y": 739,
+      "w": 72,
+      "h": 72,
+      "equipmentId": "HWS-AS2-M11"
+    },
+    {
+      "id": "e33",
+      "kind": "equipment",
+      "symbol": "inspection",
+      "x": 424,
+      "y": 739,
+      "w": 72,
+      "h": 72,
+      "equipmentId": "HWS-AS2-M12"
+    },
+    {
+      "id": "e34",
+      "kind": "equipment",
+      "symbol": "agv",
+      "x": 658,
+      "y": 753,
+      "w": 64,
+      "h": 44,
+      "equipmentId": "HWS-AS2-M13"
+    },
+    {
+      "id": "e35",
+      "kind": "equipment",
+      "symbol": "agv",
+      "x": 798,
+      "y": 753,
+      "w": 64,
+      "h": 44,
+      "equipmentId": "HWS-AS2-M14"
+    },
+    {
+      "id": "z36",
+      "kind": "zone",
+      "x": 1170,
+      "y": 80,
+      "w": 390,
+      "h": 790,
+      "label": "유틸리티",
+      "lineId": "HWS-UTL"
+    },
+    {
+      "id": "l37",
+      "kind": "line",
+      "style": "pipe",
+      "points": [
+        [
+          1210,
+          300
+        ],
+        [
+          1520,
+          300
+        ]
+      ]
+    },
+    {
+      "id": "e38",
+      "kind": "equipment",
+      "symbol": "compressor",
+      "x": 1240,
+      "y": 168,
+      "w": 80,
+      "h": 64,
+      "equipmentId": "HWS-UTL-M01",
+      "signals": [
+        "current"
+      ]
+    },
+    {
+      "id": "e39",
+      "kind": "equipment",
+      "symbol": "compressor",
+      "x": 1400,
+      "y": 168,
+      "w": 80,
+      "h": 64,
+      "equipmentId": "HWS-UTL-M02"
+    },
+    {
+      "id": "e40",
+      "kind": "equipment",
+      "symbol": "compressor",
+      "x": 1240,
+      "y": 368,
+      "w": 80,
+      "h": 64,
+      "equipmentId": "HWS-UTL-M03"
+    },
+    {
+      "id": "e41",
+      "kind": "equipment",
+      "symbol": "compressor",
+      "x": 1400,
+      "y": 368,
+      "w": 80,
+      "h": 64,
+      "equipmentId": "HWS-UTL-M04"
+    },
+    {
+      "id": "e42",
+      "kind": "equipment",
+      "symbol": "utility",
+      "x": 1244,
+      "y": 570,
+      "w": 72,
+      "h": 60,
+      "equipmentId": "HWS-UTL-M05"
+    },
+    {
+      "id": "e43",
+      "kind": "equipment",
+      "symbol": "utility",
+      "x": 1404,
+      "y": 570,
+      "w": 72,
+      "h": 60,
+      "equipmentId": "HWS-UTL-M06"
+    }
+  ]
+}

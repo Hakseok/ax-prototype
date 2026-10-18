@@ -18,7 +18,7 @@ const terms = readJson('config/terms.json');
 const company = readJson('config/company.json');
 const templates = readJson('config/industry-templates.json').templates;
 
-const PATTERNS = ['P1', 'P2', 'P3', 'P4', 'P5', 'P6', 'P7', 'P8', 'P9', 'P10', 'P11', 'P12'];
+const PATTERNS = ['P1', 'P2', 'P3', 'P4', 'P5', 'P6', 'P7', 'P8', 'P9', 'P10', 'P11', 'P12', 'P13'];
 const SITE_SCOPES = ['site-or-company', 'site-only', 'company-only', 'common'];
 const PERMISSIONS = ['조회', '편집', '관리'];
 const ID_RE = /^[A-Z]{3}-\d{3}$/;

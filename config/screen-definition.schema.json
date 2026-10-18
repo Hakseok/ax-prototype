@@ -7,7 +7,7 @@
   "required": ["id", "pattern", "title", "permission"],
   "properties": {
     "id": { "type": "string", "pattern": "^[A-Z]{3}-\\d{3}$" },
-    "pattern": { "enum": ["P1", "P2", "P3", "P4", "P5", "P6", "P7", "P8", "P9", "P10", "P11", "P12"] },
+    "pattern": { "enum": ["P1", "P2", "P3", "P4", "P5", "P6", "P7", "P8", "P9", "P10", "P11", "P12", "P13"] },
     "title": { "type": "string", "minLength": 1 },
     "permission": {
       "type": "object",
@@ -53,7 +53,21 @@
     "ai": { "type": "array" },
     "drill": { "type": "object" },
     "mobile": { "type": "boolean" },
-    "exception": { "type": "string", "description": "템플릿으로 안 되는 부분과 이유(src/screens 사용 시 필수)" }
+    "exception": { "type": "string", "description": "템플릿으로 안 되는 부분과 이유(src/screens 사용 시 필수)" },
+    "hmi": {
+      "type": "object",
+      "description": "P13 공정도형: viewer(설비 가동 화면) 또는 designer(화면 디자이너)",
+      "required": ["mode"],
+      "additionalProperties": false,
+      "properties": {
+        "mode": { "enum": ["viewer", "designer"] },
+        "views": { "type": "array", "items": { "enum": ["process", "energy"] } },
+        "playbackStepMin": { "type": "integer", "minimum": 5 },
+        "canvas": { "type": "array", "items": { "type": "integer" }, "minItems": 2, "maxItems": 2 },
+        "grid": { "type": "integer", "minimum": 1 },
+        "maxSignals": { "type": "integer", "minimum": 0, "maximum": 2 }
+      }
+    }
   },
   "additionalProperties": false,
   "allOf": [
@@ -80,7 +94,8 @@
     { "if": { "properties": { "pattern": { "const": "P9" } } }, "then": { "required": ["ledger"] } },
     { "if": { "properties": { "pattern": { "const": "P10" } } }, "then": { "required": ["report", "actions"] } },
     { "if": { "properties": { "pattern": { "const": "P11" } } }, "then": { "required": ["filters", "analysis", "actions"] } },
-    { "if": { "properties": { "pattern": { "const": "P12" } } }, "then": { "required": ["assistant"] } }
+    { "if": { "properties": { "pattern": { "const": "P12" } } }, "then": { "required": ["assistant"] } },
+    { "if": { "properties": { "pattern": { "const": "P13" } } }, "then": { "required": ["hmi"] } }
   ],
   "$defs": {
     "role": { "enum": ["조회", "편집", "관리"] },

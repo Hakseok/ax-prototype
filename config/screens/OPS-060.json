@@ -1,0 +1,12 @@
+{
+  "id": "OPS-060",
+  "pattern": "P13",
+  "title": "설비 가동 화면",
+  "permission": { "view": "조회" },
+  "hmi": { "mode": "viewer", "views": ["process", "energy"], "playbackStepMin": 15, "maxSignals": 2 },
+  "links": [
+    { "label": "라인 모니터링", "to": "OPS-030" },
+    { "label": "화면 디자이너", "to": "SET-080" }
+  ],
+  "note": "조회 전용이다(제어 없음). 공정도는 화면 디자이너(SET-080)에서 게시한 사업장별 화면이다. 상태는 OPS-030과 같은 계산(D-65), 신호값은 직전 1시간 평균, 전력은 15분 평균이다. 시점은 오늘 0시부터 지금까지 15분 단위로 되돌려 볼 수 있다(D-71)."
+}

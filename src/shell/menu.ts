@@ -36,6 +36,7 @@ export const PATTERN_NAMES: Record<string, string> = {
   P10: 'P10 보고서형',
   P11: 'P11 원인 분석형',
   P12: 'P12 대화형',
+  P13: 'P13 공정도형',
   drawer: '드로어',
   standalone: '단독 화면'
 };

@@ -1,0 +1,444 @@
+{
+  "id": "HMI-DGU-01",
+  "siteId": "DGU",
+  "name": "대구 가공동",
+  "size": [
+    1600,
+    900
+  ],
+  "grid": 10,
+  "version": 1,
+  "publishedAt": "2026-09-15T09:00",
+  "publishedBy": "시스템 관리자",
+  "objects": [
+    {
+      "id": "t1",
+      "kind": "text",
+      "x": 40,
+      "y": 44,
+      "text": "대구 가공동",
+      "size": "title"
+    },
+    {
+      "id": "z2",
+      "kind": "zone",
+      "x": 40,
+      "y": 80,
+      "w": 1060,
+      "h": 360,
+      "label": "너클 가공 1라인",
+      "lineId": "DGU-MC1"
+    },
+    {
+      "id": "l3",
+      "kind": "line",
+      "style": "conveyor",
+      "points": [
+        [
+          90,
+          260
+        ],
+        [
+          1050,
+          260
+        ]
+      ]
+    },
+    {
+      "id": "e4",
+      "kind": "equipment",
+      "symbol": "machining",
+      "x": 98,
+      "y": 133,
+      "w": 84,
+      "h": 84,
+      "equipmentId": "DGU-MC1-M01"
+    },
+    {
+      "id": "e5",
+      "kind": "equipment",
+      "symbol": "machining",
+      "x": 263,
+      "y": 133,
+      "w": 84,
+      "h": 84,
+      "equipmentId": "DGU-MC1-M02"
+    },
+    {
+      "id": "e6",
+      "kind": "equipment",
+      "symbol": "machining",
+      "x": 428,
+      "y": 133,
+      "w": 84,
+      "h": 84,
+      "equipmentId": "DGU-MC1-M03",
+      "signals": [
+        "vibration"
+      ]
+    },
+    {
+      "id": "e7",
+      "kind": "equipment",
+      "symbol": "machining",
+      "x": 593,
+      "y": 133,
+      "w": 84,
+      "h": 84,
+      "equipmentId": "DGU-MC1-M04"
+    },
+    {
+      "id": "e8",
+      "kind": "equipment",
+      "symbol": "machining",
+      "x": 758,
+      "y": 133,
+      "w": 84,
+      "h": 84,
+      "equipmentId": "DGU-MC1-M05"
+    },
+    {
+      "id": "e9",
+      "kind": "equipment",
+      "symbol": "machining",
+      "x": 923,
+      "y": 133,
+      "w": 84,
+      "h": 84,
+      "equipmentId": "DGU-MC1-M06"
+    },
+    {
+      "id": "e10",
+      "kind": "equipment",
+      "symbol": "machining",
+      "x": 98,
+      "y": 313,
+      "w": 84,
+      "h": 84,
+      "equipmentId": "DGU-MC1-M07"
+    },
+    {
+      "id": "e11",
+      "kind": "equipment",
+      "symbol": "machining",
+      "x": 263,
+      "y": 313,
+      "w": 84,
+      "h": 84,
+      "equipmentId": "DGU-MC1-M08"
+    },
+    {
+      "id": "e12",
+      "kind": "equipment",
+      "symbol": "machining",
+      "x": 428,
+      "y": 313,
+      "w": 84,
+      "h": 84,
+      "equipmentId": "DGU-MC1-M09"
+    },
+    {
+      "id": "e13",
+      "kind": "equipment",
+      "symbol": "machining",
+      "x": 593,
+      "y": 313,
+      "w": 84,
+      "h": 84,
+      "equipmentId": "DGU-MC1-M10"
+    },
+    {
+      "id": "e14",
+      "kind": "equipment",
+      "symbol": "machining",
+      "x": 758,
+      "y": 313,
+      "w": 84,
+      "h": 84,
+      "equipmentId": "DGU-MC1-M11"
+    },
+    {
+      "id": "e15",
+      "kind": "equipment",
+      "symbol": "machining",
+      "x": 923,
+      "y": 313,
+      "w": 84,
+      "h": 84,
+      "equipmentId": "DGU-MC1-M12"
+    },
+    {
+      "id": "z16",
+      "kind": "zone",
+      "x": 40,
+      "y": 470,
+      "w": 1060,
+      "h": 400,
+      "label": "하우징 가공 2라인",
+      "lineId": "DGU-MC2"
+    },
+    {
+      "id": "l17",
+      "kind": "line",
+      "style": "conveyor",
+      "points": [
+        [
+          90,
+          670
+        ],
+        [
+          1050,
+          670
+        ]
+      ]
+    },
+    {
+      "id": "e18",
+      "kind": "equipment",
+      "symbol": "lathe",
+      "x": 78,
+      "y": 553,
+      "w": 84,
+      "h": 64,
+      "equipmentId": "DGU-MC2-M01"
+    },
+    {
+      "id": "e19",
+      "kind": "equipment",
+      "symbol": "lathe",
+      "x": 218,
+      "y": 553,
+      "w": 84,
+      "h": 64,
+      "equipmentId": "DGU-MC2-M02"
+    },
+    {
+      "id": "e20",
+      "kind": "equipment",
+      "symbol": "lathe",
+      "x": 358,
+      "y": 553,
+      "w": 84,
+      "h": 64,
+      "equipmentId": "DGU-MC2-M03"
+    },
+    {
+      "id": "e21",
+      "kind": "equipment",
+      "symbol": "lathe",
+      "x": 498,
+      "y": 553,
+      "w": 84,
+      "h": 64,
+      "equipmentId": "DGU-MC2-M04"
+    },
+    {
+      "id": "e22",
+      "kind": "equipment",
+      "symbol": "lathe",
+      "x": 638,
+      "y": 553,
+      "w": 84,
+      "h": 64,
+      "equipmentId": "DGU-MC2-M05"
+    },
+    {
+      "id": "e23",
+      "kind": "equipment",
+      "symbol": "lathe",
+      "x": 778,
+      "y": 553,
+      "w": 84,
+      "h": 64,
+      "equipmentId": "DGU-MC2-M06"
+    },
+    {
+      "id": "e24",
+      "kind": "equipment",
+      "symbol": "lathe",
+      "x": 918,
+      "y": 553,
+      "w": 84,
+      "h": 64,
+      "equipmentId": "DGU-MC2-M07"
+    },
+    {
+      "id": "e25",
+      "kind": "equipment",
+      "symbol": "lathe",
+      "x": 78,
+      "y": 733,
+      "w": 84,
+      "h": 64,
+      "equipmentId": "DGU-MC2-M08"
+    },
+    {
+      "id": "e26",
+      "kind": "equipment",
+      "symbol": "machining",
+      "x": 218,
+      "y": 723,
+      "w": 84,
+      "h": 84,
+      "equipmentId": "DGU-MC2-M09"
+    },
+    {
+      "id": "e27",
+      "kind": "equipment",
+      "symbol": "machining",
+      "x": 358,
+      "y": 723,
+      "w": 84,
+      "h": 84,
+      "equipmentId": "DGU-MC2-M10"
+    },
+    {
+      "id": "e28",
+      "kind": "equipment",
+      "symbol": "machining",
+      "x": 498,
+      "y": 723,
+      "w": 84,
+      "h": 84,
+      "equipmentId": "DGU-MC2-M11"
+    },
+    {
+      "id": "e29",
+      "kind": "equipment",
+      "symbol": "machining",
+      "x": 638,
+      "y": 723,
+      "w": 84,
+      "h": 84,
+      "equipmentId": "DGU-MC2-M12"
+    },
+    {
+      "id": "e30",
+      "kind": "equipment",
+      "symbol": "machining",
+      "x": 778,
+      "y": 723,
+      "w": 84,
+      "h": 84,
+      "equipmentId": "DGU-MC2-M13"
+    },
+    {
+      "id": "e31",
+      "kind": "equipment",
+      "symbol": "machining",
+      "x": 918,
+      "y": 723,
+      "w": 84,
+      "h": 84,
+      "equipmentId": "DGU-MC2-M14"
+    },
+    {
+      "id": "z32",
+      "kind": "zone",
+      "x": 1130,
+      "y": 80,
+      "w": 430,
+      "h": 790,
+      "label": "유틸리티",
+      "lineId": "DGU-UTL"
+    },
+    {
+      "id": "l33",
+      "kind": "line",
+      "style": "pipe",
+      "points": [
+        [
+          1180,
+          300
+        ],
+        [
+          1510,
+          300
+        ]
+      ]
+    },
+    {
+      "id": "e34",
+      "kind": "equipment",
+      "symbol": "compressor",
+      "x": 1215,
+      "y": 168,
+      "w": 80,
+      "h": 64,
+      "equipmentId": "DGU-UTL-M01",
+      "signals": [
+        "current"
+      ]
+    },
+    {
+      "id": "e35",
+      "kind": "equipment",
+      "symbol": "compressor",
+      "x": 1395,
+      "y": 168,
+      "w": 80,
+      "h": 64,
+      "equipmentId": "DGU-UTL-M02"
+    },
+    {
+      "id": "e36",
+      "kind": "equipment",
+      "symbol": "compressor",
+      "x": 1215,
+      "y": 368,
+      "w": 80,
+      "h": 64,
+      "equipmentId": "DGU-UTL-M03"
+    },
+    {
+      "id": "e37",
+      "kind": "equipment",
+      "symbol": "compressor",
+      "x": 1395,
+      "y": 368,
+      "w": 80,
+      "h": 64,
+      "equipmentId": "DGU-UTL-M04"
+    },
+    {
+      "id": "e38",
+      "kind": "equipment",
+      "symbol": "utility",
+      "x": 1219,
+      "y": 550,
+      "w": 72,
+      "h": 60,
+      "equipmentId": "DGU-UTL-M05"
+    },
+    {
+      "id": "e39",
+      "kind": "equipment",
+      "symbol": "utility",
+      "x": 1399,
+      "y": 550,
+      "w": 72,
+      "h": 60,
+      "equipmentId": "DGU-UTL-M06"
+    },
+    {
+      "id": "e40",
+      "kind": "equipment",
+      "symbol": "utility",
+      "x": 1219,
+      "y": 710,
+      "w": 72,
+      "h": 60,
+      "equipmentId": "DGU-UTL-M07"
+    },
+    {
+      "id": "e41",
+      "kind": "equipment",
+      "symbol": "utility",
+      "x": 1399,
+      "y": 710,
+      "w": 72,
+      "h": 60,
+      "equipmentId": "DGU-UTL-M08"
+    }
+  ]
+}

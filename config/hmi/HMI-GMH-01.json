@@ -1,0 +1,449 @@
+{
+  "id": "HMI-GMH-01",
+  "siteId": "GMH",
+  "name": "김해 사출·도장동",
+  "size": [
+    1600,
+    900
+  ],
+  "grid": 10,
+  "version": 1,
+  "publishedAt": "2026-09-15T09:00",
+  "publishedBy": "시스템 관리자",
+  "objects": [
+    {
+      "id": "t1",
+      "kind": "text",
+      "x": 40,
+      "y": 44,
+      "text": "김해 사출·도장동",
+      "size": "title"
+    },
+    {
+      "id": "z2",
+      "kind": "zone",
+      "x": 40,
+      "y": 80,
+      "w": 700,
+      "h": 380,
+      "label": "대형 사출 1라인",
+      "lineId": "GMH-IM1"
+    },
+    {
+      "id": "l3",
+      "kind": "line",
+      "style": "conveyor",
+      "points": [
+        [
+          80,
+          270
+        ],
+        [
+          700,
+          270
+        ]
+      ]
+    },
+    {
+      "id": "e4",
+      "kind": "equipment",
+      "symbol": "injection",
+      "x": 95,
+      "y": 145,
+      "w": 150,
+      "h": 80,
+      "equipmentId": "GMH-IM1-M01",
+      "signals": [
+        "temperature"
+      ]
+    },
+    {
+      "id": "e5",
+      "kind": "equipment",
+      "symbol": "injection",
+      "x": 315,
+      "y": 145,
+      "w": 150,
+      "h": 80,
+      "equipmentId": "GMH-IM1-M02"
+    },
+    {
+      "id": "e6",
+      "kind": "equipment",
+      "symbol": "injection",
+      "x": 535,
+      "y": 145,
+      "w": 150,
+      "h": 80,
+      "equipmentId": "GMH-IM1-M03"
+    },
+    {
+      "id": "e7",
+      "kind": "equipment",
+      "symbol": "injection",
+      "x": 95,
+      "y": 320,
+      "w": 150,
+      "h": 80,
+      "equipmentId": "GMH-IM1-M04"
+    },
+    {
+      "id": "e8",
+      "kind": "equipment",
+      "symbol": "injection",
+      "x": 315,
+      "y": 320,
+      "w": 150,
+      "h": 80,
+      "equipmentId": "GMH-IM1-M05"
+    },
+    {
+      "id": "e9",
+      "kind": "equipment",
+      "symbol": "injection",
+      "x": 535,
+      "y": 320,
+      "w": 150,
+      "h": 80,
+      "equipmentId": "GMH-IM1-M06"
+    },
+    {
+      "id": "z10",
+      "kind": "zone",
+      "x": 770,
+      "y": 80,
+      "w": 790,
+      "h": 380,
+      "label": "중형 사출 2라인",
+      "lineId": "GMH-IM2"
+    },
+    {
+      "id": "l11",
+      "kind": "line",
+      "style": "conveyor",
+      "points": [
+        [
+          810,
+          270
+        ],
+        [
+          1520,
+          270
+        ]
+      ]
+    },
+    {
+      "id": "e12",
+      "kind": "equipment",
+      "symbol": "injection",
+      "x": 790,
+      "y": 151,
+      "w": 120,
+      "h": 68,
+      "equipmentId": "GMH-IM2-M01"
+    },
+    {
+      "id": "e13",
+      "kind": "equipment",
+      "symbol": "injection",
+      "x": 945,
+      "y": 151,
+      "w": 120,
+      "h": 68,
+      "equipmentId": "GMH-IM2-M02"
+    },
+    {
+      "id": "e14",
+      "kind": "equipment",
+      "symbol": "injection",
+      "x": 1100,
+      "y": 151,
+      "w": 120,
+      "h": 68,
+      "equipmentId": "GMH-IM2-M03"
+    },
+    {
+      "id": "e15",
+      "kind": "equipment",
+      "symbol": "injection",
+      "x": 1255,
+      "y": 151,
+      "w": 120,
+      "h": 68,
+      "equipmentId": "GMH-IM2-M04"
+    },
+    {
+      "id": "e16",
+      "kind": "equipment",
+      "symbol": "injection",
+      "x": 1410,
+      "y": 151,
+      "w": 120,
+      "h": 68,
+      "equipmentId": "GMH-IM2-M05"
+    },
+    {
+      "id": "e17",
+      "kind": "equipment",
+      "symbol": "injection",
+      "x": 790,
+      "y": 326,
+      "w": 120,
+      "h": 68,
+      "equipmentId": "GMH-IM2-M06"
+    },
+    {
+      "id": "e18",
+      "kind": "equipment",
+      "symbol": "injection",
+      "x": 945,
+      "y": 326,
+      "w": 120,
+      "h": 68,
+      "equipmentId": "GMH-IM2-M07"
+    },
+    {
+      "id": "e19",
+      "kind": "equipment",
+      "symbol": "injection",
+      "x": 1100,
+      "y": 326,
+      "w": 120,
+      "h": 68,
+      "equipmentId": "GMH-IM2-M08"
+    },
+    {
+      "id": "e20",
+      "kind": "equipment",
+      "symbol": "injection",
+      "x": 1255,
+      "y": 326,
+      "w": 120,
+      "h": 68,
+      "equipmentId": "GMH-IM2-M09"
+    },
+    {
+      "id": "e21",
+      "kind": "equipment",
+      "symbol": "injection",
+      "x": 1410,
+      "y": 326,
+      "w": 120,
+      "h": 68,
+      "equipmentId": "GMH-IM2-M10"
+    },
+    {
+      "id": "z22",
+      "kind": "zone",
+      "x": 40,
+      "y": 490,
+      "w": 1100,
+      "h": 380,
+      "label": "도장 1라인",
+      "lineId": "GMH-PT1"
+    },
+    {
+      "id": "l23",
+      "kind": "line",
+      "style": "conveyor",
+      "points": [
+        [
+          90,
+          700
+        ],
+        [
+          1090,
+          700
+        ]
+      ]
+    },
+    {
+      "id": "e24",
+      "kind": "equipment",
+      "symbol": "paintBooth",
+      "x": 95,
+      "y": 570,
+      "w": 110,
+      "h": 80,
+      "equipmentId": "GMH-PT1-M01"
+    },
+    {
+      "id": "e25",
+      "kind": "equipment",
+      "symbol": "paintBooth",
+      "x": 295,
+      "y": 570,
+      "w": 110,
+      "h": 80,
+      "equipmentId": "GMH-PT1-M02"
+    },
+    {
+      "id": "e26",
+      "kind": "equipment",
+      "symbol": "paintBooth",
+      "x": 495,
+      "y": 570,
+      "w": 110,
+      "h": 80,
+      "equipmentId": "GMH-PT1-M03"
+    },
+    {
+      "id": "e27",
+      "kind": "equipment",
+      "symbol": "paintBooth",
+      "x": 695,
+      "y": 570,
+      "w": 110,
+      "h": 80,
+      "equipmentId": "GMH-PT1-M04"
+    },
+    {
+      "id": "e28",
+      "kind": "equipment",
+      "symbol": "paintBooth",
+      "x": 895,
+      "y": 570,
+      "w": 110,
+      "h": 80,
+      "equipmentId": "GMH-PT1-M05"
+    },
+    {
+      "id": "e29",
+      "kind": "equipment",
+      "symbol": "oven",
+      "x": 235,
+      "y": 760,
+      "w": 130,
+      "h": 80,
+      "equipmentId": "GMH-PT1-M06",
+      "signals": [
+        "temperature"
+      ]
+    },
+    {
+      "id": "e30",
+      "kind": "equipment",
+      "symbol": "oven",
+      "x": 495,
+      "y": 760,
+      "w": 130,
+      "h": 80,
+      "equipmentId": "GMH-PT1-M07"
+    },
+    {
+      "id": "e31",
+      "kind": "equipment",
+      "symbol": "generic",
+      "x": 864,
+      "y": 764,
+      "w": 72,
+      "h": 72,
+      "equipmentId": "GMH-PT1-M08"
+    },
+    {
+      "id": "z32",
+      "kind": "zone",
+      "x": 1170,
+      "y": 490,
+      "w": 390,
+      "h": 380,
+      "label": "유틸리티",
+      "lineId": "GMH-UTL"
+    },
+    {
+      "id": "l33",
+      "kind": "line",
+      "style": "pipe",
+      "points": [
+        [
+          1210,
+          735
+        ],
+        [
+          1520,
+          735
+        ]
+      ]
+    },
+    {
+      "id": "e34",
+      "kind": "equipment",
+      "symbol": "compressor",
+      "x": 1230,
+      "y": 528,
+      "w": 80,
+      "h": 64,
+      "equipmentId": "GMH-UTL-M01"
+    },
+    {
+      "id": "e35",
+      "kind": "equipment",
+      "symbol": "compressor",
+      "x": 1400,
+      "y": 528,
+      "w": 80,
+      "h": 64,
+      "equipmentId": "GMH-UTL-M02"
+    },
+    {
+      "id": "e36",
+      "kind": "equipment",
+      "symbol": "compressor",
+      "x": 1230,
+      "y": 628,
+      "w": 80,
+      "h": 64,
+      "equipmentId": "GMH-UTL-M03"
+    },
+    {
+      "id": "e37",
+      "kind": "equipment",
+      "symbol": "compressor",
+      "x": 1400,
+      "y": 628,
+      "w": 80,
+      "h": 64,
+      "equipmentId": "GMH-UTL-M04"
+    },
+    {
+      "id": "e38",
+      "kind": "equipment",
+      "symbol": "utility",
+      "x": 1189,
+      "y": 770,
+      "w": 72,
+      "h": 60,
+      "equipmentId": "GMH-UTL-M06"
+    },
+    {
+      "id": "e39",
+      "kind": "equipment",
+      "symbol": "utility",
+      "x": 1279,
+      "y": 770,
+      "w": 72,
+      "h": 60,
+      "equipmentId": "GMH-UTL-M07"
+    },
+    {
+      "id": "e40",
+      "kind": "equipment",
+      "symbol": "utility",
+      "x": 1369,
+      "y": 770,
+      "w": 72,
+      "h": 60,
+      "equipmentId": "GMH-UTL-M08"
+    },
+    {
+      "id": "e41",
+      "kind": "equipment",
+      "symbol": "utility",
+      "x": 1459,
+      "y": 770,
+      "w": 72,
+      "h": 60,
+      "equipmentId": "GMH-UTL-M14"
+    }
+  ]
+}

@@ -14,6 +14,7 @@ import { P9Evidence } from './P9/P9Evidence';
 import { P10Report } from './P10/P10Report';
 import { P11Cause } from './P11/P11Cause';
 import { P12Assistant } from './P12/P12Assistant';
+import { P13Process } from './P13/P13Process';
 
 export const patternTemplates: Partial<Record<string, ComponentType<TemplateProps>>> = {
   P1: P1Dashboard,
@@ -27,5 +28,6 @@ export const patternTemplates: Partial<Record<string, ComponentType<TemplateProp
   P9: P9Evidence,
   P10: P10Report,
   P11: P11Cause,
-  P12: P12Assistant
+  P12: P12Assistant,
+  P13: P13Process
 };
