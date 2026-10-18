@@ -72,6 +72,7 @@ interface Evidence { label: string; value: number; normalRange: [number, number]
 - 답은 지표 계산 함수와 위 기능의 결과로 만든다. 수치·기간·사업장과 관련 화면 링크를 함께 준다.
 - 맞는 의도가 없으면 지원 범위를 안내한다. 답을 만들어 내지 않는다.
 - 같은 질문(정규화한 문자열)에는 항상 같은 답을 준다.
+- 고객사 설치에서 공개 언어 모델과 도구 호출로 확장하는 설계는 `docs/ai-assistant-onprem.md`에 둔다(D-70).
 
 ## 4. 판정과 이력
 
